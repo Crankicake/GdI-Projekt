@@ -1,7 +1,7 @@
 HOW TO Git :)
 
 
-0. git pull		                                         - jedes mal bevor man anfängt zu kommentieren
+0. git pull		                                         - jedes mal bevor man anfängt zu programmieren
 
 0.5 git pull origin master
 
