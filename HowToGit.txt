@@ -3,6 +3,8 @@ HOW TO Git :)
 
 0. git pull		                                         - jedes mal bevor man anfängt zu kommentieren
 
+0.5 git pull origin master
+
 1. Coolen Scheiß programmieren.
 
 2. git add *                                          - coolen Scheiß zum Index hinzufügen
@@ -12,5 +14,5 @@ HOW TO Git :)
 4. git push 					                              	- und ciao 
 
 
-Wird hier eventuell nochmal erweitert - Salim
+Wird hier eventuell nochmal erweitert - Salim & Fabian
 
