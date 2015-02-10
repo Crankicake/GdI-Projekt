@@ -2,12 +2,16 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 
 import java.net.URL;
 
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
 import de.matthiasmann.twl.slick.TWLStateBasedGame;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.HighScoreState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.InstructionState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.OptionState;
 import eea.engine.entity.StateBasedEntityManager;
 
 /**
@@ -26,11 +30,6 @@ public class Gorillas extends TWLStateBasedGame {
 	public static final int OPTIONSTATE = 4;
 	public static final int INSTRUCTIONSSTATE = 5;
 
-	public static final int FRAME_WIDTH = 800;
-	public static final int FRAME_HEIGHT = 600;
-
-	public static final int TARGET_FRAME_RATE = 120;
-
 	public static boolean debug = false;
 
 	public Gorillas(boolean debug) {
@@ -42,51 +41,26 @@ public class Gorillas extends TWLStateBasedGame {
 		debug = debuging;
 	}
 
-	public static void main(String[] args) throws SlickException {
-
-		// Set the native library path (depending on the operating system)
-		// @formatter:off
-		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-			System.setProperty("org.lwjgl.librarypath",
-					System.getProperty("user.dir")
-							+ "/lib/lwjgl-2.9.1/native/windows");
-		} else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-			System.setProperty("org.lwjgl.librarypath",
-					System.getProperty("user.dir")
-							+ "/lib/lwjgl-2.9.1/native/macosx");
-		} else {
-			System.setProperty("org.lwjgl.librarypath",
-					System.getProperty("user.dir") + "/lib/lwjgl-2.9.1/native/"
-							+ System.getProperty("os.name").toLowerCase());
-		}
-
-		System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL",
-				"false");
-		System.err.println(System.getProperty("os.name") + ": "
-				+ System.getProperty("org.lwjgl.librarypath"));
-		// @formatter:on
-
-		// Insert this StateBasedGame into an AppContainer (a window)
-		AppGameContainer app = new AppGameContainer(new Gorillas(false));
-
-		// Set window properties and start it
-		app.setShowFPS(false);
-		app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
-		app.setTargetFrameRate(TARGET_FRAME_RATE);
-		app.start();
-	}
-
 	@Override
 	public void initStatesList(GameContainer gameContainer)
 			throws SlickException {
 
 		// Add states to the StateBasedGame
+		// The first added one will be the started one
 		this.addState(new MainMenuState(MAINMENUSTATE));
-		// TODO: Add the other states...
+		this.addState(new GameSetupState(GAMESETUPSTATE));
+		this.addState(new GamePlayState(GAMEPLAYSTATE));
+		this.addState(new HighScoreState(HIGHSCORESTATE));
+		this.addState(new OptionState(OPTIONSTATE));
+		this.addState(new InstructionState(INSTRUCTIONSSTATE));
 
 		// Add states to the StateBasedEntityManager
 		StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
-		// TODO: Add the other states...
+		StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
+		StateBasedEntityManager.getInstance().addState(GAMEPLAYSTATE);
+		StateBasedEntityManager.getInstance().addState(HIGHSCORESTATE);
+		StateBasedEntityManager.getInstance().addState(OPTIONSTATE);
+		StateBasedEntityManager.getInstance().addState(INSTRUCTIONSSTATE);
 	}
 
 	@Override
