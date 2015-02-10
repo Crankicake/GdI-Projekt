@@ -1,15 +1,15 @@
 HOW TO Git :)
 
 
-0. git pull		- jedes mal bevor man anfängt zu kommentieren
+0. git pull		                                         - jedes mal bevor man anfängt zu kommentieren
 
 1. Coolen Scheiß programmieren.
 
-2. git add *          - coolen Scheiß zum Index hinzufügen
+2. git add *                                          - coolen Scheiß zum Index hinzufügen
 
 3. git commit -m “Habe coolen Scheiß programmiert“    - Aussagekräftig die changes kommentieren
 
-4. git push 						- und ciao 
+4. git push 					                              	- und ciao 
 
 
 Wird hier eventuell nochmal erweitert - Salim
