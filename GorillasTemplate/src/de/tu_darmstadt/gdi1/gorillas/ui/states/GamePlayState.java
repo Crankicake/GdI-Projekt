@@ -16,7 +16,7 @@ import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 
 public class GamePlayState extends BasicTWLGameState {
-	
+
 	// Das hier ist einfach das Attribut, abgeschrieben von DOW :§
 	private StateBasedEntityManager sbnm;
 	private int stateID;
@@ -31,7 +31,8 @@ public class GamePlayState extends BasicTWLGameState {
 		sbnm = StateBasedEntityManager.getInstance();
 	}
 
-	// Ich hab das Initialiesieren in 2 Methoden ausgelagert, für die Affen noch eine weitere bitte, der Übersichtlichkeit halber.
+	// Ich hab das Initialiesieren in 2 Methoden ausgelagert, für die Affen noch
+	// eine weitere bitte, der Übersichtlichkeit halber.
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
@@ -41,46 +42,62 @@ public class GamePlayState extends BasicTWLGameState {
 
 	// Ich hab bei jeder Entität lieber mal alle Werte gesetzt.
 	protected void initBackground() throws SlickException {
-		Entity background = new Entity("Background"); // Name der Entität, unter der sie später gefunden werden kann
+		Entity background = new Entity("Background");
+		// Name der Entität, unter der sie später gefunden werden kann
+
 		background.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/background/background.png"))); // Das Bild. Leider weiß ich noch nicht, wie 2 Bilder laden und tauschen kann. Theme Sonne etc.
-		background.setPosition(new Vector2f(400, 300)); // Die Position ist relativ zur links-oberen Ecke und gibt die Mitte vom Bild an. Bissi komisch
-		background.setScale(1.0f);
+				"/assets/gorillas/background/background.png")));
+		// Das Bild. Leider weiß ich noch nicht, wie 2 Bilder laden und tauschen
+		// kann. Theme Sonne etc.
+
+		float scaleX = ((float) Launcher.FRAME_WIDTH / 800f);
+		float scaleY = ((float) Launcher.FRAME_HEIGHT / 600f);
+		// Hier berechnen wir, um wie viel gestreckt das Bild pro Richtung sein
+		// muss. Für 800 * 600 sind die Grafiken entwickelt, deswegen nehmen wir
+		// das als Grundwert
+
+		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
+				Launcher.FRAME_HEIGHT / 2));
+		// Die Position ist relativ zur links-oberen Ecke und gibt die Mitte vom
+		// Bild an. Bissi komisch
+
+		background.setScale(scaleX > scaleY ? scaleX : scaleY);
+		// Die größere Streckung gibt die Gesamtstreckung. Problem hier:
+		// Was machen, wenn das Fenster nicht 4:3 ist? Eine Dimension passt
+		// dann, die andere nicht.
+
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
 		Entity sun = new Entity("Sun");
 		sun.addComponent(new ImageRenderComponent(new Image(
 				"/assets/gorillas/sun/sun_smiling.png")));
-		sun.setPosition(new Vector2f(400, 100));
-		sun.setScale(1.0f);
+
+		sun.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
+				Launcher.FRAME_HEIGHT / 6));
+		sun.setScale(scaleX > scaleY ? scaleX : scaleY);
 		sun.setPassable(true);
 		sun.setRotation(0.0f);
 
-		sbnm.addEntity(stateID, background); // Beide hinzufügen
+		sbnm.addEntity(stateID, background);
 		sbnm.addEntity(stateID, sun);
+		// Beide hinzufügen
 	}
 
 	protected void initBuildings() throws SlickException {
 
-		// Hier wird dynamisch berechnet, wie viele Gebäude das Spielfeld breit ist. Jedes Gebäude ist 100p breit.
-		int anzahl = Launcher.FRAME_WIDTH / 100;
-		
-		// Falls die Rechnung nicht glatt aufgeht, noch eins Zeichnen.
-		// Später vielleicht mit scaling so ändern, dass es (fast) genau passt?
-		// Warnung ist da weil wir 2 Konstanten miteinander verrechnen. Einfach ignorieren
-		if(Launcher.FRAME_WIDTH % 100 != 0)
-			++anzahl;
-		
-		Entity[] buildings = new Entity[anzahl];
+		Entity[] buildings = new Entity[8];
+
+		float scale = (float) Launcher.FRAME_WIDTH / 800f;
 
 		Random r = new Random();
 
-		for (int i = 0; i < anzahl; ++i) {
+		for (int i = 0; i < 8; ++i) {
 			buildings[i] = new Entity("Building_" + i);
-			
-			// per Zufall wählen, welches Gebäudebild wir nehmen. Atm sind es nur 3 Farben, aber nun gut
-			
+
+			// per Zufall wählen, welches Gebäudebild wir nehmen. Atm sind es
+			// nur 3 Farben, aber nun gut
+
 			switch (r.nextInt(3)) {
 			case 0:
 				buildings[i].addComponent(new ImageRenderComponent(new Image(
@@ -94,17 +111,19 @@ public class GamePlayState extends BasicTWLGameState {
 				buildings[i].addComponent(new ImageRenderComponent(new Image(
 						"/assets/gorillas/background/building_nazi.png")));
 				break;
-			}			
-			
-			buildings[i].setPosition(new Vector2f(50 + 100 * i, 25 * r.nextInt(11) + Launcher.FRAME_HEIGHT));
-			
-			// Hier rechnen wir aus, wo das Gebäude hin soll. Dabei ist der Spielraum zwischen 0 und 250.
-			// Gerne kann man das erweitern oder die Schritte verfeinern/ vergröbern.
-			
-			buildings[i].setScale(1.0f);
+			}
+
+			buildings[i].setPosition(new Vector2f((50 + 100 * i) * scale, (r
+					.nextInt(9) - 4) * Launcher.FRAME_HEIGHT / 20 + Launcher.FRAME_HEIGHT));
+
+			// Hier rechnen wir aus, wo das Gebäude hin soll. "+ Launcher.FRAME_HEIGHT" setzt die Gebäude so,
+			// dass sie genau in der Mitte vom Fenster aufhören. Dann +/- 4 * mit einer Konstante. Dise hab ich mal als
+			// Launcher.FRAME_HEIGHT / 20 festgelegt, wenn der Divisor größer wird, wird der Spielraum kleiner.
+
+			buildings[i].setScale(scale);
 			buildings[i].setPassable(false);
 			buildings[i].setRotation(0.0f);
-			
+
 			sbnm.addEntity(stateID, buildings[i]);
 		}
 	}
@@ -120,7 +139,7 @@ public class GamePlayState extends BasicTWLGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
-		
+
 		sbnm.updateEntities(gc, sbg, i);
 
 	}
