@@ -1,6 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import java.awt.Font;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -8,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.matthiasmann.twl.Button;
@@ -24,7 +22,6 @@ import eea.engine.entity.StateBasedEntityManager;
 
 public class GamePlayState extends BasicTWLGameState {
 
-	// Das hier ist einfach das Attribut, abgeschrieben von DOW...
 	protected StateBasedEntityManager sbem;
 	protected int stateID;
 
@@ -86,6 +83,7 @@ public class GamePlayState extends BasicTWLGameState {
 
 		// Sind die Entitäten zerstörbar? Ich glaube es gibt da eine extra
 		// destructable entity...
+		// Sowas gibt es tats�chlich, hat aber einen komischen Konstruktor, hab mich damit noch nciht auseinander gesetzt.
 		Entity[] buildings = new Entity[8];
 
 		Random r = new Random();

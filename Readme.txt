@@ -26,3 +26,11 @@ Lies die Kommentare^^
 Christoph @ all:
 Affe wird (zwar noch fehlerhaft) auf dem SPielfeld platziert, derzeit nur der linke.
 
+----------------------------------------------------------------------------------------------
+15.02.
+
+Fabi:
+Nachdem Christoph die ganze Zeit programmiert hat und alles blockiert hat, habe ich mich mal ausgelassen.
+Habe viele Kommentare gelöscht, die nutzlos waren. Hab die Affen richtig platziert, die tanzen jetzt. Gibt jetzt einen Button und 2 Textfelder, allerdings noch ohne beschriftung.
+Player erbt jetzt von Entity. 
+@Christoph: Ich hab deine komische Klasse mal gelöscht <3
