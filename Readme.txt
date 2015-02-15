@@ -34,3 +34,28 @@ Nachdem Christoph die ganze Zeit programmiert hat und alles blockiert hat, habe 
 Habe viele Kommentare gelöscht, die nutzlos waren. Hab die Affen richtig platziert, die tanzen jetzt. Gibt jetzt einen Button und 2 Textfelder, allerdings noch ohne beschriftung.
 Player erbt jetzt von Entity. 
 @Christoph: Ich hab deine komische Klasse mal gelöscht <3
+
+Nochmal, ausführlicher:
+Launcher hat jetzt ein Attribut 'SCALE', welches direkt die Skallierung ausgibt, sodass man sie nicht ständig neu errechnen muss.
+Player hat eine neuere Interaktionslogik. Bedeutet, es erbt von Entity, hat die Methode createEntity zum festlegen aller nötigen Attribute
+und speichert die Bilder direkt. Das hat zur Folge, dass in render(...) nun auf das Graphicsobjekt direkt gezeichnet wird.
+Besser/ schlechter als vorher? RÜCKMELDUNG!!! :D
+Projectile instanziert jetzt ThrowAttempt & erbt auch von Entity. Dementsprechend gibts eine update und eine render Methode.
+Diese rotiert die Banane, falls sie fliegt. Genauso holt sie aus ThrowAttempt die neue Position heraus. Probierts ruhig mal aus, ist verdammt scheiße und klappt nicht.
+Dazu gibt es jetzt darinne 2 neue Methoden, die ich von der angegebenen Internetseite kopiert habe. Copyright?
+GamePlayState hat jetzt eine vollwertige GUI mit 2 Textboxen, 3 Labeln und einem Button. Es wird automatisch erkannt, ob eine Zahl eingegeben wird oder nicht. Ggf wird das alte Zeichen gelöscht.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -14,6 +14,8 @@ public class ThrowAttempt {
 
 	double gravity;
 
+	double timePassed;
+	
 	/* Einen neuen Wurf starten mit:
 	 * Dem Winkel
 	 * Der Kraft
@@ -96,12 +98,14 @@ public class ThrowAttempt {
 		}
 	}
 
-	public Vector2f getNexPoint(double timePassed) {
+	public Vector2f getNexPoint(double time) {
 
-		timePassed *= GamePlayState.timeScale;
+		time *= GamePlayState.timeScale;
+
+		timePassed += time;
 		
-		int x = (int) (x0 + (velocityX * timePassed) + (0.5
-				* GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));
+		int x = (int) (x0 + (velocityX * timePassed) );
+				//+ (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));
 
 		int y = (int) (y0 - (velocityY * timePassed) + (0.5 * gravity
 				* timePassed * timePassed));

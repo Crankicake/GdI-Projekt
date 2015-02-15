@@ -12,10 +12,12 @@ import org.newdawn.slick.state.StateBasedGame;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditField.Callback;
+import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
+import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
@@ -25,26 +27,36 @@ public class GamePlayState extends BasicTWLGameState {
 	protected StateBasedEntityManager sbem;
 	protected int stateID;
 
+	protected Projectile projectile;
+
 	protected Player playerOne;
-	protected Player spielerZwei;
+	protected Player playerTwo;
 
 	// Die 3 sind atm nur Platzhalter.
 	public static double wind = 0;
-	public static double windScale = 0;
-	public static double timeScale = 0;
+	public static double windScale = 1;
+	public static double timeScale = 0.1;
 
 	protected Button throwButton;
 	protected EditField velocityTextField;
 	protected EditField angleTextField;
+	protected Label velocityLabel;
+	protected Label angleLabel;
+	protected Label playerLabel;
+
 	protected String oldVelocity = "";
 	protected String oldAngle = "";
+
+	protected int whichPlayersDraw;
 
 	public GamePlayState(int sid) {
 		stateID = sid;
 		sbem = StateBasedEntityManager.getInstance();
 
 		playerOne = new Player("Christoph");
-		spielerZwei = new Player("Fabian");
+		playerTwo = new Player("Fabian");
+
+		whichPlayersDraw = 1;
 	}
 
 	@Override
@@ -53,6 +65,7 @@ public class GamePlayState extends BasicTWLGameState {
 
 		initBackground();
 		initBuildings();
+		initProjectile();
 	}
 
 	protected void initBackground() throws SlickException {
@@ -83,7 +96,8 @@ public class GamePlayState extends BasicTWLGameState {
 
 		// Sind die Entit√§ten zerst√∂rbar? Ich glaube es gibt da eine extra
 		// destructable entity...
-		// Sowas gibt es tats‰chlich, hat aber einen komischen Konstruktor, hab mich damit noch nciht auseinander gesetzt.
+		// Sowas gibt es tats‰chlich, hat aber einen komischen Konstruktor, hab
+		// mich damit noch nciht auseinander gesetzt.
 		Entity[] buildings = new Entity[8];
 
 		Random r = new Random();
@@ -122,9 +136,9 @@ public class GamePlayState extends BasicTWLGameState {
 						.createEntity(new Vector2f(buildingX, buildingY - 321));
 				sbem.addEntity(stateID, playerOne);
 			} else if (i == indexSecondApe) {
-				spielerZwei.createEntity(new Vector2f(buildingX,
-						buildingY - 321));
-				sbem.addEntity(stateID, spielerZwei);
+				playerTwo
+						.createEntity(new Vector2f(buildingX, buildingY - 321));
+				sbem.addEntity(stateID, playerTwo);
 			}
 
 			buildings[i].setScale(Launcher.SCALE);
@@ -134,6 +148,12 @@ public class GamePlayState extends BasicTWLGameState {
 			sbem.addEntity(stateID, buildings[i]);
 
 		}
+	}
+
+	protected void initProjectile() throws SlickException {
+		projectile = new Projectile("Banane", playerOne.getPosition());
+		projectile.createEntity();
+		sbem.addEntity(stateID, projectile);
 	}
 
 	@Override
@@ -164,10 +184,10 @@ public class GamePlayState extends BasicTWLGameState {
 		velocityTextField.setText("0");
 		velocityTextField.addCallback(new Callback() {
 			@Override
-			public void callback(int arg0) {		
+			public void callback(int arg0) {
 				String oldText = velocityTextField.getText();
 
-				if(oldVelocity.equals(oldText))
+				if (oldVelocity.equals(oldText))
 					return;
 
 				Integer number = Integer.parseInt(trimString(oldText));
@@ -179,11 +199,14 @@ public class GamePlayState extends BasicTWLGameState {
 				}
 
 				oldText = number.toString();
-				
+
 				oldVelocity = oldText;
 				velocityTextField.setText(oldText);
 			}
 		});
+
+		velocityLabel = new Label();
+		velocityLabel.setText("St‰rke:");
 
 		angleTextField = new EditField();
 		angleTextField.setText("0");
@@ -192,7 +215,7 @@ public class GamePlayState extends BasicTWLGameState {
 			public void callback(int arg0) {
 				String oldText = angleTextField.getText();
 
-				if(oldAngle.equals(oldText))
+				if (oldAngle.equals(oldText))
 					return;
 
 				Integer number = Integer.parseInt(trimString(oldText));
@@ -204,25 +227,44 @@ public class GamePlayState extends BasicTWLGameState {
 				}
 
 				oldText = number.toString();
-				
+
 				oldAngle = oldText;
 				angleTextField.setText(oldText);
 			}
 		});
 
+		angleLabel = new Label();
+		angleLabel.setText("Winkel: ");
+
 		throwButton = new Button();
-		throwButton.setText("Wurf");
+		throwButton.setText("Werfen");
 		throwButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("Click");
+
+				Vector2f pos = whichPlayersDraw == 1 ? playerOne.getPosition()
+						: playerTwo.getPosition();
+
+				projectile.setParamter(
+						Integer.parseInt(angleTextField.getText()),
+						Integer.parseInt(velocityTextField.getText()), pos,
+						9.81);
+
+				whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
+				playerLabel.setText("Spieler " + whichPlayersDraw + ":");
+				throwButton.setEnabled(false);
 			}
 		});
 
-		rp.add(velocityTextField);
-		rp.add(angleTextField);
-		rp.add(throwButton);
+		playerLabel = new Label();
+		playerLabel.setText("Spieler " + whichPlayersDraw + ":");
 
+		rp.add(velocityTextField);
+		rp.add(velocityLabel);
+		rp.add(angleTextField);
+		rp.add(angleLabel);
+		rp.add(throwButton);
+		rp.add(playerLabel);
 		return rp;
 	}
 
@@ -230,14 +272,23 @@ public class GamePlayState extends BasicTWLGameState {
 	protected void layoutRootPane() {
 
 		velocityTextField.adjustSize();
-		velocityTextField.setPosition(20, 20);
+		velocityTextField.setPosition(70, 20);
+
+		velocityLabel.adjustSize();
+		velocityLabel.setPosition(20, 23);
 
 		angleTextField.adjustSize();
-		angleTextField.setPosition(20, 55);
+		angleTextField.setPosition(70, 55);
+
+		angleLabel.adjustSize();
+		angleLabel.setPosition(15, 58);
 
 		throwButton.adjustSize();
-		throwButton.setPosition(20, 90);
+		throwButton.setPosition(70, 90);
 		throwButton.setSize(88, throwButton.getHeight());
+
+		playerLabel.adjustSize();
+		playerLabel.setPosition(3, 93);
 	}
 
 	protected String trimString(String s) {
