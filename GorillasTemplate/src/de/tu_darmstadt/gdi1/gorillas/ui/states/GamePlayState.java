@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+import java.awt.Font;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -7,116 +8,95 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.StateBasedGame;
 
+import de.matthiasmann.twl.Button;
+import de.matthiasmann.twl.EditField;
+import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
+import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
-import de.tu_darmstadt.gdi1.gorillas.main.Spielergorilla;
+import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 
 public class GamePlayState extends BasicTWLGameState {
 
-	// Das hier ist einfach das Attribut, abgeschrieben von DOW :�
-	private StateBasedEntityManager sbnm;
-	private int stateID;
+	// Das hier ist einfach das Attribut, abgeschrieben von DOW...
+	protected StateBasedEntityManager sbem;
+	protected int stateID;
+
+	protected Player playerOne;
+	protected Player spielerZwei;
 
 	// Die 3 sind atm nur Platzhalter.
 	public static double wind = 0;
 	public static double windScale = 0;
 	public static double timeScale = 0;
 
+	protected Button throwButton;
+	protected EditField velocityTextField;
+	protected EditField angleTextField;
+	protected String oldVelocity = "";
+	protected String oldAngle = "";
+
 	public GamePlayState(int sid) {
 		stateID = sid;
-		sbnm = StateBasedEntityManager.getInstance();
+		sbem = StateBasedEntityManager.getInstance();
+
+		playerOne = new Player("Christoph");
+		spielerZwei = new Player("Fabian");
 	}
 
-	// Ich hab das Initialiesieren in 2 Methoden ausgelagert, f�r die Affen noch
-	// eine weitere bitte, der �bersichtlichkeit halber.
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
+
 		initBackground();
 		initBuildings();
 	}
 
-	// Ich hab bei jeder Entit�t lieber mal alle Werte gesetzt.
 	protected void initBackground() throws SlickException {
-		Entity background = new Entity("Background");
-		// Name der Entit�t, unter der sie sp�ter gefunden werden kann
 
+		Entity background = new Entity("Background");
 		background.addComponent(new ImageRenderComponent(new Image(
 				"/assets/gorillas/background/background.png")));
-		// Das Bild. Leider wei� ich noch nicht, wie 2 Bilder laden und tauschen
-		// kann. Theme Sonne etc.
-
-		float scaleX = ((float) Launcher.FRAME_WIDTH / 800f);
-		float scaleY = ((float) Launcher.FRAME_HEIGHT / 600f);
-		// Hier berechnen wir, um wie viel gestreckt das Bild pro Richtung sein
-		// muss. F�r 800 * 600 sind die Grafiken entwickelt, deswegen nehmen wir
-		// das als Grundwert
-
 		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
 				Launcher.FRAME_HEIGHT / 2));
-		// Die Position ist relativ zur links-oberen Ecke und gibt die Mitte vom
-		// Bild an. Bissi komisch
-
-		background.setScale(scaleX > scaleY ? scaleX : scaleY);
-		// Die gr��ere Streckung gibt die Gesamtstreckung. Problem hier:
-		// Was machen, wenn das Fenster nicht 4:3 ist? Eine Dimension passt
-		// dann, die andere nicht.
-
+		background.setScale(Launcher.SCALE);
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
 		Entity sun = new Entity("Sun");
 		sun.addComponent(new ImageRenderComponent(new Image(
 				"/assets/gorillas/sun/sun_smiling.png")));
-
 		sun.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 6));
-		sun.setScale(scaleX > scaleY ? scaleX : scaleY);
+				Launcher.FRAME_HEIGHT / 8));
+		sun.setScale(Launcher.SCALE);
 		sun.setPassable(true);
 		sun.setRotation(0.0f);
 
-		sbnm.addEntity(stateID, background);
-		sbnm.addEntity(stateID, sun);
-		// Beide hinzuf�gen
+		sbem.addEntity(stateID, background);
+		sbem.addEntity(stateID, sun);
 	}
 
-	/**
-	 * @throws SlickException
-	 */
 	protected void initBuildings() throws SlickException {
 
 		// Sind die Entitäten zerstörbar? Ich glaube es gibt da eine extra
 		// destructable entity...
 		Entity[] buildings = new Entity[8];
 
-		float scale = (float) Launcher.FRAME_WIDTH / 800f;
-
-		
-		//Affenentitäten
-		Entity firstApe = new Entity("Ape_1");
-	
-		Entity secondApe = new Entity("Ape_2");
-
 		Random r = new Random();
 
-		
+		int indexFirstApe = r.nextInt(3);
+		int indexSecondApe = r.nextInt(3) + 5;
 
-		//Zufallszahlen zum platzieren der affen zwischen dem 1. und 3.
-		// bzw dann 5. und 7. hochhaus
-		int indexFirstApe = r.nextInt(2) + 1;
-		
+		float buildingX, buildingY;
 
-		// Hochhäuser setzen
 		for (int i = 0; i < 8; ++i) {
 			buildings[i] = new Entity("Building_" + i);
-
-			// per Zufall w�hlen, welches Geb�udebild wir nehmen. Atm sind es
-			// nur 3 Farben, aber nun gut
 
 			switch (r.nextInt(3)) {
 			case 0:
@@ -133,58 +113,27 @@ public class GamePlayState extends BasicTWLGameState {
 				break;
 			}
 
-			// X und Y koordinaten für die Hochhäuser
-			float buildingX = (50 + 100 * i) * scale;
-			float buildingY = (r.nextInt(9) - 4)* Launcher.FRAME_HEIGHT / 20
-					+ Launcher.FRAME_HEIGHT; 
-			
-			
+			buildingX = (50f + 100f * i) * Launcher.FRAME_WIDTH / 800;
+			buildingY = Launcher.FRAME_HEIGHT + (r.nextInt(7) - 3)
+					* Launcher.FRAME_HEIGHT / 20;
 
-			buildings[i].setPosition(new Vector2f(buildingX, buildingY ));
+			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
 
-			// Linken Affen setzen
-			// Zufallszahl um das gebäude zu bestimmen
-			
-			
-			// Derzeit noch null, da noch unfertig
-			// später soll hier die zufallszahl eingestetzt werden
-			if ( 0 == i) {
-				// indexFirstApe -
-				
-				
-				firstApe.addComponent(new ImageRenderComponent(new Image(
-						"/assets/gorillas/gorillas/gorilla.png")));
-			
-				float apeX = buildingX;
-				//X koordinate korrekt, lediglich Y noch zu fertigen 
-				float apeY = (buildingY - 26) / 2;
-				
-				System.out.println(apeY);
-				
-				firstApe.setPosition(new Vector2f(apeX, apeY));
-
-				
-
-				
-				firstApe.setScale(1);
-				firstApe.setPassable(true);
-				firstApe.setRotation(0.0f);
-				
-				sbnm.addEntity(stateID, firstApe);
+			if (i == indexFirstApe) {
+				playerOne
+						.createEntity(new Vector2f(buildingX, buildingY - 321));
+				sbem.addEntity(stateID, playerOne);
+			} else if (i == indexSecondApe) {
+				spielerZwei.createEntity(new Vector2f(buildingX,
+						buildingY - 321));
+				sbem.addEntity(stateID, spielerZwei);
 			}
 
-			// Hier rechnen wir aus, wo das Geb�ude hin soll.
-			// "+ Launcher.FRAME_HEIGHT" setzt die Geb�ude so,
-			// dass sie genau in der Mitte vom Fenster aufh�ren. Dann +/- 4 *
-			// mit einer Konstante. Diese hab ich mal als
-			// Launcher.FRAME_HEIGHT / 20 festgelegt, wenn der Divisor gr��er
-			// wird, wird der Spielraum kleiner.
-
-			buildings[i].setScale(scale);
+			buildings[i].setScale(Launcher.SCALE);
 			buildings[i].setPassable(false);
 			buildings[i].setRotation(0.0f);
 
-			sbnm.addEntity(stateID, buildings[i]);
+			sbem.addEntity(stateID, buildings[i]);
 
 		}
 	}
@@ -193,20 +142,139 @@ public class GamePlayState extends BasicTWLGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 
-		sbnm.renderEntities(gc, sbg, g);
-
+		sbem.renderEntities(gc, sbg, g);
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
-		sbnm.updateEntities(gc, sbg, i);
-
+		sbem.updateEntities(gc, sbg, i);
 	}
 
 	@Override
 	public int getID() {
 		return stateID;
+	}
+
+	@Override
+	protected RootPane createRootPane() {
+
+		RootPane rp = super.createRootPane();
+
+		velocityTextField = new EditField();
+		velocityTextField.setText("0");
+		velocityTextField.addCallback(new Callback() {
+			@Override
+			public void callback(int arg0) {		
+				String oldText = velocityTextField.getText();
+
+				if(oldVelocity.equals(oldText))
+					return;
+
+				Integer number = Integer.parseInt(trimString(oldText));
+
+				if (number < 0) {
+					number = 0;
+				} else if (number > 200) {
+					number = 200;
+				}
+
+				oldText = number.toString();
+				
+				oldVelocity = oldText;
+				velocityTextField.setText(oldText);
+			}
+		});
+
+		angleTextField = new EditField();
+		angleTextField.setText("0");
+		angleTextField.addCallback(new Callback() {
+			@Override
+			public void callback(int arg0) {
+				String oldText = angleTextField.getText();
+
+				if(oldAngle.equals(oldText))
+					return;
+
+				Integer number = Integer.parseInt(trimString(oldText));
+
+				if (number < 0) {
+					number = 0;
+				} else if (number > 360) {
+					number = 360;
+				}
+
+				oldText = number.toString();
+				
+				oldAngle = oldText;
+				angleTextField.setText(oldText);
+			}
+		});
+
+		throwButton = new Button();
+		throwButton.setText("Wurf");
+		throwButton.addCallback(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("Click");
+			}
+		});
+
+		rp.add(velocityTextField);
+		rp.add(angleTextField);
+		rp.add(throwButton);
+
+		return rp;
+	}
+
+	@Override
+	protected void layoutRootPane() {
+
+		velocityTextField.adjustSize();
+		velocityTextField.setPosition(20, 20);
+
+		angleTextField.adjustSize();
+		angleTextField.setPosition(20, 55);
+
+		throwButton.adjustSize();
+		throwButton.setPosition(20, 90);
+		throwButton.setSize(88, throwButton.getHeight());
+	}
+
+	protected String trimString(String s) {
+		StringBuilder sb = new StringBuilder(s.length());
+
+		for (char c : s.toCharArray()) {
+			switch (c) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				sb.append(c);
+				break;
+			}
+		}
+
+		return sb.toString();
+	}
+
+	protected int stringToInt(String s) {
+
+		int length = s.length();
+		int number = 0;
+
+		for (int index = 0; index < length; ++index) {
+
+			number += (Math.pow(10, length - index) * s.charAt(index));
+		}
+
+		return number;
 	}
 }

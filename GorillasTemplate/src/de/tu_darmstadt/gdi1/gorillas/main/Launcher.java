@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
+@SuppressWarnings("unused")
 public class Launcher {
 
 	public static final int FRAME_WIDTH = 800;
@@ -10,6 +11,12 @@ public class Launcher {
 
 	public static final int TARGET_FRAME_RATE = 120;
 
+	public static final float SCALE;
+	
+	static {
+		SCALE = ((float)FRAME_WIDTH / 800f) < ((float)FRAME_HEIGHT / 600f) ? ((float)FRAME_HEIGHT / 600f) : ((float)FRAME_WIDTH / 800f);
+	}
+	
 	public static void main(String[] args) throws SlickException {
 
 		String osname = System.getProperty("os.name").toLowerCase();
