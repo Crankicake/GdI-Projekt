@@ -16,6 +16,7 @@ import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
+import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.component.render.ImageRenderComponent;
@@ -53,8 +54,8 @@ public class GamePlayState extends BasicTWLGameState {
 		stateID = sid;
 		sbem = StateBasedEntityManager.getInstance();
 
-		playerOne = new Player("Christoph");
-		playerTwo = new Player("Fabian");
+		playerOne = MasterGame.getPlayerOne();
+		playerTwo = MasterGame.getPlayerTwo();
 
 		whichPlayersDraw = 1;
 	}

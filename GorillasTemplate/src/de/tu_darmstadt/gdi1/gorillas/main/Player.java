@@ -16,21 +16,24 @@ public class Player extends Entity {
 	private int counter = 0;
 
 	private Vector2f position;
-	
+
 	private Image links, normal, rechts;
 
 	public Player(String entityID) {
 		super(entityID);
-		name = entityID;
+	}
+
+	public void setName(String value) {
+		name = value;
 	}
 
 	public void createEntity(Vector2f pos) throws SlickException {
 
 		pos.x -= 18;
 		pos.y -= 21;
-		
+
 		this.position = pos;
-		
+
 		normal = new Image("/assets/gorillas/gorillas/gorilla.png");
 		links = new Image("/assets/gorillas/gorillas/gorilla_left_up.png");
 		rechts = new Image("/assets/gorillas/gorillas/gorilla_right_up.png");

@@ -32,9 +32,12 @@ public class Gorillas extends TWLStateBasedGame {
 
 	public static boolean debug = false;
 
+	protected MasterGame mg;
+	
 	public Gorillas(boolean debug) {
 		super("Gorillas");
 		setDebug(debug);
+		mg = new MasterGame();
 	}
 
 	public static void setDebug(boolean debuging) {
@@ -48,7 +51,7 @@ public class Gorillas extends TWLStateBasedGame {
 		boolean debug = true;
 
 		if (debug) {
-			this.addState(new GamePlayState(GAMESETUPSTATE));
+			this.addState(new GameSetupState(GAMESETUPSTATE));
 			StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
 		}
 
@@ -56,8 +59,8 @@ public class Gorillas extends TWLStateBasedGame {
 		// The first added one will be the started one
 		this.addState(new MainMenuState(MAINMENUSTATE));
 		if (!debug)
-			this.addState(new GamePlayState(GAMESETUPSTATE));
-		this.addState(new GameSetupState(GAMEPLAYSTATE));
+			this.addState(new GameSetupState(GAMESETUPSTATE));
+		this.addState(new GamePlayState(GAMEPLAYSTATE));
 		this.addState(new HighScoreState(HIGHSCORESTATE));
 		this.addState(new OptionState(OPTIONSTATE));
 		this.addState(new InstructionState(INSTRUCTIONSSTATE));
