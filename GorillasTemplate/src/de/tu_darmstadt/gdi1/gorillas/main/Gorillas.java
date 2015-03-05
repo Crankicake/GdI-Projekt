@@ -48,25 +48,25 @@ public class Gorillas extends TWLStateBasedGame {
 		boolean debug = true;
 
 		if (debug) {
-			this.addState(new GamePlayState(GAMEPLAYSTATE));
-			StateBasedEntityManager.getInstance().addState(GAMEPLAYSTATE);
+			this.addState(new GamePlayState(GAMESETUPSTATE));
+			StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
 		}
 
 		// Add states to the StateBasedGame
 		// The first added one will be the started one
 		this.addState(new MainMenuState(MAINMENUSTATE));
-		this.addState(new GameSetupState(GAMESETUPSTATE));
 		if (!debug)
-			this.addState(new GamePlayState(GAMEPLAYSTATE));
+			this.addState(new GamePlayState(GAMESETUPSTATE));
+		this.addState(new GameSetupState(GAMEPLAYSTATE));
 		this.addState(new HighScoreState(HIGHSCORESTATE));
 		this.addState(new OptionState(OPTIONSTATE));
 		this.addState(new InstructionState(INSTRUCTIONSSTATE));
 
 		// Add states to the StateBasedEntityManager
 		StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
-		StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
 		if (!debug)
-			StateBasedEntityManager.getInstance().addState(GAMEPLAYSTATE);
+			StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
+		StateBasedEntityManager.getInstance().addState(GAMEPLAYSTATE);
 		StateBasedEntityManager.getInstance().addState(HIGHSCORESTATE);
 		StateBasedEntityManager.getInstance().addState(OPTIONSTATE);
 		StateBasedEntityManager.getInstance().addState(INSTRUCTIONSSTATE);
