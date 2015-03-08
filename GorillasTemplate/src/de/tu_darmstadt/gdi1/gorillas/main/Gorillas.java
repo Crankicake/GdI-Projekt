@@ -44,7 +44,7 @@ public class Gorillas extends TWLStateBasedGame {
 	@Override
 	public void initStatesList(GameContainer gameContainer)
 			throws SlickException {
-
+		
 		// Add states to the StateBasedGame
 		// The first added one will be the started one
 		this.addState(new MainMenuState(MAINMENUSTATE));
