@@ -5,6 +5,7 @@ import java.util.Random;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -15,14 +16,17 @@ import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.dropofwater.Launch;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
+import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.basicevents.KeyPressedEvent;
 
 public class GamePlayState extends BasicTWLGameState {
 
@@ -80,6 +84,15 @@ public class GamePlayState extends BasicTWLGameState {
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
+		
+		// Prüft ob Escape gedrückt wurde
+		Entity escListener = new Entity("ESC_Listener");
+		KeyPressedEvent escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
+		escPressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
+		escListener.addComponent(escPressed);
+		
+		
+		
 		Entity sun = new Entity("Sun");
 		sun.addComponent(new ImageRenderComponent(new Image(
 				"/assets/gorillas/sun/sun_smiling.png")));
@@ -90,6 +103,7 @@ public class GamePlayState extends BasicTWLGameState {
 		sun.setRotation(0.0f);
 
 		sbem.addEntity(stateID, background);
+		sbem.addEntity(stateID, escListener);
 		sbem.addEntity(stateID, sun);
 	}
 

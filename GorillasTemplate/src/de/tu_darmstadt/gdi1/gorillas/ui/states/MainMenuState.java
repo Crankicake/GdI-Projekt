@@ -6,7 +6,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
@@ -14,6 +13,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.action.basicactions.QuitAction;
+
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
@@ -27,8 +27,7 @@ public class MainMenuState extends BasicTWLGameState {
 	private int stateID;
 	private StateBasedEntityManager entityManager;
 
-	private Button newGameButton;
-	private Button quitGameBtn;
+
 
 	public MainMenuState(int sid) {
 		stateID = sid;
@@ -175,15 +174,11 @@ public class MainMenuState extends BasicTWLGameState {
 
 		entityManager.renderEntities(container, game, g);
 		
-		int zaehler = 0;
+	
 		g.drawString("Neues Spiel",85,70);
-		zaehler++;
 		g.drawString("Highscore",85,130);
-		zaehler++;
 		g.drawString("Anleitung", 85, 190);
-		zaehler++;
 		g.drawString("Spiel beenden", 85, 250);
-		zaehler++;
 		g.drawString("About",385,70);
 		
 	}
