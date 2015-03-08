@@ -14,6 +14,7 @@ import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.dropofwater.Launch;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerNameEvent;
@@ -75,7 +76,7 @@ public class GameSetupState extends BasicTWLGameState {
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent mainEvents = new ANDEvent(new PlayerNameEvent());
 
-		Action newGameAction = new ChangeStateInitAction(Launch.GAMEPLAY_STATE);
+		Action newGameAction = new ChangeStateInitAction(Gorillas.GAMEPLAYSTATE);
 		mainEvents.addAction(newGameAction);
 		newGameEntity.addComponent(mainEvents);
 

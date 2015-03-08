@@ -35,7 +35,7 @@ public class PlayerNameEvent extends Event {
 		if(twoName == null)
 			return false;
 		
-		return oneName.equals(twoName);
+		return !oneName.equals(twoName);
 	}
 
 }

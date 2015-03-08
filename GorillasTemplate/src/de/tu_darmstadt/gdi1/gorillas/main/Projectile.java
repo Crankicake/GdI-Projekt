@@ -22,9 +22,8 @@ public class Projectile extends Entity {
 	private boolean fliegt;
 	private ThrowAttempt throwAttempt;
 
-	
 	private long lastFrame;
-	
+
 	public Projectile(String entityID, Vector2f pos) {
 		super(entityID);
 		position = pos;
@@ -39,11 +38,11 @@ public class Projectile extends Entity {
 		setRotation(0.0f);
 	}
 
-	public void setParamter(int angle, int velocity, Vector2f pos, double gravity)
-	{
+	public void setParamter(int angle, int velocity, Vector2f pos,
+			double gravity) {
 		position.x = pos.x;
 		position.y = pos.y;
-		
+
 		try {
 			throwAttempt = new ThrowAttempt(angle, velocity, pos, gravity);
 			fliegt = true;
@@ -52,7 +51,7 @@ public class Projectile extends Entity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Vector2f nextPosition() {
 		return nextPositions.poll();
 	}
@@ -65,35 +64,34 @@ public class Projectile extends Entity {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i) {
 		int delta = getDelta();
-		
-		if(!fliegt)
+
+		if (!fliegt)
 			return;
-		
+
 		bild.setRotation(rotation);
-		
+
 		rotation += 10f;
-		
-		if(rotation == 360f)
+
+		if (rotation == 360f)
 			rotation = 0;
-		
+try{
 		position = throwAttempt.getNexPoint(delta);
-		
-		if(position == null)
-		{
-			position = new Vector2f(400, 300);
-			fliegt = false;
-		}
-	}
+}
+catch (GorillasException ex){
 	
-	public long getTime() {
-	    return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+}
 	}
+
+	public long getTime() {
+		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	}
+
 	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29
 	public int getDelta() {
-	    long time = getTime();
-	    int delta = (int) (time - lastFrame);
-	    lastFrame = time;
-	         
-	    return delta;
+		long time = getTime();
+		int delta = (int) (time - lastFrame);
+		lastFrame = time;
+
+		return delta;
 	}
 }

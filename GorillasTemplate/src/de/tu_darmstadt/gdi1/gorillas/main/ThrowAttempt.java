@@ -98,7 +98,7 @@ public class ThrowAttempt {
 		}
 	}
 
-	public Vector2f getNexPoint(double time) {
+	public Vector2f getNexPoint(double time) throws GorillasException {
 
 		time *= GamePlayState.timeScale;
 
@@ -112,7 +112,7 @@ public class ThrowAttempt {
 
 		if (x > 0 && y > 0 && x < Launcher.FRAME_WIDTH)
 			return new Vector2f(x, y);
-		else
-			return null; // oder null, damit wir wissen, dass das nicht geklappt hat.
+		
+		throw new GorillasException(new Exception(), "Banane ist außerhalb vom Bild", ExceptionReason.ThrowAttemptNoNextPosition);
 	}
 }
