@@ -32,12 +32,9 @@ public class Gorillas extends TWLStateBasedGame {
 
 	public static boolean debug = false;
 
-	protected MasterGame mg;
-	
 	public Gorillas(boolean debug) {
 		super("Gorillas");
 		setDebug(debug);
-		mg = new MasterGame();
 	}
 
 	public static void setDebug(boolean debuging) {
@@ -48,18 +45,9 @@ public class Gorillas extends TWLStateBasedGame {
 	public void initStatesList(GameContainer gameContainer)
 			throws SlickException {
 
-		boolean debug = true;
-		this.addState(new MainMenuState(MAINMENUSTATE));
-
-		if (debug) {
-			this.addState(new GameSetupState(GAMESETUPSTATE));
-			StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
-		}
-
 		// Add states to the StateBasedGame
 		// The first added one will be the started one
 		this.addState(new MainMenuState(MAINMENUSTATE));
-		if (!debug)
 		this.addState(new GameSetupState(GAMESETUPSTATE));
 		this.addState(new GamePlayState(GAMEPLAYSTATE));
 		this.addState(new HighScoreState(HIGHSCORESTATE));
@@ -68,8 +56,7 @@ public class Gorillas extends TWLStateBasedGame {
 
 		// Add states to the StateBasedEntityManager
 		StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
-		if (!debug)
-			StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
+		StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
 		StateBasedEntityManager.getInstance().addState(GAMEPLAYSTATE);
 		StateBasedEntityManager.getInstance().addState(HIGHSCORESTATE);
 		StateBasedEntityManager.getInstance().addState(OPTIONSTATE);

@@ -111,6 +111,7 @@ public class GameSetupState extends BasicTWLGameState {
 		applyButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
+				
 				applyEvent.SetPerformAction(true);
 			}
 		});

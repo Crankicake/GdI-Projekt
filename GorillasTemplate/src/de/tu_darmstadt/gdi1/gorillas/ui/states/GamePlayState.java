@@ -34,7 +34,6 @@ public class GamePlayState extends BasicTWLGameState {
 	protected Player playerOne;
 	protected Player playerTwo;
 
-	// Die 3 sind atm nur Platzhalter.
 	public static double wind = 0;
 	public static double windScale = 1;
 	public static double timeScale = 0.01;

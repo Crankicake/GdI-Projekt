@@ -1,7 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import java.awt.Image;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -11,14 +9,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.dropofwater.Launch;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
-import de.tu_darmstadt.gdi1.gorillas.test.students.testcases.NewGameTest;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.action.basicactions.QuitAction;
-import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
