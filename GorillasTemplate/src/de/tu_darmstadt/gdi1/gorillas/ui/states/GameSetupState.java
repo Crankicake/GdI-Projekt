@@ -13,7 +13,6 @@ import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.dropofwater.Launch;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
@@ -24,6 +23,7 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
+import eea.engine.event.ApplyEvent;
 
 public class GameSetupState extends BasicTWLGameState {
 
@@ -38,10 +38,13 @@ public class GameSetupState extends BasicTWLGameState {
 	private Label playername1Label;
 	private Label playername2Label;
 
+	private ApplyEvent applyEvent;
+	
 	public GameSetupState(int sid) {
 		stateID = sid;
 
 		sbem = StateBasedEntityManager.getInstance();
+		applyEvent = new ApplyEvent();
 	}
 
 	@Override
@@ -74,7 +77,7 @@ public class GameSetupState extends BasicTWLGameState {
 		newGameEntity.setScale(Launcher.SCALE);
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
-		ANDEvent mainEvents = new ANDEvent(new PlayerNameEvent());
+		ANDEvent mainEvents = new ANDEvent(new PlayerNameEvent(), applyEvent);
 
 		Action newGameAction = new ChangeStateInitAction(Gorillas.GAMEPLAYSTATE);
 		mainEvents.addAction(newGameAction);
@@ -107,7 +110,7 @@ public class GameSetupState extends BasicTWLGameState {
 		applyButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
-
+				applyEvent.SetPerformAction(true);
 			}
 		});
 

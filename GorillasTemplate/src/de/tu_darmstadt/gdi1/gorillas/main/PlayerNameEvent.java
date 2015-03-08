@@ -9,7 +9,6 @@ public class PlayerNameEvent extends Event {
 
 	public PlayerNameEvent() {
 		super("Hallo");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

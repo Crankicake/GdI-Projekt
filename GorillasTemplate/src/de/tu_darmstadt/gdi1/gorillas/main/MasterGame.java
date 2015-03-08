@@ -2,12 +2,15 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 
 public class MasterGame {
 
-	protected static Player playerOne;
-	protected static Player playerTwo;
+	private static Player playerOne;
+	private static Player playerTwo;
 
-	public MasterGame() {
+	private static boolean applyPlayerNames;
+	
+	static  {
 		playerOne = new Player("One");
 		playerTwo = new Player("Two");
+		applyPlayerNames = false;
 	}
 
 	public static Player getPlayerOne() {
@@ -17,4 +20,9 @@ public class MasterGame {
 	public static Player getPlayerTwo() {
 		return playerTwo;
 	}
+
+	public static boolean getApplyPlayerNames() {
+		return applyPlayerNames;
+	}
+
 }
