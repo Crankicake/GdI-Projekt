@@ -49,7 +49,7 @@ public class Gorillas extends TWLStateBasedGame {
 			throws SlickException {
 
 		boolean debug = true;
-		this.addState(new GamePlayState(GAMEPLAYSTATE));
+		this.addState(new MainMenuState(MAINMENUSTATE));
 		if (debug) {
 			this.addState(new GameSetupState(GAMESETUPSTATE));
 			StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
@@ -59,8 +59,8 @@ public class Gorillas extends TWLStateBasedGame {
 		// The first added one will be the started one
 		this.addState(new MainMenuState(MAINMENUSTATE));
 		if (!debug)
-			this.addState(new GameSetupState(GAMESETUPSTATE));
-		//this.addState(new GamePlayState(GAMEPLAYSTATE));
+		this.addState(new GameSetupState(GAMESETUPSTATE));
+		this.addState(new GamePlayState(GAMEPLAYSTATE));
 		this.addState(new HighScoreState(HIGHSCORESTATE));
 		this.addState(new OptionState(OPTIONSTATE));
 		this.addState(new InstructionState(INSTRUCTIONSSTATE));
