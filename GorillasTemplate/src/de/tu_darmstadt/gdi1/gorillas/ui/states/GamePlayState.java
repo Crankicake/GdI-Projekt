@@ -37,7 +37,7 @@ public class GamePlayState extends BasicTWLGameState {
 	// Die 3 sind atm nur Platzhalter.
 	public static double wind = 0;
 	public static double windScale = 1;
-	public static double timeScale = 0.1;
+	public static double timeScale = 0.01;
 
 	protected Button throwButton;
 	protected EditField velocityTextField;
@@ -219,7 +219,6 @@ public class GamePlayState extends BasicTWLGameState {
 				} catch (NumberFormatException nfe) {
 
 				}
-
 			}
 		});
 
@@ -236,18 +235,22 @@ public class GamePlayState extends BasicTWLGameState {
 				if (oldAngle.equals(oldText))
 					return;
 
-				Integer number = Integer.parseInt(trimString(oldText));
+				try {
+					Integer number = Integer.parseInt(trimString(oldText));
 
-				if (number < 0) {
-					number = 0;
-				} else if (number > 360) {
-					number = 360;
+					if (number < 0) {
+						number = 0;
+					} else if (number > 200) {
+						number = 200;
+					}
+
+					oldText = number.toString();
+
+					oldAngle = oldText;
+					angleTextField.setText(oldText);
+				} catch (NumberFormatException nfe) {
+
 				}
-
-				oldText = number.toString();
-
-				oldAngle = oldText;
-				angleTextField.setText(oldText);
 			}
 		});
 
@@ -270,6 +273,10 @@ public class GamePlayState extends BasicTWLGameState {
 
 				whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
 				throwButton.setEnabled(false);
+				
+				for(Vector2f v : projectile.getAllPositions()) {
+					System.out.println(v);
+				}
 			}
 		});
 

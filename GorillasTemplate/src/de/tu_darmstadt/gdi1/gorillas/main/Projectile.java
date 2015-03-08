@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 import org.lwjgl.Sys;
@@ -62,6 +63,10 @@ public class Projectile extends Entity {
 		return nextPositions.poll();
 	}
 
+	public LinkedList<Vector2f> getAllPositions() {
+		return throwAttempt.getAllPoints();
+	}
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if (fliegt)

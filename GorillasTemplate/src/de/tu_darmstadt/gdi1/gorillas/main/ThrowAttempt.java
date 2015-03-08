@@ -100,9 +100,9 @@ public class ThrowAttempt {
 
 	public Vector2f getNexPoint(double time) throws GorillasException {
 
-		time *= GamePlayState.timeScale;
-
 		timePassed += time;
+		
+		timePassed *= GamePlayState.timeScale;
 		
 		int x = (int) (x0 + (velocityX * timePassed) );
 				//+ (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));
