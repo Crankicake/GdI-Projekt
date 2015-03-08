@@ -9,7 +9,6 @@ public class PlayerNameEvent extends Event {
 
 	public PlayerNameEvent() {
 		super("Hallo");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -35,7 +34,7 @@ public class PlayerNameEvent extends Event {
 		if(twoName == null)
 			return false;
 		
-		return oneName.equals(twoName);
+		return !oneName.equals(twoName);
 	}
 
 }

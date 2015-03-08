@@ -5,6 +5,7 @@ public enum ExceptionReason {
 	ThrowAttemptAngelWrong,
 	ThrowAttemptVelocityWrong,
 	ThrowAttemptGravityNegative,
-	ThrowAttemptPositionOutsideWindow
+	ThrowAttemptPositionOutsideWindow,
+	ThrowAttemptNoNextPosition
 	// Hier sind die 4 hinzu gekommen, damit man weiﬂ, wo und warum. Name ist ja selbsterkl‰rend.
 }
