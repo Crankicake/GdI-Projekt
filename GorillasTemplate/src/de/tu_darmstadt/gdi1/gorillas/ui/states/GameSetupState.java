@@ -13,6 +13,7 @@ import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.main.ApplyEvent;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
@@ -23,7 +24,6 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
-import eea.engine.event.ApplyEvent;
 
 public class GameSetupState extends BasicTWLGameState {
 
@@ -107,6 +107,7 @@ public class GameSetupState extends BasicTWLGameState {
 
 		applyButton = new Button();
 		applyButton.setText("Anwenden");
+		applyButton.setEnabled(false);
 		applyButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
@@ -117,8 +118,24 @@ public class GameSetupState extends BasicTWLGameState {
 		playername1Textbox = new EditField();
 		playername1Textbox.addCallback(new Callback() {
 			@Override
-			public void callback(int arg0) {
-				MasterGame.getPlayerOne().setName(playername1Textbox.getText());
+			public void callback(int arg0) {		
+				if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
+				{
+					if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
+						MasterGame.getPlayerOne().setName(playername1Textbox.getText());
+						MasterGame.getPlayerTwo().setName(playername2Textbox.getText());
+						
+						applyButton.setEnabled(true);
+					}
+					else
+					{
+						applyButton.setEnabled(false);
+					}
+				}
+				else
+				{
+					applyButton.setEnabled(true);
+				}				
 			}
 		});
 
@@ -126,7 +143,23 @@ public class GameSetupState extends BasicTWLGameState {
 		playername2Textbox.addCallback(new Callback() {
 			@Override
 			public void callback(int arg0) {
-				MasterGame.getPlayerTwo().setName(playername2Textbox.getText());
+				if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
+				{
+					if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
+						MasterGame.getPlayerOne().setName(playername1Textbox.getText());
+						MasterGame.getPlayerTwo().setName(playername2Textbox.getText());
+						
+						applyButton.setEnabled(true);
+					}
+					else
+					{
+						applyButton.setEnabled(false);
+					}
+				}
+				else
+				{
+					applyButton.setEnabled(true);
+				}	
 			}
 		});
 

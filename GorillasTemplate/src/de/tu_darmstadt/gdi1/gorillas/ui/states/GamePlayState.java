@@ -15,6 +15,7 @@ import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
@@ -152,7 +153,8 @@ public class GamePlayState extends BasicTWLGameState {
 	}
 
 	protected void initProjectile() throws SlickException {
-		projectile = new Projectile("Banane", playerOne.getPosition());
+		projectile = new Projectile("Banane");
+		projectile.setMyPosition(playerOne.getPosition());
 		projectile.createEntity();
 		sbem.addEntity(stateID, projectile);
 	}
@@ -169,6 +171,16 @@ public class GamePlayState extends BasicTWLGameState {
 			throws SlickException {
 
 		sbem.updateEntities(gc, sbg, i);
+
+		if (projectile.isFlying()) {
+			try {
+				projectile.updateOwn(gc, sbg, i);
+			} catch (GorillasException ex) {
+				throwButton.setEnabled(true);
+				projectile.setMyPosition(whichPlayersDraw == 1 ? playerOne
+						.getPosition() : playerTwo.getPosition());
+			}
+		}
 	}
 
 	@Override
@@ -191,18 +203,23 @@ public class GamePlayState extends BasicTWLGameState {
 				if (oldVelocity.equals(oldText))
 					return;
 
-				Integer number = Integer.parseInt(trimString(oldText));
+				try {
+					Integer number = Integer.parseInt(trimString(oldText));
 
-				if (number < 0) {
-					number = 0;
-				} else if (number > 200) {
-					number = 200;
+					if (number < 0) {
+						number = 0;
+					} else if (number > 200) {
+						number = 200;
+					}
+
+					oldText = number.toString();
+
+					oldVelocity = oldText;
+					velocityTextField.setText(oldText);
+				} catch (NumberFormatException nfe) {
+
 				}
 
-				oldText = number.toString();
-
-				oldVelocity = oldText;
-				velocityTextField.setText(oldText);
 			}
 		});
 
@@ -243,22 +260,21 @@ public class GamePlayState extends BasicTWLGameState {
 			@Override
 			public void run() {
 
-				Vector2f pos = whichPlayersDraw == 1 ? playerOne.getPosition()
-						: playerTwo.getPosition();
-
 				projectile.setParamter(
 						Integer.parseInt(angleTextField.getText()),
-						Integer.parseInt(velocityTextField.getText()), pos,
+						Integer.parseInt(velocityTextField.getText()),
 						9.81);
 
+				playerLabel.setText((whichPlayersDraw == 1 ? playerTwo
+						.getName() : playerOne.getName()) + ":");
+
 				whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
-				playerLabel.setText("Spieler " + whichPlayersDraw + ":");
 				throwButton.setEnabled(false);
 			}
 		});
 
 		playerLabel = new Label();
-		playerLabel.setText("Spieler " + whichPlayersDraw + ":");
+		playerLabel.setText(playerOne.getName() + ":");
 
 		rp.add(velocityTextField);
 		rp.add(velocityLabel);
@@ -271,7 +287,7 @@ public class GamePlayState extends BasicTWLGameState {
 
 	@Override
 	protected void layoutRootPane() {
-
+		
 		velocityTextField.adjustSize();
 		velocityTextField.setPosition(70, 20);
 
