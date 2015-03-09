@@ -17,6 +17,7 @@ import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.dropofwater.Launch;
+import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
@@ -88,7 +89,7 @@ public class GamePlayState extends BasicTWLGameState {
 		// Prüft ob Escape gedrückt wurde
 		Entity escListener = new Entity("ESC_Listener");
 		KeyPressedEvent escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
+		escPressed.addAction(new ChangeStateAction(Gorillas.MAINMENUSTATE));
 		escListener.addComponent(escPressed);
 		
 		
