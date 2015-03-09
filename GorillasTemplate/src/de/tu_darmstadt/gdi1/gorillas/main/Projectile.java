@@ -17,8 +17,7 @@ public class Projectile extends Entity {
 
 	private PriorityQueue<Vector2f> nextPositions;
 	private float rotation = 10f;
-	private Vector2f position;
-	private Vector2f startPosition;
+	private static Vector2f position;
 	private Image bild;
 
 	private boolean fliegt;
@@ -29,14 +28,8 @@ public class Projectile extends Entity {
 	public Projectile(String entityID) {
 		super(entityID);
 		nextPositions = new PriorityQueue<Vector2f>();
-		
-		startPosition = new Vector2f();
-		position = new Vector2f();
-	}
 
-	public void setMyPosition(Vector2f pos) {
-		startPosition = pos;
-		position = pos;
+		position = super.getPosition();
 	}
 
 	public void createEntity() throws SlickException {
@@ -50,8 +43,7 @@ public class Projectile extends Entity {
 	public void setParamter(int angle, int velocity, double gravity) {
 
 		try {
-			throwAttempt = new ThrowAttempt(angle, velocity, startPosition,
-					gravity);
+			throwAttempt = new ThrowAttempt(angle, velocity, position, gravity);
 			fliegt = true;
 		} catch (GorillasException e) {
 			fliegt = false;
@@ -66,13 +58,10 @@ public class Projectile extends Entity {
 	public LinkedList<Vector2f> getAllPositions() {
 		return throwAttempt.getAllPoints();
 	}
-	
+
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
-		if (fliegt)
-			g.drawImage(bild, position.x, position.y);
-		else
-			g.drawImage(bild, startPosition.x, startPosition.y);
+		g.drawImage(bild, position.x, position.y);
 	}
 
 	public void updateOwn(GameContainer gc, StateBasedGame sbg, int i)
@@ -91,7 +80,7 @@ public class Projectile extends Entity {
 			rotation = 0;
 
 		try {
-			position = throwAttempt.getNexPoint(delta);
+			setPosition(throwAttempt.getNextPoint(delta));
 		} catch (GorillasException ex) {
 			fliegt = false;
 			throw ex;
@@ -100,6 +89,18 @@ public class Projectile extends Entity {
 
 	public boolean isFlying() {
 		return fliegt;
+	}
+
+	public void setPosition(Vector2f newPosition) {
+		position = newPosition;
+
+		super.setPosition(newPosition);
+		
+		System.out.println(newPosition);
+	}
+
+	public Vector2f getPosition() {
+		return position;
 	}
 
 	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29

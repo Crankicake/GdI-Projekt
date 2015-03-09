@@ -167,7 +167,7 @@ public class GamePlayState extends BasicTWLGameState {
 
 	protected void initProjectile() throws SlickException {
 		projectile = new Projectile("Banane");
-		projectile.setMyPosition(playerOne.getPosition());
+		projectile.setPosition(playerOne.getPosition());
 		projectile.createEntity();
 		sbem.addEntity(stateID, projectile);
 	}
@@ -190,7 +190,7 @@ public class GamePlayState extends BasicTWLGameState {
 				projectile.updateOwn(gc, sbg, i);
 			} catch (GorillasException ex) {
 				throwButton.setEnabled(true);
-				projectile.setMyPosition(whichPlayersDraw == 1 ? playerOne
+				projectile.setPosition(whichPlayersDraw == 1 ? playerOne
 						.getPosition() : playerTwo.getPosition());
 			}
 		}
@@ -253,8 +253,8 @@ public class GamePlayState extends BasicTWLGameState {
 
 					if (number < 0) {
 						number = 0;
-					} else if (number > 200) {
-						number = 200;
+					} else if (number > 360) {
+						number = 360;
 					}
 
 					oldText = number.toString();
@@ -287,9 +287,7 @@ public class GamePlayState extends BasicTWLGameState {
 				whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
 				throwButton.setEnabled(false);
 				
-				for(Vector2f v : projectile.getAllPositions()) {
-					System.out.println(v);
-				}
+				
 			}
 		});
 
