@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -16,8 +17,8 @@ import eea.engine.entity.Entity;
 public class Projectile extends Entity {
 
 	private PriorityQueue<Vector2f> nextPositions;
-	private float rotation = 10f;
 	private static Vector2f position;
+	private static float rotation;
 	private Image bild;
 
 	private boolean fliegt;
@@ -30,6 +31,7 @@ public class Projectile extends Entity {
 		nextPositions = new PriorityQueue<Vector2f>();
 
 		position = super.getPosition();
+		rotation = super.getRotation();
 	}
 
 	public void createEntity() throws SlickException {
@@ -72,12 +74,7 @@ public class Projectile extends Entity {
 		if (!fliegt)
 			return;
 
-		bild.setRotation(rotation);
-
-		rotation += 10f;
-
-		if (rotation == 360f)
-			rotation = 0;
+		rotate();
 
 		try {
 			setPosition(throwAttempt.getNextPoint(delta));
@@ -91,18 +88,44 @@ public class Projectile extends Entity {
 		return fliegt;
 	}
 
+	public void rotate() {
+		float rotation = getRotation();
+		
+		rotation += 10f;
+		
+		if (rotation == 360f)
+			rotation = 0f;
+		
+		bild.rotate(rotation);
+		
+		System.out.println(rotation);
+		
+		setRotation(rotation);
+	}
+	
+	@Override
 	public void setPosition(Vector2f newPosition) {
 		position = newPosition;
 
 		super.setPosition(newPosition);
-		
-		System.out.println(newPosition);
 	}
 
+	@Override
 	public Vector2f getPosition() {
 		return position;
 	}
 
+	@Override
+	public void setRotation(float newRotation) {
+		rotation = newRotation;
+		
+		super.setRotation(newRotation);
+	}
+	
+	public float getRotation() {
+		return rotation;
+	}
+	
 	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29
 	public long getTime() {
 		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
