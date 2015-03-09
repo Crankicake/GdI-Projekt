@@ -5,8 +5,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 
-import de.tu_darmstadt.gdi1.gorillas.main.ExceptionReason;
-import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
@@ -135,8 +133,7 @@ public class GorillasTestAdapterMinimal {
 	 * @param player2Name
 	 *            the name of player 2
 	 */
-	public void setPlayerNames(String player1Name, String player2Name)
-			throws GorillasException {
+	public void setPlayerNames(String player1Name, String player2Name) {
 		int stateID = gorillas.getCurrentStateID();
 
 		if (stateID != TestGorillas.GAMESETUPSTATE)
@@ -145,10 +142,7 @@ public class GorillasTestAdapterMinimal {
 		GameState state = gorillas.getCurrentState();
 
 		if (!(state instanceof GameSetupState)) {
-			throw new GorillasException(
-					new Exception(),
-					"Die ID ist für GameSetupState, aber der CurrentState ist kein GameSetupState!",
-					ExceptionReason.StateHasWrongID);
+			return;
 		}
 
 		GameSetupState gs = (GameSetupState) state;
@@ -169,7 +163,13 @@ public class GorillasTestAdapterMinimal {
 		if (stateID != TestGorillas.GAMESETUPSTATE)
 			return;
 
-		GameSetupState gs = (GameSetupState) gorillas.getCurrentState();
+		GameState state = gorillas.getCurrentState();
+
+		if (!(state instanceof GameSetupState)) {
+			return;
+		}
+
+		GameSetupState gs = (GameSetupState) state;
 
 		gs.applyButton_Click();
 	}
@@ -197,8 +197,17 @@ public class GorillasTestAdapterMinimal {
 		if (stateID != TestGorillas.GAMEPLAYSTATE)
 			return -1;
 
-		GamePlayState gs = (GamePlayState) gorillas.getCurrentState();
-		return -1;
+		GameState state = gorillas.getCurrentState();
+
+		if (!(state instanceof GamePlayState)) {
+			return -1;
+		}
+
+		GamePlayState gs = (GamePlayState) state;
+		
+		int velocity = gs.getProjectile().getVelocity();
+			
+		return velocity;
 	}
 
 	/**
@@ -219,8 +228,22 @@ public class GorillasTestAdapterMinimal {
 	 *         was put in the method should return -1.
 	 */
 	public int getAngleInput() {
-		// TODO: Implement
-		return -1;
+		int stateID = gorillas.getCurrentStateID();
+
+		if (stateID != TestGorillas.GAMEPLAYSTATE)
+			return -1;
+
+		GameState state = gorillas.getCurrentState();
+
+		if (!(state instanceof GamePlayState)) {
+			return -1;
+		}
+
+		GamePlayState gs = (GamePlayState) state;
+		
+		int angle = gs.getProjectile().getAngle();
+			
+		return angle;
 	}
 
 	/**

@@ -8,13 +8,13 @@ import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 
 public class ThrowAttempt {
 
-	double velocityX, velocityY;
+	private double velocityX, velocityY;
+	private double x0, y0;
+	private double gravity;
+	private double timePassed;
 
-	double x0, y0;
-
-	double gravity;
-
-	double timePassed;
+	private int velocity;
+	private int angle;
 
 	/*
 	 * Einen neuen Wurf starten mit: Dem Winkel Der Kraft Der Position, von der
@@ -64,16 +64,33 @@ public class ThrowAttempt {
 
 		this.x0 = position.x;
 		this.y0 = position.y;
-		
-		velocityX = Math.cos(Math.toRadians(angle)) * velocity; // Nach der gegebenen Formel
-												// berechnet.
+
+		velocityX = Math.cos(Math.toRadians(angle)) * velocity; // Nach der
+																// gegebenen
+																// Formel
+		// berechnet.
 		velocityY = Math.sin(Math.toRadians(angle)) * velocity;
+
+		this.velocity = velocity;
+		this.angle = angle;
 	}
 
 	// Hier drunter passiert 2x das gleiche. Nach der Formel für x und y wird
 	// deren Wert errechnet.
 	// Danach geprüft, ob der noch im Fenster liegt...
 
+	public double getGravity() {
+		return gravity;
+	}
+	
+	public int getVelocity() {
+		return velocity;
+	}
+	
+	public int getAngle() {
+		return angle;
+	}
+	
 	public LinkedList<Vector2f> getAllPoints() {
 
 		LinkedList<Vector2f> liste = new LinkedList<Vector2f>();
@@ -108,7 +125,7 @@ public class ThrowAttempt {
 		int y = (int) (y0 - (velocityY * timePassed) + (0.5 * gravity
 				* timePassed * timePassed));
 
-		if (x > 0 && y > 0 && x < Launcher.FRAME_WIDTH)
+		if (x > 0 && y < Launcher.FRAME_HEIGHT && x < Launcher.FRAME_WIDTH)
 			return new Vector2f(x, y);
 
 		throw new GorillasException(new Exception(),

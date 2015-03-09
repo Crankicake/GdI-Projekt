@@ -16,7 +16,6 @@ import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.dropofwater.Launch;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
@@ -263,6 +262,10 @@ public class GamePlayState extends BasicTWLGameState {
 		return stateID;
 	}
 
+	public Projectile getProjectile() {
+		return projectile;
+	}
+	
 	@Override
 	protected RootPane createRootPane() {
 

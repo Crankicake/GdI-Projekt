@@ -83,6 +83,18 @@ public class Projectile extends Entity {
 		}
 	}
 
+	public double getGravity () {
+		return throwAttempt.getGravity();
+	}
+	
+	public int getVelocity() {
+		return throwAttempt.getVelocity();
+	}
+	
+	public int getAngle() {
+		return throwAttempt.getAngle();
+	}
+	
 	public boolean isFlying() {
 		return fliegt;
 	}
