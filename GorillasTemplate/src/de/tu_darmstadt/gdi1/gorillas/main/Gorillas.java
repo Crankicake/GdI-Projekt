@@ -61,7 +61,6 @@ public class Gorillas extends TWLStateBasedGame {
 		StateBasedEntityManager.getInstance().addState(HIGHSCORESTATE);
 		StateBasedEntityManager.getInstance().addState(OPTIONSTATE);
 		StateBasedEntityManager.getInstance().addState(INSTRUCTIONSSTATE);
-
 	}
 
 	@Override

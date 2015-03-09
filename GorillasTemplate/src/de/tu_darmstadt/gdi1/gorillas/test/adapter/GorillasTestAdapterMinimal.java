@@ -3,10 +3,15 @@ package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.GameState;
 
+import de.tu_darmstadt.gdi1.gorillas.main.ExceptionReason;
+import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
 import eea.engine.entity.StateBasedEntityManager;
 
 public class GorillasTestAdapterMinimal {
@@ -130,8 +135,26 @@ public class GorillasTestAdapterMinimal {
 	 * @param player2Name
 	 *            the name of player 2
 	 */
-	public void setPlayerNames(String player1Name, String player2Name) {
-		// TODO: Implement
+	public void setPlayerNames(String player1Name, String player2Name)
+			throws GorillasException {
+		int stateID = gorillas.getCurrentStateID();
+
+		if (stateID != TestGorillas.GAMESETUPSTATE)
+			return;
+
+		GameState state = gorillas.getCurrentState();
+
+		if (!(state instanceof GameSetupState)) {
+			throw new GorillasException(
+					new Exception(),
+					"Die ID ist für GameSetupState, aber der CurrentState ist kein GameSetupState!",
+					ExceptionReason.StateHasWrongID);
+		}
+
+		GameSetupState gs = (GameSetupState) state;
+
+		gs.setPlayerOneName(player1Name);
+		gs.setPlayerTwoName(player2Name);
 	}
 
 	/**
@@ -141,7 +164,14 @@ public class GorillasTestAdapterMinimal {
 	 * GamePlayState. Otherwise it should stay in the GameSetupState.
 	 */
 	public void startGameButtonPressed() {
-		// TODO: Implement
+		int stateID = gorillas.getCurrentStateID();
+
+		if (stateID != TestGorillas.GAMESETUPSTATE)
+			return;
+
+		GameSetupState gs = (GameSetupState) gorillas.getCurrentState();
+
+		gs.applyButton_Click();
 	}
 
 	/**
@@ -162,7 +192,12 @@ public class GorillasTestAdapterMinimal {
 	 *         nothing was put in the method should return -1.
 	 */
 	public int getVelocityInput() {
-		// TODO: Implement
+		int stateID = gorillas.getCurrentStateID();
+
+		if (stateID != TestGorillas.GAMEPLAYSTATE)
+			return -1;
+
+		GamePlayState gs = (GamePlayState) gorillas.getCurrentState();
 		return -1;
 	}
 
