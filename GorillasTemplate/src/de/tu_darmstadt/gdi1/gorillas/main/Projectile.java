@@ -1,6 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
