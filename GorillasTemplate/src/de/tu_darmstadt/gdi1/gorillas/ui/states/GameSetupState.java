@@ -1,7 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -32,17 +30,14 @@ import eea.engine.event.basicevents.KeyPressedEvent;
 public class GameSetupState extends BasicTWLGameState {
 
 	protected StateBasedEntityManager sbem;
-
+	private ApplyEvent applyEvent;
 	private int stateID;
-	private Button applyButton;
-
+	
 	private EditField playername1Textbox;
 	private EditField playername2Textbox;
-
 	private Label playername1Label;
 	private Label playername2Label;
-
-	private ApplyEvent applyEvent;
+	private Button applyButton;
 	
 	public GameSetupState(int sid) {
 		stateID = sid;
@@ -112,8 +107,65 @@ public class GameSetupState extends BasicTWLGameState {
 		sbem.updateEntities(gc, sbg, delta);
 	}
 
+	public void setPlayerOneName(String name) {
+		if(name == null || name.isEmpty())
+			return;
+		
+		MasterGame.getPlayerOne().setName(name);
+	}
+	
+	public void setPlayerTwoName(String name) {
+		if(name == null || name.isEmpty())
+			return;
+		
+		MasterGame.getPlayerTwo().setName(name);
+	}
+	
+	public void playername1Textbox_TextChanged(){
+		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
+		{
+			if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
+				setPlayerOneName(playername1Textbox.getText());
+				setPlayerTwoName(playername2Textbox.getText());
+				
+				applyButton.setEnabled(true);
+			}
+			else
+			{
+				applyButton.setEnabled(false);
+			}
+		}
+		else
+		{
+			applyButton.setEnabled(true);
+		}	
+	}
+	
+	public void playername2Textbox_TextChanged(){
+		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
+		{
+			if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
+				setPlayerOneName(playername1Textbox.getText());
+				setPlayerTwoName(playername2Textbox.getText());
+				
+				applyButton.setEnabled(true);
+			}
+			else
+			{
+				applyButton.setEnabled(false);
+			}
+		}
+		else
+		{
+			applyButton.setEnabled(true);
+		}
+	}
+	
+	public void applyButton_Click() {
+		applyEvent.SetPerformAction(true);
+	}
+	
 	protected RootPane createRootPane() {
-
 		RootPane rp = super.createRootPane();
 
 		applyButton = new Button();
@@ -122,8 +174,7 @@ public class GameSetupState extends BasicTWLGameState {
 		applyButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
-				
-				applyEvent.SetPerformAction(true);
+				applyButton_Click();
 			}
 		});
 
@@ -131,23 +182,7 @@ public class GameSetupState extends BasicTWLGameState {
 		playername1Textbox.addCallback(new Callback() {
 			@Override
 			public void callback(int arg0) {		
-				if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
-				{
-					if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
-						MasterGame.getPlayerOne().setName(playername1Textbox.getText());
-						MasterGame.getPlayerTwo().setName(playername2Textbox.getText());
-						
-						applyButton.setEnabled(true);
-					}
-					else
-					{
-						applyButton.setEnabled(false);
-					}
-				}
-				else
-				{
-					applyButton.setEnabled(true);
-				}				
+				playername1Textbox_TextChanged();
 			}
 		});
 
@@ -155,23 +190,7 @@ public class GameSetupState extends BasicTWLGameState {
 		playername2Textbox.addCallback(new Callback() {
 			@Override
 			public void callback(int arg0) {
-				if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
-				{
-					if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
-						MasterGame.getPlayerOne().setName(playername1Textbox.getText());
-						MasterGame.getPlayerTwo().setName(playername2Textbox.getText());
-						
-						applyButton.setEnabled(true);
-					}
-					else
-					{
-						applyButton.setEnabled(false);
-					}
-				}
-				else
-				{
-					applyButton.setEnabled(true);
-				}	
+				playername2Textbox_TextChanged();
 			}
 		});
 

@@ -197,6 +197,67 @@ public class GamePlayState extends BasicTWLGameState {
 		}
 	}
 
+	public void throwButton_Click() {
+		projectile.setParamter(
+				Integer.parseInt(angleTextField.getText()),
+				Integer.parseInt(velocityTextField.getText()),
+				9.81);
+
+		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo
+				.getName() : playerOne.getName()) + ":");
+
+		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
+		throwButton.setEnabled(false);
+	}
+	
+	public void velocityTextField_TextChanged() {
+		String oldText = velocityTextField.getText();
+
+		if (oldVelocity.equals(oldText))
+			return;
+
+		try {
+			Integer number = Integer.parseInt(trimString(oldText));
+
+			if (number < 0) {
+				number = 0;
+			} else if (number > 200) {
+				number = 200;
+			}
+
+			oldText = number.toString();
+
+			oldVelocity = oldText;
+			velocityTextField.setText(oldText);
+		} catch (NumberFormatException nfe) {
+
+		}
+	}
+	
+	public void angleTextField_TextChanged() {
+		String oldText = angleTextField.getText();
+
+		if (oldAngle.equals(oldText))
+			return;
+
+		try {
+			Integer number = Integer.parseInt(trimString(oldText));
+
+			if (number < 0) {
+				number = 0;
+			} else if (number > 360) {
+				number = 360;
+			}
+
+			oldText = number.toString();
+
+			oldAngle = oldText;
+			angleTextField.setText(oldText);
+		} catch (NumberFormatException nfe) {
+
+		}
+	}
+	
 	@Override
 	public int getID() {
 		return stateID;
@@ -212,27 +273,7 @@ public class GamePlayState extends BasicTWLGameState {
 		velocityTextField.addCallback(new Callback() {
 			@Override
 			public void callback(int arg0) {
-				String oldText = velocityTextField.getText();
-
-				if (oldVelocity.equals(oldText))
-					return;
-
-				try {
-					Integer number = Integer.parseInt(trimString(oldText));
-
-					if (number < 0) {
-						number = 0;
-					} else if (number > 200) {
-						number = 200;
-					}
-
-					oldText = number.toString();
-
-					oldVelocity = oldText;
-					velocityTextField.setText(oldText);
-				} catch (NumberFormatException nfe) {
-
-				}
+				velocityTextField_TextChanged();
 			}
 		});
 
@@ -244,27 +285,7 @@ public class GamePlayState extends BasicTWLGameState {
 		angleTextField.addCallback(new Callback() {
 			@Override
 			public void callback(int arg0) {
-				String oldText = angleTextField.getText();
-
-				if (oldAngle.equals(oldText))
-					return;
-
-				try {
-					Integer number = Integer.parseInt(trimString(oldText));
-
-					if (number < 0) {
-						number = 0;
-					} else if (number > 360) {
-						number = 360;
-					}
-
-					oldText = number.toString();
-
-					oldAngle = oldText;
-					angleTextField.setText(oldText);
-				} catch (NumberFormatException nfe) {
-
-				}
+				angleTextField_TextChanged();
 			}
 		});
 
@@ -276,19 +297,7 @@ public class GamePlayState extends BasicTWLGameState {
 		throwButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
-
-				projectile.setParamter(
-						Integer.parseInt(angleTextField.getText()),
-						Integer.parseInt(velocityTextField.getText()),
-						9.81);
-
-				playerLabel.setText((whichPlayersDraw == 1 ? playerTwo
-						.getName() : playerOne.getName()) + ":");
-
-				whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
-				throwButton.setEnabled(false);
-				
-				
+				throwButton_Click();
 			}
 		});
 
@@ -301,6 +310,7 @@ public class GamePlayState extends BasicTWLGameState {
 		rp.add(angleLabel);
 		rp.add(throwButton);
 		rp.add(playerLabel);
+		
 		return rp;
 	}
 
@@ -327,7 +337,7 @@ public class GamePlayState extends BasicTWLGameState {
 		playerLabel.setPosition(3, 93);
 	}
 
-	protected String trimString(String s) {
+	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 
 		for (char c : s.toCharArray()) {
@@ -348,18 +358,5 @@ public class GamePlayState extends BasicTWLGameState {
 		}
 
 		return sb.toString();
-	}
-
-	protected int stringToInt(String s) {
-
-		int length = s.length();
-		int number = 0;
-
-		for (int index = 0; index < length; ++index) {
-
-			number += (Math.pow(10, length - index) * s.charAt(index));
-		}
-
-		return number;
 	}
 }

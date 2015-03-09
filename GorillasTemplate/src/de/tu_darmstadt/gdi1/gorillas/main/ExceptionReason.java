@@ -6,6 +6,7 @@ public enum ExceptionReason {
 	ThrowAttemptVelocityWrong,
 	ThrowAttemptGravityNegative,
 	ThrowAttemptPositionOutsideWindow,
-	ThrowAttemptNoNextPosition
+	ThrowAttemptNoNextPosition,
+	StateHasWrongID
 	// Hier sind die 4 hinzu gekommen, damit man weiﬂ, wo und warum. Name ist ja selbsterkl‰rend.
 }
