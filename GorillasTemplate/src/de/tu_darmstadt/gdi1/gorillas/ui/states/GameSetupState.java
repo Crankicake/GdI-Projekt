@@ -44,7 +44,7 @@ public class GameSetupState extends BasicTWLGameState {
 		stateID = sid;
 
 		sbem = StateBasedEntityManager.getInstance();
-		applyEvent = new ApplyEvent();
+		
 	}
 
 	@Override
@@ -76,6 +76,7 @@ public class GameSetupState extends BasicTWLGameState {
 		newGameEntity.setPosition(new Vector2f(0, 0));
 		newGameEntity.setScale(Launcher.SCALE);
 
+		applyEvent = new ApplyEvent();
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent mainEvents = new ANDEvent(new PlayerNameEvent(), applyEvent);
 

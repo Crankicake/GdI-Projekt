@@ -7,7 +7,7 @@ import eea.engine.event.Event;
 
 public class ApplyEvent extends Event {
 
-	private boolean performActionBoolean;
+	private static boolean performActionBoolean;
 	
 	@SuppressWarnings("unused")
 	private double id;
