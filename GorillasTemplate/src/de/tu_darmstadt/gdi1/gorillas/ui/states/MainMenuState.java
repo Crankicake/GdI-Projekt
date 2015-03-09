@@ -2,23 +2,26 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.dropofwater.Launch;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import eea.engine.action.Action;
+import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.action.basicactions.QuitAction;
-
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
+import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 
@@ -133,6 +136,12 @@ public class MainMenuState extends BasicTWLGameState {
 		Action beendenAction = new QuitAction();
 		
 		
+		// Prüft ob N gedrückt wurde
+		Entity nListener = new Entity("N_Listener");
+		KeyPressedEvent nPressed = new KeyPressedEvent(Input.KEY_N);
+		nPressed.addAction(new ChangeStateAction(Gorillas.GAMESETUPSTATE));
+		nListener.addComponent(nPressed);
+		
 		
 		neuesSpielEvent.addAction(neueAction);
 		highscoreEvent.addAction(highscoreAction);
@@ -154,7 +163,7 @@ public class MainMenuState extends BasicTWLGameState {
 		entityManager.addEntity(this.stateID, anleitungE);
 		entityManager.addEntity(this.stateID, aboutE);
 		entityManager.addEntity(this.stateID, beendenE);
-		
+		entityManager.addEntity(this.stateID, nListener);
 		
 		
 		
