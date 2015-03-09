@@ -1,8 +1,11 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -24,6 +27,7 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
+import eea.engine.event.basicevents.KeyPressedEvent;
 
 public class GameSetupState extends BasicTWLGameState {
 
@@ -59,10 +63,10 @@ public class GameSetupState extends BasicTWLGameState {
 
 		Entity background = new Entity("Background");
 		background.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/background/LOTR.jpg")));
+				"/assets/gorillas/background/MenuBackground.jpg")));
 		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
 				Launcher.FRAME_HEIGHT / 2));
-		background.setScale(Launcher.SCALE);
+		background.setScale(1.5f);
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
@@ -75,6 +79,12 @@ public class GameSetupState extends BasicTWLGameState {
 		// Setze Position und Bildkomponente
 		newGameEntity.setPosition(new Vector2f(0, 0));
 		newGameEntity.setScale(Launcher.SCALE);
+		
+		// Prüft ob Tab gedrückt wurde
+				Entity tabListener = new Entity("Tab_Listener");
+				KeyPressedEvent tabPressed = new KeyPressedEvent(Input.KEY_TAB);
+			// Fabian mach	nPressed.addComponent
+				tabListener.addComponent(tabPressed);
 
 		applyEvent = new ApplyEvent();
 		// Erstelle das Ausloese-Event und die zugehoerige Action
