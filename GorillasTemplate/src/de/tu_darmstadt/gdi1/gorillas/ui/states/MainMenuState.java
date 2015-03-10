@@ -172,11 +172,11 @@ public class MainMenuState extends OwnState {
 
 		entityManager.renderEntities(container, game, g);
 
-		g.drawString("Neues Spiel", 85, 70);
-		g.drawString("Highscore", 85, 130);
-		g.drawString("Anleitung", 85, 190);
-		g.drawString("Spiel beenden", 85, 250);
-		g.drawString("About", 385, 70);
+		g.drawString("Neues Spiel", 85, 66);
+		g.drawString("Highscore", 85, 126);
+		g.drawString("Anleitung", 85, 186);
+		g.drawString("Spiel beenden", 85, 246);
+		g.drawString("About", 366, 66);
 
 	}
 
