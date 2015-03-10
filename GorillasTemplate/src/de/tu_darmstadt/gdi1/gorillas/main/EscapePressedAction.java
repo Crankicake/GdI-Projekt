@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.action.Action;
 import eea.engine.component.Component;
 
-public class EscapePressedAction implements Action{
+public class EscapePressedAction implements Action {
 
 	public EscapePressedAction() {
 	}

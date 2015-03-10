@@ -1,5 +1,8 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -26,6 +29,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
+import eea.engine.entity.DestructibleImageEntity;
 import eea.engine.entity.Entity;
 import eea.engine.event.basicevents.KeyPressedEvent;
 
@@ -222,7 +226,10 @@ public class GamePlayState extends OwnState {
 		// destructable entity...
 		// Sowas gibt es tatsächlich, hat aber einen komischen Konstruktor, hab
 		// mich damit noch nciht auseinander gesetzt.
+
 		Entity[] buildings = new Entity[8];
+
+		Graphics2D[] theArry = new Graphics2D[8];
 
 		Random r = new Random();
 
@@ -234,18 +241,68 @@ public class GamePlayState extends OwnState {
 		for (int i = 0; i < 8; ++i) {
 			buildings[i] = new Entity("Building_" + i);
 
+			ImageRenderComponent image = new ImageRenderComponent(new Image(
+					"/assets/gorillas/background/building_green.png"));
+
+			// DestructibleImageEntity imd = new
+
+			// DestructibleImageEntity en = new
+			// DestructibleImageEntity("Building" + i, image,
+			// "/assets/gorillas/expolosions/explosion_1.png", false);
+
+			// DestructibleImageEntity es = new DestructibleImageEntity
+			// ("Building" + i,"/assets/gorillas/background/building_green.png",
+			// "gorillas/expolosions/explosion_1.png",false);
+
+			BufferedImage img = new BufferedImage(100, 600,
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D blueHouse = img.createGraphics();
+			blueHouse.setColor(new Color(23, 100, 201));
+			blueHouse.fillRect(0, 0, 100, 600);
+
+			BufferedImage img2 = new BufferedImage(100, 600,
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D greenHouse = img2.createGraphics();
+			greenHouse.setColor(new Color(15, 252, 165));
+			greenHouse.fillRect(0, 0, 100, 600);
+
+			BufferedImage img3 = new BufferedImage(100, 600,
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D redHouse = img3.createGraphics();
+
+			redHouse.setColor(new Color(239, 60, 60));
+			redHouse.fillRect(0, 0, 100, 600);
+
+			/**
+			 * 
+			 * Nützliche Links:
+			 * http://www.rapidtables.com/web/color/RGB_Color.html
+			 * http://www.dpunkt
+			 * .de/java/Programmieren_mit_Java/Grafikprogrammierung/5.htm
+			 * https:/
+			 * /moodle.informatik.tu-darmstadt.de/mod/forum/discuss.php?d=34033
+			 */
+
+			// graphic.drawImage(img, x, y, null);
+
 			switch (r.nextInt(3)) {
 			case 0:
-				buildings[i].addComponent(new ImageRenderComponent(new Image(
-						"/assets/gorillas/background/building_green.png")));
+				DestructibleImageEntity ent1 = new DestructibleImageEntity(
+						"Building " + i, img, "dropofwater/destruction.png",
+						false);
+				buildings[i] = ent1;
 				break;
 			case 1:
-				buildings[i].addComponent(new ImageRenderComponent(new Image(
-						"/assets/gorillas/background/building_red.png")));
+				DestructibleImageEntity ent2 = new DestructibleImageEntity(
+						"Building " + i, img2, "dropofwater/destruction.png",
+						false);
+				buildings[i] = ent2;
 				break;
 			case 2:
-				buildings[i].addComponent(new ImageRenderComponent(new Image(
-						"/assets/gorillas/background/building_nazi.png")));
+				DestructibleImageEntity ent3 = new DestructibleImageEntity(
+						"Building " + i, img3, "dropofwater/destruction.png",
+						false);
+				buildings[i] = ent3;
 				break;
 			}
 
@@ -271,6 +328,7 @@ public class GamePlayState extends OwnState {
 
 			entityManager.addEntity(stateID, buildings[i]);
 
+			// sbem.addEntity(stateID, theArry[i]);
 		}
 	}
 
