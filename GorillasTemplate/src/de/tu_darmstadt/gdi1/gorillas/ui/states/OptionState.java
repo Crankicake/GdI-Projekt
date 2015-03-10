@@ -19,27 +19,20 @@ public class OptionState extends OwnState {
 
 	public OptionState(int sid) {
 		super(sid);
+		
+		names = new String[] {
+			"Zurueck",
+			"GorillaLogo"
+		};
 	}
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
+		super.initBackground();
 
-		// Erstellung der Entität für den Hintergrund
-		Entity backgroundE = new Entity("Menue");
-
-		backgroundE.setPosition(new Vector2f(windowWidth / 2,
-				windowHeight / 2));
-		backgroundE.setScale(1.5f);
-
-		// Hintergrundbild für das About-Fenster
-		backgroundE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"/assets/gorillas/background/MenuBackground.jpg")));
-
-		// Entität zum Zurückkehren zum Menübildschirm
-		String zurueck = "Zurück";
-		Entity zurueckE = createMenuEntity(zurueck, new Vector2f(120, 80));
+		// Entitaet zum Zurueckkehren zum Menuebildschirm
+		Entity zurueckE = createMenuEntity(names[0], new Vector2f(120, 80));
 
 		// Events und Actions
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
@@ -51,9 +44,8 @@ public class OptionState extends OwnState {
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
 
-		// Entität des Gorilla Logos
-		String gorilla_logo = "GorillaLogo";
-		Entity gorilla_logoE = new Entity(gorilla_logo);
+		// Entitaet des Gorilla Logos
+		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
 		gorilla_logoE.setPosition(new Vector2f(370, 200));
@@ -62,11 +54,9 @@ public class OptionState extends OwnState {
 				new org.newdawn.slick.Image(
 						"assets/gorillas/background/Banner.png")));
 
-		// Hinzufügen der Entity zum Entitymanager
-		entityManager.addEntity(getID(), backgroundE);
+		// Hinzufuegen der Entity zum Entitymanager
 		entityManager.addEntity(getID(), zurueckE);
 		entityManager.addEntity(getID(), gorilla_logoE);
-
 	}
 
 	@Override
@@ -76,7 +66,7 @@ public class OptionState extends OwnState {
 		super.render(container, game, g);
 
 		// Schreiben der Texte
-		g.drawString("Zurück", 85, 66);
+		g.drawString("Zurueck", 85, 66);
 		g.drawString("Version: 1.0", 320, 260);
 		g.drawString("Gorillas wird entwickelt von:", 260, 320);
 		g.drawString("Fabian Czappa", 320, 360);

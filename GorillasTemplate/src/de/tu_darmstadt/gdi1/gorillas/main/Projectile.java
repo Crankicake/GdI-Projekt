@@ -18,9 +18,9 @@ public class Projectile extends Entity {
 	private PriorityQueue<Vector2f> nextPositions;
 	private static Vector2f position;
 	private float rotation = 5f;
-	private Image bild;
+	private Image picture;
 
-	private static boolean fliegt;
+	private static boolean flying;
 	private static ThrowAttempt throwAttempt;
 
 	private long lastFrame;
@@ -35,7 +35,7 @@ public class Projectile extends Entity {
 	}
 
 	public void createEntity() throws SlickException {
-		bild = new Image("/assets/gorillas/banana.png");
+		picture = new Image("/assets/gorillas/banana.png");
 
 		setScale(Launcher.SCALE);
 		setPassable(true);
@@ -48,9 +48,9 @@ public class Projectile extends Entity {
 		try {
 			throwAttempt = new ThrowAttempt(angle, velocity, position, gravity,
 					playerID);
-			fliegt = true;
+			flying = true;
 		} catch (GorillasException e) {
-			fliegt = false;
+			flying = false;
 			e.printStackTrace();
 		}
 	}
@@ -65,7 +65,7 @@ public class Projectile extends Entity {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
-		g.drawImage(bild, position.x, position.y);
+		g.drawImage(picture, position.x, position.y);
 	}
 
 	public void updateOwn(GameContainer gc, StateBasedGame sbg, int i)
@@ -73,26 +73,26 @@ public class Projectile extends Entity {
 
 		int delta = getDelta();
 
-		if (!fliegt)
+		if (!flying)
 			return;
 
 		try {
 			setPosition(throwAttempt.getNextPoint(delta));
 		} catch (GorillasException ex) {
-			fliegt = false;
+			flying = false;
 			throw ex;
 		}
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i) {
-		if (fliegt) {
-			bild.setRotation(rotation);
+		if (flying) {
+			picture.setRotation(rotation);
 
 			rotation += 5;
 			rotation %= 360;
 		} else {
-			bild.setRotation(0);
+			picture.setRotation(0);
 			rotation = 0;
 		}
 	}
@@ -110,7 +110,7 @@ public class Projectile extends Entity {
 	}
 
 	public boolean isFlying() {
-		return fliegt;
+		return flying;
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class Projectile extends Entity {
 		super.setRotation(newRotation);
 
 		rotation = newRotation;
-		bild.setRotation(newRotation);
+		picture.setRotation(newRotation);
 	}
 
 	public float getRotation() {

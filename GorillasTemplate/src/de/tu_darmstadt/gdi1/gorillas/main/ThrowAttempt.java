@@ -21,7 +21,7 @@ public class ThrowAttempt {
 	 * Einen neuen Wurf starten mit: Dem Winkel Der Kraft Der Position, von der
 	 * aus geworfen wird Der Gravitation
 	 * 
-	 * Hier wird viel geprüft und viele Exceptions geschmissen. Gemacht habe ich
+	 * Hier wird viel geprueft und viele Exceptions geschmissen. Gemacht habe ich
 	 * das, weil das robuster ist, als wenn ich annehme, dass die Werte immer
 	 * richtig reinkommen.
 	 */
@@ -32,7 +32,7 @@ public class ThrowAttempt {
 			throw new GorillasException(new ArithmeticException(), "angle: "
 					+ angle, ExceptionReason.ThrowAttemptAngelWrong);
 		}
-		// Der Winkel soll ja zwischen 0 und 360° sein und eine natürliche Zahl.
+		// Der Winkel soll ja zwischen 0 und 360° sein und eine natuerliche Zahl.
 
 		if (velocity < 0 || velocity > 200) {
 			throw new GorillasException(new ArithmeticException(), "velocity: "
@@ -53,7 +53,7 @@ public class ThrowAttempt {
 					+ position.x + ", " + position.y,
 					ExceptionReason.ThrowAttemptPositionOutsideWindow);
 		}
-		// Prüfen, ob die Position außerhalb des Fensters ist.
+		// Pruefen, ob die Position ausserhalb des Fensters ist.
 
 		if (playerID != 1 && playerID != 2) {
 			throw new GorillasException(new IllegalArgumentException(),
@@ -84,9 +84,9 @@ public class ThrowAttempt {
 		this.playerID = playerID;
 	}
 
-	// Hier drunter passiert 2x das gleiche. Nach der Formel für x und y wird
+	// Hier drunter passiert 2x das gleiche. Nach der Formel fuer x und y wird
 	// deren Wert errechnet.
-	// Danach geprüft, ob der noch im Fenster liegt...
+	// Danach geprueft, ob der noch im Fenster liegt...
 
 	public double getGravity() {
 		return gravity;
@@ -105,7 +105,7 @@ public class ThrowAttempt {
 		LinkedList<Vector2f> liste = new LinkedList<Vector2f>();
 
 		int x, y, timePassed = 1; // Hier muss eine Zeiteinheit rein.
-									// Prinzipiell alles möglich, ich hab aber
+									// Prinzipiell alles moeglich, ich hab aber
 									// mal 1 als kleinsten Wert eingetragen.
 
 		while (true) {
@@ -119,7 +119,7 @@ public class ThrowAttempt {
 			if (x > 0 && y > 0 && x < Launcher.FRAME_WIDTH)
 				liste.add(new Vector2f(x, y));
 			else
-				return liste; // ... wenn nicht, einfach die Liste zurückgeben.
+				return liste; // ... wenn nicht, einfach die Liste zurueckgeben.
 		}
 	}
 
@@ -137,7 +137,7 @@ public class ThrowAttempt {
 			return new Vector2f(x, y);
 
 		throw new GorillasException(new Exception(),
-				"Banane ist außerhalb vom Bild",
+				"Banane ist ausserhalb vom Bild",
 				ExceptionReason.ThrowAttemptNoNextPosition);
 	}
 }

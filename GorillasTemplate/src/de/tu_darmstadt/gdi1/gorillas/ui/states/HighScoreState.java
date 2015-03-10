@@ -19,41 +19,33 @@ public class HighScoreState extends OwnState {
 
 	public HighScoreState(int sid) {
 		super(sid);
+		
+		names = new String[] {
+				"Zurueck",
+				"GorillaLogo"
+		};
 	}
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
+		super.initBackground();
 
-		// Erstellung der Entität für den Hintergrund
-		Entity backgroundE = new Entity("Menue");
-
-		backgroundE.setPosition(new Vector2f(windowWidth / 2,
-				windowHeight / 2));
-		backgroundE.setScale(1.5f);
-
-		// Hintergrundbild für das About-Fenster
-		backgroundE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"/assets/gorillas/background/MenuBackground.jpg")));
-
-		// Entität zum Zurückkehren zum Menübildschirm
-		String zurueck = "Zurueck";
-		Entity zurueckE = createMenuEntity(zurueck, new Vector2f(120, 80));
+		// Entitaet zum Zurueckkehren zum Menuebildschirm
+		Entity zurueckE = createMenuEntity(names[0], new Vector2f(120, 80));
 
 		// Events und Actions
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
-		//Zurück Action
+		//Zurueck Action
 		ChangeStateInitAction zurueckAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
 
-		// Entität des Gorilla Logos
-		String gorilla_logo = "Gorillalogo";
-		Entity gorilla_logoE = new Entity(gorilla_logo);
+		// Entitaet des Gorilla Logos
+		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
 		gorilla_logoE.setPosition(new Vector2f(370, 200));
@@ -62,11 +54,9 @@ public class HighScoreState extends OwnState {
 				new org.newdawn.slick.Image(
 						"assets/gorillas/background/Banner_highscore.png")));
 
-		// Hinzufügen der Entity zum Entitymanager
-		entityManager.addEntity(getID(), backgroundE);
+		// Hinzufuegen der Entity zum Entitymanager
 		entityManager.addEntity(getID(), zurueckE);
 		entityManager.addEntity(getID(), gorilla_logoE);
-
 	}
 
 	@Override
@@ -75,6 +65,6 @@ public class HighScoreState extends OwnState {
 		super.render(container, game, g);
 		
 		// Schreiben der Texte
-		g.drawString("Zurück", 85, 66);
+		g.drawString("Zurueck", 85, 66);
 	}
 }

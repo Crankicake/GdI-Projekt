@@ -8,7 +8,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import eea.engine.action.basicactions.ChangeStateInitAction;
-import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -19,30 +18,22 @@ public class InstructionState extends OwnState{
 
 	public InstructionState(int sid) {
 		super(sid);
+		
+		names = new String[] {
+			"Zurueck"	
+		};
 	}
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-
-		// Erstellung der Entität für den Hintergrund
-		Entity backgroundE = new Entity("Menue");
-
-		backgroundE.setPosition(new Vector2f(windowWidth / 2,
-				windowHeight / 2));
-		backgroundE.setScale(1.5f);
-
-		// Hintergrundbild für das About-Fenster
-		backgroundE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"/assets/gorillas/background/MenuBackground.jpg")));
-
-		// Entität zum Zurückkehren zum Menübildschirm
-		String zurueck = "Zurueck";
-		Entity zurueckE = createMenuEntity(zurueck, new Vector2f(120, 80));
+		super.initBackground();
+		
+		// Entitaet zum Zurueckkehren zum Menuebildschirm
+		Entity zurueckE = createMenuEntity(names[0], new Vector2f(120, 80));
 
 		/*
-				// Entität des 1. Screenshots
+				// Entitaet des 1. Screenshots
 				String screen1 = "";
 				Entity screen1E = new Entity(screen1);
 
@@ -53,7 +44,7 @@ public class InstructionState extends OwnState{
 						new org.newdawn.slick.Image(
 								"assets/gorillas/background/screen1.png")));
 				
-				// Entität des 2. Screenshots
+				// Entitaet des 2. Screenshots
 				String screen2 = "";
 				Entity screen2E = new Entity(screen2);
 
@@ -64,7 +55,7 @@ public class InstructionState extends OwnState{
 						new org.newdawn.slick.Image(
 								"assets/gorillas/background/screen2.png")));
 				
-				// Entität des 3. Screenshots
+				// Entitaet des 3. Screenshots
 				String screen3 = "";
 				Entity screen3E = new Entity(screen3);
 
@@ -75,7 +66,7 @@ public class InstructionState extends OwnState{
 						new org.newdawn.slick.Image(
 								"assets/gorillas/background/screen3.png")));
 				
-				// Entität des 4. Screenshots
+				// Entitaet des 4. Screenshots
 				String screen4 = "";
 				Entity screen4E = new Entity(screen4);
 
@@ -91,14 +82,13 @@ public class InstructionState extends OwnState{
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
-		// Zurück Action
+		// Zurueck Action
 		ChangeStateInitAction zurueckAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
 
-		// Hinzufügen der Entity zum Entitymanager
-		entityManager.addEntity(getID(), backgroundE);
+		// Hinzufuegen der Entity zum Entitymanager
 		entityManager.addEntity(getID(), zurueckE);
 		
 	 	/* entityManager.addEntity(getID(), screen1E);
@@ -112,18 +102,18 @@ public class InstructionState extends OwnState{
 			throws SlickException {
 		super.render(container, game, g);
 
-		// Schreiben der Texte
-		g.drawString("Zurück", 85, 66);
+		//  Schreiben der Texte
+		g.drawString("Zurueck", 85, 66);
 		g.drawString("Willkommen bei Gorillas!", 250, 130);
-		g.drawString("In der folgenden Anleitung werden sie Schritt für", 50, 160);
-		g.drawString("Schritt in die Welt von Gorillas eingeführt!", 50, 190);
-		g.drawString("1. Schritt: Wählen der Spielernamen", 30, 250);
-		//  g.drawString("1. Schritt: Wählen der Spielernamen", 325, 365);
+		g.drawString("In der folgenden Anleitung werden sie Schritt fuer", 50, 160);
+		g.drawString("Schritt in die Welt von Gorillas eingefuehrt!", 50, 190);
+		g.drawString("1. Schritt: Waehlen der Spielernamen", 30, 250);
+		//  g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 365);
 		g.drawString("2. Schritt: Starten des Spiels", 30, 410);
-		//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 390);
-		g.drawString("3. Schritt: Wählen der Flugbahn", 450, 250);
-		//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 405);
+		//	g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 390);
+		g.drawString("3. Schritt: Waehlen der Flugbahn", 450, 250);
+		//	g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 405);
 		g.drawString("4. Schritt: Viel Erfolg!", 450, 410);
-		//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 420);
+		// g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 420);
 	}
 }

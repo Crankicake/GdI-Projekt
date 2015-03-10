@@ -25,11 +25,9 @@ import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
-import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.DestructibleImageEntity;
 import eea.engine.entity.Entity;
-import eea.engine.event.basicevents.KeyPressedEvent;
 
 public class GamePlayState extends OwnState {
 
@@ -67,12 +65,16 @@ public class GamePlayState extends OwnState {
 		System.out.println(wind);
 
 		playerOne.setImageState(PlayerImageState.LeftHandRised);
+
+		names = new String[] { "Background", "Sun", "Building_",
+				"BuildingDestrucable_", "Banana"
+
+		};
 	}
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-
 		initBackground();
 		initBuildings();
 		initProjectile();
@@ -92,7 +94,6 @@ public class GamePlayState extends OwnState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
-
 		Input input = gc.getInput();
 
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
@@ -100,9 +101,9 @@ public class GamePlayState extends OwnState {
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
 
-		if(arrowPosition == null)
+		if (arrowPosition == null)
 			arrowPosition = new Vector2f(0, 0);
-			
+
 		arrowPosition.x += wind;
 
 		if (arrowPosition.x > windowWidth + 30) {
@@ -136,7 +137,6 @@ public class GamePlayState extends OwnState {
 
 	@Override
 	protected RootPane createRootPane() {
-
 		RootPane rp = super.createRootPane();
 
 		velocityTextField = new EditField();
@@ -149,7 +149,7 @@ public class GamePlayState extends OwnState {
 		});
 
 		velocityLabel = new Label();
-		velocityLabel.setText("Stärke:");
+		velocityLabel.setText("Staerke:");
 
 		angleTextField = new EditField();
 		angleTextField.setText("0");
@@ -187,12 +187,11 @@ public class GamePlayState extends OwnState {
 
 	@Override
 	protected void layoutRootPane() {
-
 		velocityTextField.adjustSize();
 		velocityTextField.setPosition(70, 20);
 
 		velocityLabel.adjustSize();
-		velocityLabel.setPosition(20, 23);
+		velocityLabel.setPosition(12, 23);
 
 		angleTextField.adjustSize();
 		angleTextField.setPosition(70, 55);
@@ -208,9 +207,10 @@ public class GamePlayState extends OwnState {
 		playerLabel.setPosition(3, 93);
 	}
 
+	@Override
 	protected void initBackground() throws SlickException {
 
-		Entity background = new Entity("Background");
+		Entity background = new Entity(names[0]);
 		background.addComponent(new ImageRenderComponent(new Image(
 				"/assets/gorillas/background/background.png")));
 		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
@@ -219,13 +219,7 @@ public class GamePlayState extends OwnState {
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
-		// Prüft ob Escape gedrückt wurde
-		Entity escListener = new Entity("ESC_Listener");
-		KeyPressedEvent escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(Gorillas.MAINMENUSTATE));
-		escListener.addComponent(escPressed);
-
-		Entity sun = new Entity("Sun");
+		Entity sun = new Entity(names[1]);
 		sun.addComponent(new ImageRenderComponent(new Image(
 				"/assets/gorillas/sun/sun_smiling.png")));
 		sun.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
@@ -235,7 +229,6 @@ public class GamePlayState extends OwnState {
 		sun.setRotation(0.0f);
 
 		entityManager.addEntity(stateID, background);
-		entityManager.addEntity(stateID, escListener);
 		entityManager.addEntity(stateID, sun);
 	}
 
@@ -243,7 +236,7 @@ public class GamePlayState extends OwnState {
 
 		// Sind die EntitÃ¤ten zerstÃ¶rbar? Ich glaube es gibt da eine extra
 		// destructable entity...
-		// Sowas gibt es tatsächlich, hat aber einen komischen Konstruktor, hab
+		// Sowas gibt es tatsaechlich, hat aber einen komischen Konstruktor, hab
 		// mich damit noch nciht auseinander gesetzt.
 
 		Entity[] buildings = new Entity[8];
@@ -258,7 +251,7 @@ public class GamePlayState extends OwnState {
 		float buildingX, buildingY;
 
 		for (int i = 0; i < 8; ++i) {
-			buildings[i] = new Entity("Building_" + i);
+			buildings[i] = new Entity(names[2] + i);
 
 			// ImageRenderComponent image = new ImageRenderComponent(new Image(
 			// "/assets/gorillas/background/building_green.png"));
@@ -294,7 +287,7 @@ public class GamePlayState extends OwnState {
 
 			/**
 			 * 
-			 * Nützliche Links:
+			 * Nuetzliche Links:
 			 * http://www.rapidtables.com/web/color/RGB_Color.html
 			 * http://www.dpunkt
 			 * .de/java/Programmieren_mit_Java/Grafikprogrammierung/5.htm
@@ -306,28 +299,22 @@ public class GamePlayState extends OwnState {
 
 			switch (r.nextInt(3)) {
 			case 0:
-				DestructibleImageEntity ent1 = new DestructibleImageEntity(
-						"Building " + i, img, "dropofwater/destruction.png",
-						false);
-				buildings[i] = ent1;
+				buildings[i] = new DestructibleImageEntity(names[3] + i,
+						img, "dropofwater/destruction.png", false);
 				break;
 			case 1:
-				DestructibleImageEntity ent2 = new DestructibleImageEntity(
-						"Building " + i, img2, "dropofwater/destruction.png",
-						false);
-				buildings[i] = ent2;
+				buildings[i] = new DestructibleImageEntity(names[3] + i,
+						img2, "dropofwater/destruction.png", false);
 				break;
 			case 2:
-				DestructibleImageEntity ent3 = new DestructibleImageEntity(
-						"Building " + i, img3, "dropofwater/destruction.png",
-						false);
-				buildings[i] = ent3;
+				buildings[i] = new DestructibleImageEntity(names[3] + i,
+						img3, "dropofwater/destruction.png", false);
 				break;
 			}
 
-			buildingX = (50f + 100f * i) * Launcher.FRAME_WIDTH / 800;
-			buildingY = Launcher.FRAME_HEIGHT + (r.nextInt(7) - 3)
-					* Launcher.FRAME_HEIGHT / 20;
+			buildingX = (50f + 100f * i) * windowWidth / 800;
+			buildingY = windowHeight + (r.nextInt(7) - 3)
+					* windowHeight / 20;
 
 			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
 
@@ -352,7 +339,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	protected void initProjectile() throws SlickException {
-		projectile = new Projectile("Banane");
+		projectile = new Projectile(names[4]);
 		projectile.setPosition(playerOne.getPosition());
 		projectile.createEntity();
 		entityManager.addEntity(stateID, projectile);

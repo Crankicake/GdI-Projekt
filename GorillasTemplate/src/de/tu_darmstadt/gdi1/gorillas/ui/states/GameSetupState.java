@@ -19,7 +19,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.action.basicactions.ChangeStateInitAction;
-import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -42,6 +41,7 @@ public class GameSetupState extends OwnState {
 
 		io = new InputOutput();
 		errormessage = "";
+		names = new String[] { "Zurueck", "Spiel starten" };
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class GameSetupState extends OwnState {
 			throws SlickException {
 		super.render(container, game, g);
 
-		g.drawString("Zurück", 85, 66);
+		g.drawString(names[0], 85, 66);
 		g.drawString("Spiel starten", windowWidth / 2 - 35,
 				windowHeight / 2 + 36);
 		g.drawString(errormessage, 220, 500);
@@ -135,24 +135,11 @@ public class GameSetupState extends OwnState {
 		playername2Textbox.setPosition(width, height - 50);
 	}
 
-	protected void initBackground() throws SlickException {
-
-		Entity background = new Entity("Background");
-		background.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/background/MenuBackground.jpg")));
-		background.setPosition(new Vector2f(windowWidth / 2, windowHeight / 2));
-		background.setScale(1.5f);
-		background.setPassable(true);
-		background.setRotation(0.0f);
-
-		entityManager.addEntity(stateID, background);
-	}
-
 	protected void initEntities() throws SlickException {
-		Entity newGameEntity = createMenuEntity("SpielStarten", new Vector2f(windowWidth / 2,
-				windowHeight / 2 + 50));
+		Entity newGameEntity = createMenuEntity(names[1], new Vector2f(
+				windowWidth / 2, windowHeight / 2 + 50));
 
-		Entity zurueckEntity = createMenuEntity("Zurueck", new Vector2f(120, 80));
+		Entity zurueckEntity = createMenuEntity(names[0], new Vector2f(120, 80));
 
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
@@ -232,7 +219,7 @@ public class GameSetupState extends OwnState {
 
 				if (name1 == null || name2 == null || name1.isEmpty()
 						|| name2.isEmpty()) {
-					errormessage = "Die Spielernamen dürfen nicht leer sein!";
+					errormessage = "Die Spielernamen duerfen nicht leer sein!";
 					return;
 				}
 
