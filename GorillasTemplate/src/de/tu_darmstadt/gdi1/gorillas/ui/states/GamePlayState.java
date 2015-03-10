@@ -200,7 +200,7 @@ public class GamePlayState extends BasicTWLGameState {
 		projectile.setParamter(
 				Integer.parseInt(angleTextField.getText()),
 				Integer.parseInt(velocityTextField.getText()),
-				9.81);
+				9.81, whichPlayersDraw);
 
 		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo
 				.getName() : playerOne.getName()) + ":");

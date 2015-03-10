@@ -16,6 +16,7 @@ public class ThrowAttempt {
 	private int velocity;
 	private int angle;
 
+	private int playerID;
 	/*
 	 * Einen neuen Wurf starten mit: Dem Winkel Der Kraft Der Position, von der
 	 * aus geworfen wird Der Gravitation
@@ -25,7 +26,7 @@ public class ThrowAttempt {
 	 * richtig reinkommen.
 	 */
 	public ThrowAttempt(int angle, int velocity, Vector2f position,
-			double gravity) throws GorillasException {
+			double gravity, int playerID) throws GorillasException {
 
 		if (angle < 0 || angle > 360) {
 			throw new GorillasException(new ArithmeticException(), "angle: "
@@ -54,6 +55,12 @@ public class ThrowAttempt {
 		}
 		// Prüfen, ob die Position außerhalb des Fensters ist.
 
+		if (playerID != 1 && playerID != 2) {
+			throw new GorillasException(new IllegalArgumentException(),
+					"Die SpielerID ist falsch: " + playerID,
+					ExceptionReason.UnknownPlayerID);
+		}
+
 		if (Double.isNaN(gravity) || Double.isInfinite(gravity)) {
 			this.gravity = 9.81;
 		} else {
@@ -73,6 +80,8 @@ public class ThrowAttempt {
 
 		this.velocity = velocity;
 		this.angle = angle;
+		
+		this.playerID = playerID;
 	}
 
 	// Hier drunter passiert 2x das gleiche. Nach der Formel für x und y wird
@@ -82,15 +91,15 @@ public class ThrowAttempt {
 	public double getGravity() {
 		return gravity;
 	}
-	
+
 	public int getVelocity() {
 		return velocity;
 	}
-	
+
 	public int getAngle() {
 		return angle;
 	}
-	
+
 	public LinkedList<Vector2f> getAllPoints() {
 
 		LinkedList<Vector2f> liste = new LinkedList<Vector2f>();
@@ -118,7 +127,7 @@ public class ThrowAttempt {
 
 		timePassed += 0.01;
 
-		int x = (int) (x0 + (velocityX * timePassed));
+		int x = (int) (x0 + (playerID == 1? (velocityX * timePassed): -(velocityX * timePassed)));
 		// + (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed *
 		// timePassed));
 

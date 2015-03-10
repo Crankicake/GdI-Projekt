@@ -17,20 +17,21 @@ public class Projectile extends Entity {
 
 	private PriorityQueue<Vector2f> nextPositions;
 	private static Vector2f position;
-	private static float rotation;
+	private float rotation = 10f;
 	private Image bild;
 
-	private boolean fliegt;
+	private static boolean fliegt;
 	private ThrowAttempt throwAttempt;
 
 	private long lastFrame;
+
+	float r = 0;
 
 	public Projectile(String entityID) {
 		super(entityID);
 		nextPositions = new PriorityQueue<Vector2f>();
 
 		position = super.getPosition();
-		rotation = super.getRotation();
 	}
 
 	public void createEntity() throws SlickException {
@@ -41,10 +42,10 @@ public class Projectile extends Entity {
 		setRotation(0.0f);
 	}
 
-	public void setParamter(int angle, int velocity, double gravity) {
+	public void setParamter(int angle, int velocity, double gravity, int playerID) {
 
 		try {
-			throwAttempt = new ThrowAttempt(angle, velocity, position, gravity);
+			throwAttempt = new ThrowAttempt(angle, velocity, position, gravity, playerID);
 			fliegt = true;
 		} catch (GorillasException e) {
 			fliegt = false;
@@ -73,8 +74,6 @@ public class Projectile extends Entity {
 		if (!fliegt)
 			return;
 
-		rotate();
-
 		try {
 			setPosition(throwAttempt.getNextPoint(delta));
 		} catch (GorillasException ex) {
@@ -83,37 +82,33 @@ public class Projectile extends Entity {
 		}
 	}
 
-	public double getGravity () {
+	@Override
+	public void update(GameContainer gc, StateBasedGame sbg, int i) {
+		if (fliegt) 
+		{			
+			bild.setRotation(rotation);
+
+			rotation += 10;
+			rotation %= 360;	
+		}
+	}
+
+	public double getGravity() {
 		return throwAttempt.getGravity();
 	}
-	
+
 	public int getVelocity() {
 		return throwAttempt.getVelocity();
 	}
-	
+
 	public int getAngle() {
 		return throwAttempt.getAngle();
 	}
-	
+
 	public boolean isFlying() {
 		return fliegt;
 	}
 
-	public void rotate() {
-		float rotation = getRotation();
-		
-		rotation += 10f;
-		
-		if (rotation == 360f)
-			rotation = 0f;
-		
-		bild.rotate(rotation);
-		
-		System.out.println(rotation);
-		
-		setRotation(rotation);
-	}
-	
 	@Override
 	public void setPosition(Vector2f newPosition) {
 		position = newPosition;
@@ -128,15 +123,16 @@ public class Projectile extends Entity {
 
 	@Override
 	public void setRotation(float newRotation) {
-		rotation = newRotation;
-		
 		super.setRotation(newRotation);
+
+		rotation = newRotation;
+		bild.setRotation(newRotation);
 	}
-	
+
 	public float getRotation() {
 		return rotation;
 	}
-	
+
 	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29
 	public long getTime() {
 		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
