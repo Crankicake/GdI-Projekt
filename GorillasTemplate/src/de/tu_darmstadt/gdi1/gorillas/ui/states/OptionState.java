@@ -106,11 +106,6 @@ public class OptionState extends OwnState {
 	}
 
 	@Override
-	public int getID() {
-		return stateID;
-	}
-
-	@Override
 	protected RootPane createRootPane() {
 
 		RootPane rp = super.createRootPane();
