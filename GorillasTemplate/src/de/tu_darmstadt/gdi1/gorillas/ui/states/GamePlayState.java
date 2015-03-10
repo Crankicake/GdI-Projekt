@@ -52,6 +52,9 @@ public class GamePlayState extends OwnState {
 	public static double windScale = 0.2;
 	public static double timeScale = 0.01;
 
+	private Image arrow;
+	private Vector2f arrowPosition;
+
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -61,6 +64,8 @@ public class GamePlayState extends OwnState {
 		whichPlayersDraw = 1;
 		wind = new Random().nextInt(31) - 15;
 
+		System.out.println(wind);
+		
 		playerOne.setImageState(PlayerImageState.LeftHandRised);
 	}
 
@@ -71,6 +76,7 @@ public class GamePlayState extends OwnState {
 		initBackground();
 		initBuildings();
 		initProjectile();
+		initWindIndicator();
 	}
 
 	@Override
@@ -78,6 +84,9 @@ public class GamePlayState extends OwnState {
 			throws SlickException {
 
 		entityManager.renderEntities(gc, sbg, g);
+
+		if (wind != 0)
+			g.drawImage(arrow, arrowPosition.x, arrowPosition.y);
 	}
 
 	@Override
@@ -91,6 +100,14 @@ public class GamePlayState extends OwnState {
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
 
+		arrowPosition.x += wind;
+		
+		if(arrowPosition.x > windowWidth + 30) {
+			arrowPosition.x = 0;
+		} else if(arrowPosition.x < -30) {
+			arrowPosition.x = windowWidth;
+		}
+		
 		if (projectile.isFlying()) {
 			try {
 				projectile.updateOwn(gc, sbg, i);
@@ -110,7 +127,7 @@ public class GamePlayState extends OwnState {
 				}
 			}
 		}
-		
+
 		entityManager.updateEntities(gc, sbg, i);
 	}
 
@@ -336,6 +353,21 @@ public class GamePlayState extends OwnState {
 		projectile.setPosition(playerOne.getPosition());
 		projectile.createEntity();
 		entityManager.addEntity(stateID, projectile);
+	}
+
+	private void initWindIndicator() throws SlickException {
+
+		if (wind < 0) {
+			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
+
+			arrow = new Image("/assets/gorillas/arrow.png");			
+		} else if (wind > 0) {
+			arrowPosition = new Vector2f(30, windowHeight - 20);
+
+			arrow = new Image("/assets/gorillas/arrow.png");
+			
+			arrow.rotate(180);
+		}
 	}
 
 	public void throwButton_Click() {
