@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
+import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.ChangeStateInitAction;
@@ -167,6 +168,11 @@ public class MainMenuState extends OwnState {
 			throws SlickException {
 
 		entityManager.updateEntities(container, game, delta);
+		
+		Input input = container.getInput();
+		
+		if(MasterGame.isAGameRunning() && input.isKeyPressed(Input.KEY_ESCAPE))
+			changeState(container, game, Gorillas.GAMEPLAYSTATE);
 	}
 
 	@Override

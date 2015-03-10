@@ -21,6 +21,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
+import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.ChangeStateInitAction;
@@ -48,8 +49,7 @@ public class GamePlayState extends OwnState {
 	public static double wind = 0;
 	public static double windScale = 0.2;
 	public static double timeScale = 0.01;
-	
-	
+
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -57,9 +57,9 @@ public class GamePlayState extends OwnState {
 		playerTwo = MasterGame.getPlayerTwo();
 
 		whichPlayersDraw = 1;
-		
 		wind = new Random().nextInt(31) - 15;
-		System.out.println(wind);
+
+		playerOne.setImageState(PlayerImageState.LeftHandRised);
 	}
 
 	@Override
@@ -69,6 +69,7 @@ public class GamePlayState extends OwnState {
 		initBackground();
 		initBuildings();
 		initProjectile();
+		// initEvents();
 	}
 
 	@Override
@@ -82,6 +83,13 @@ public class GamePlayState extends OwnState {
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
+		Input input = gc.getInput();
+
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+			MasterGame.setIsAGameRunning(true);
+			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
+		}
+
 		entityManager.updateEntities(gc, sbg, i);
 
 		if (projectile.isFlying()) {
@@ -89,8 +97,16 @@ public class GamePlayState extends OwnState {
 				projectile.updateOwn(gc, sbg, i);
 			} catch (GorillasException ex) {
 				throwButton.setEnabled(true);
-				projectile.setPosition(whichPlayersDraw == 1 ? playerOne
-						.getPosition() : playerTwo.getPosition());
+
+				if (whichPlayersDraw == 1) {
+					projectile.setPosition(playerOne.getPosition());
+					playerOne.setImageState(PlayerImageState.LeftHandRised);
+					playerTwo.setImageState(PlayerImageState.NoHandsForYou);
+				} else {
+					projectile.setPosition(playerTwo.getPosition());
+					playerOne.setImageState(PlayerImageState.NoHandsForYou);
+					playerTwo.setImageState(PlayerImageState.LeftHandRised);
+				}
 			}
 		}
 	}
@@ -142,13 +158,13 @@ public class GamePlayState extends OwnState {
 		rp.add(angleLabel);
 		rp.add(throwButton);
 		rp.add(playerLabel);
-		
+
 		return rp;
 	}
 
 	@Override
 	protected void layoutRootPane() {
-		
+
 		velocityTextField.adjustSize();
 		velocityTextField.setPosition(70, 20);
 
@@ -169,7 +185,6 @@ public class GamePlayState extends OwnState {
 		playerLabel.setPosition(3, 93);
 	}
 
-
 	protected void initBackground() throws SlickException {
 
 		Entity background = new Entity("Background");
@@ -181,15 +196,12 @@ public class GamePlayState extends OwnState {
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
-		
 		// Prüft ob Escape gedrückt wurde
 		Entity escListener = new Entity("ESC_Listener");
 		KeyPressedEvent escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
 		escPressed.addAction(new ChangeStateAction(Gorillas.MAINMENUSTATE));
 		escListener.addComponent(escPressed);
-		
-		
-		
+
 		Entity sun = new Entity("Sun");
 		sun.addComponent(new ImageRenderComponent(new Image(
 				"/assets/gorillas/sun/sun_smiling.png")));
@@ -268,36 +280,34 @@ public class GamePlayState extends OwnState {
 		projectile.createEntity();
 		entityManager.addEntity(stateID, projectile);
 	}
-	
+
 	protected void initEvents() throws SlickException {
 		Entity escapeListener = new Entity("Escape_Listener");
-		
+
 		KeyPressedEvent escapePressed = new KeyPressedEvent(Input.KEY_ESCAPE);
 		EscapePressedAction escapePressedAction = new EscapePressedAction();
-		ChangeStateInitAction switchToMainMenuStateAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
-		
+		ChangeStateInitAction switchToMainMenuStateAction = new ChangeStateInitAction(
+				Gorillas.MAINMENUSTATE);
+
 		escapePressed.addAction(escapePressedAction);
 		escapePressed.addAction(switchToMainMenuStateAction);
 		escapeListener.addComponent(escapePressed);
-		
+
 		entityManager.addEntity(getID(), escapeListener);
 	}
-	
-	
-	
-	public void throwButton_Click() {
-		projectile.setParamter(
-				Integer.parseInt(angleTextField.getText()),
-				Integer.parseInt(velocityTextField.getText()),
-				9.81, whichPlayersDraw);
 
-		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo
-				.getName() : playerOne.getName()) + ":");
+	public void throwButton_Click() {
+		projectile.setParamter(Integer.parseInt(angleTextField.getText()),
+				Integer.parseInt(velocityTextField.getText()), 9.81,
+				whichPlayersDraw);
+
+		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
+				: playerOne.getName()) + ":");
 
 		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
 		throwButton.setEnabled(false);
 	}
-	
+
 	public void velocityTextField_TextChanged() {
 		String oldText = velocityTextField.getText();
 
@@ -321,7 +331,7 @@ public class GamePlayState extends OwnState {
 
 		}
 	}
-	
+
 	public void angleTextField_TextChanged() {
 		String oldText = angleTextField.getText();
 
@@ -346,11 +356,10 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
-	
 	public Projectile getProjectile() {
 		return projectile;
 	}
-	
+
 	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 

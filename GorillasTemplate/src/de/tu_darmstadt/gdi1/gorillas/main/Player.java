@@ -19,8 +19,12 @@ public class Player extends Entity {
 
 	private Image links, normal, rechts;
 
+	private PlayerImageState imageState;
+
 	public Player(String entityID) {
 		super(entityID);
+
+		imageState = PlayerImageState.NoHandsForYou;
 	}
 
 	public void setName(String value) {
@@ -56,29 +60,49 @@ public class Player extends Entity {
 		return score;
 	}
 
+	public void setImageState(PlayerImageState state) {
+		imageState = state;
+	}
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 
-		switch (counter / 100) {
-		case 0:
+		switch (imageState) {
+		case NoHandsForYou:
+			g.drawImage(normal, position.x, position.y);
+			break;
+		case LeftHandRised:
 			g.drawImage(links, position.x, position.y);
 			break;
-		case 1:
-			g.drawImage(normal, position.x, position.y);
-			break;
-		case 2:
+		case RightHandRised:
 			g.drawImage(rechts, position.x, position.y);
 			break;
-		case 3:
-			g.drawImage(normal, position.x, position.y);
-			break;
+		case Dancing:
+			switch (counter / 100) {
+			case 0:
+				g.drawImage(links, position.x, position.y);
+				break;
+			case 1:
+				g.drawImage(normal, position.x, position.y);
+				break;
+			case 2:
+				g.drawImage(rechts, position.x, position.y);
+				break;
+			case 3:
+				g.drawImage(normal, position.x, position.y);
+				break;
+			}
 		}
+
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i) {
-		counter++;
-		if (counter == 401)
-			counter = 0;
+
+		if (imageState == PlayerImageState.Dancing) {
+			counter++;
+			if (counter == 401)
+				counter = 0;
+		}
 	}
 }
