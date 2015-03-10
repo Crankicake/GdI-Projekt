@@ -31,13 +31,8 @@ import eea.engine.event.basicevents.KeyPressedEvent;
 public class GamePlayState extends OwnState {
 
 	protected Projectile projectile;
-
 	protected Player playerOne;
 	protected Player playerTwo;
-
-	public static double wind = 0;
-	public static double windScale = 1;
-	public static double timeScale = 0.01;
 
 	protected Button throwButton;
 	protected EditField velocityTextField;
@@ -49,8 +44,12 @@ public class GamePlayState extends OwnState {
 	protected String oldVelocity = "";
 	protected String oldAngle = "";
 
-	protected int whichPlayersDraw;
-
+	private int whichPlayersDraw;
+	public static double wind = 0;
+	public static double windScale = 0.2;
+	public static double timeScale = 0.01;
+	
+	
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -58,6 +57,9 @@ public class GamePlayState extends OwnState {
 		playerTwo = MasterGame.getPlayerTwo();
 
 		whichPlayersDraw = 1;
+		
+		wind = new Random().nextInt(31) - 15;
+		System.out.println(wind);
 	}
 
 	@Override

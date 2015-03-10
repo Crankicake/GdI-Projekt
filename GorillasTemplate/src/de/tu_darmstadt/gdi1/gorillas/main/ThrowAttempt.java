@@ -128,8 +128,7 @@ public class ThrowAttempt {
 		timePassed += 0.02;
 
 		int x = (int) (x0 + (playerID == 1? (velocityX * timePassed): -(velocityX * timePassed)));
-		// + (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed *
-		// timePassed));
+		x = (int) (x + (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));
 
 		int y = (int) (y0 - (velocityY * timePassed) + (0.5 * gravity
 				* timePassed * timePassed));

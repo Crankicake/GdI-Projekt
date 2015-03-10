@@ -109,6 +109,9 @@ public class GameSetupState extends OwnState {
 		rp.add(playername1Label);
 		rp.add(playername2Label);
 
+		setPlayername1TextboxText("Player 1");
+		setPlayername2TextboxText("Player 2");
+		
 		return rp;
 	}
 
@@ -245,6 +248,14 @@ public class GameSetupState extends OwnState {
 		io.FindeNamen(playername1Textbox.getText());
 	}
 	
+	
+	public void setPlayername1TextboxText(String text) {
+		playername1Textbox.setText(text);
+	}
+	
+	public void setPlayername2TextboxText(String text) {
+		playername2Textbox.setText(text);
+	}
 	
 	public void setPlayerOneName(String name) {
 		if (name == null || name.isEmpty() || name.equals(MasterGame.getPlayerTwo().getName()))

@@ -21,7 +21,7 @@ public class Projectile extends Entity {
 	private Image bild;
 
 	private static boolean fliegt;
-	private ThrowAttempt throwAttempt;
+	private static ThrowAttempt throwAttempt;
 
 	private long lastFrame;
 
