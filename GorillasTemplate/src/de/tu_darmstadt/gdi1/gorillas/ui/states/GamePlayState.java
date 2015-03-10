@@ -65,7 +65,7 @@ public class GamePlayState extends OwnState {
 		wind = new Random().nextInt(31) - 15;
 
 		System.out.println(wind);
-		
+
 		playerOne.setImageState(PlayerImageState.LeftHandRised);
 	}
 
@@ -101,13 +101,13 @@ public class GamePlayState extends OwnState {
 		}
 
 		arrowPosition.x += wind;
-		
-		if(arrowPosition.x > windowWidth + 30) {
+
+		if (arrowPosition.x > windowWidth + 30) {
 			arrowPosition.x = 0;
-		} else if(arrowPosition.x < -30) {
+		} else if (arrowPosition.x < -30) {
 			arrowPosition.x = windowWidth;
 		}
-		
+
 		if (projectile.isFlying()) {
 			try {
 				projectile.updateOwn(gc, sbg, i);
@@ -245,7 +245,7 @@ public class GamePlayState extends OwnState {
 
 		Entity[] buildings = new Entity[8];
 
-		Graphics2D[] theArry = new Graphics2D[8];
+		// Graphics2D[] theArry = new Graphics2D[8];
 
 		Random r = new Random();
 
@@ -257,8 +257,8 @@ public class GamePlayState extends OwnState {
 		for (int i = 0; i < 8; ++i) {
 			buildings[i] = new Entity("Building_" + i);
 
-			ImageRenderComponent image = new ImageRenderComponent(new Image(
-					"/assets/gorillas/background/building_green.png"));
+			// ImageRenderComponent image = new ImageRenderComponent(new Image(
+			// "/assets/gorillas/background/building_green.png"));
 
 			// DestructibleImageEntity imd = new
 
@@ -360,12 +360,12 @@ public class GamePlayState extends OwnState {
 		if (wind < 0) {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
 
-			arrow = new Image("/assets/gorillas/arrow.png");			
+			arrow = new Image("/assets/gorillas/arrow.png");
 		} else if (wind > 0) {
 			arrowPosition = new Vector2f(30, windowHeight - 20);
 
 			arrow = new Image("/assets/gorillas/arrow.png");
-			
+
 			arrow.rotate(180);
 		}
 	}

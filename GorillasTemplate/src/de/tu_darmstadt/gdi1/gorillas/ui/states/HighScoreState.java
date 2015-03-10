@@ -95,7 +95,7 @@ public class HighScoreState extends OwnState {
 		entityManager.renderEntities(container, game, g);
 
 		// Schreiben der Texte
-		g.drawString("Zurück", 85, 70);
+		g.drawString("Zurück", 85, 66);
 	}
 
 	@Override

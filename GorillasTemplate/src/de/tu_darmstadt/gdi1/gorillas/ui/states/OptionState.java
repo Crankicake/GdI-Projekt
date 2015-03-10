@@ -96,7 +96,7 @@ public class OptionState extends OwnState {
 		entityManager.renderEntities(container, game, g);
 
 		// Schreiben der Texte
-		g.drawString("Zurück", 85, 70);
+		g.drawString("Zurück", 85, 66);
 		g.drawString("Version: 1.0", 320, 260);
 		g.drawString("Gorillas wird entwickelt von:", 260, 320);
 		g.drawString("Fabian Czappa", 320, 360);

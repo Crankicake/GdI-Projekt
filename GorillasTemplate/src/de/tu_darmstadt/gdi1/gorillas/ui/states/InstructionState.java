@@ -133,7 +133,7 @@ public class InstructionState extends OwnState{
 		entityManager.renderEntities(container, game, g);
 
 		// Schreiben der Texte
-		g.drawString("Zurück", 85, 70);
+		g.drawString("Zurück", 85, 66);
 		g.drawString("Willkommen bei Gorillas!", 250, 130);
 		g.drawString("In der folgenden Anleitung werden sie Schritt für", 50, 160);
 		g.drawString("Schritt in die Welt von Gorillas eingeführt!", 50, 190);
