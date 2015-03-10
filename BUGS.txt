@@ -1,5 +1,1 @@
-GameSetupState: Die Überprüfung ob die beiden eingegeben Namen gleich sind sollte vielleicht nicht bei textChanged sein,
- 		wenn du gleiche namen eingibst. Den Button clickst. Dann einen weiteren Buchstaben eingibst, springt er sofort ins spiel ohne nochmal auf den Button click zu warten
-
-
-GamePlayState/GameSetupState: Wenn Lange Namen eingegeben werden, liegen Sie über den Textboxen zur Eingabe der Wurfparameter im GamePlayState
+GamePlayState/GameSetupState: Wenn lange Namen eingegeben werden, liegen Sie über den Textboxen zur Eingabe der Wurfparameter im GamePlayState

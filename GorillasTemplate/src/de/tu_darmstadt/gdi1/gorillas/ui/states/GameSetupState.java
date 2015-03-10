@@ -1,6 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,14 +8,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-
-
-
-
-
-
-
-
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditFieldAutoCompletionWindow;
@@ -24,7 +15,6 @@ import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.model.AutoCompletionDataSource;
 import de.matthiasmann.twl.model.AutoCompletionResult;
-import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.ApplyEvent;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
@@ -36,31 +26,25 @@ import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
-import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 
-public class GameSetupState extends BasicTWLGameState {
+public class GameSetupState extends OwnState {
 
-	protected StateBasedEntityManager sbem;
 	private ApplyEvent applyEvent;
-	private int stateID;
-	
+
 	private EditField playername1Textbox;
 	private EditField playername2Textbox;
 	private Label playername1Label;
 	private Label playername2Label;
 	private Button applyButton;
-	
+	private InputOutput io;
 
-	
 	public GameSetupState(int sid) {
-		stateID = sid;
-
-		sbem = StateBasedEntityManager.getInstance();
+		super(sid);
 		
+		io = new InputOutput();
 	}
-
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
@@ -81,7 +65,7 @@ public class GameSetupState extends BasicTWLGameState {
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
-		sbem.addEntity(stateID, background);
+		entityManager.addEntity(stateID, background);
 	}
 
 	protected void initGamePlayState() throws SlickException {
@@ -90,12 +74,12 @@ public class GameSetupState extends BasicTWLGameState {
 		// Setze Position und Bildkomponente
 		newGameEntity.setPosition(new Vector2f(0, 0));
 		newGameEntity.setScale(Launcher.SCALE);
-		
+
 		// Prüft ob Tab gedrückt wurde
-				Entity tabListener = new Entity("Tab_Listener");
-				KeyPressedEvent tabPressed = new KeyPressedEvent(Input.KEY_TAB);
-			// Fabian mach	nPressed.addComponent
-				tabListener.addComponent(tabPressed);
+		Entity tabListener = new Entity("Tab_Listener");
+		KeyPressedEvent tabPressed = new KeyPressedEvent(Input.KEY_TAB);
+		// Fabian mach nPressed.addComponent
+		tabListener.addComponent(tabPressed);
 
 		applyEvent = new ApplyEvent();
 		// Erstelle das Ausloese-Event und die zugehoerige Action
@@ -104,116 +88,122 @@ public class GameSetupState extends BasicTWLGameState {
 		Action newGameAction = new ChangeStateInitAction(Gorillas.GAMEPLAYSTATE);
 		mainEvents.addAction(newGameAction);
 		newGameEntity.addComponent(mainEvents);
-		
-		
-		
-		
 
 		// Fuege die Entity zum StateBasedEntityManager hinzu
-		sbem.addEntity(this.stateID, newGameEntity);
+		entityManager.addEntity(this.stateID, newGameEntity);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 
-		sbem.renderEntities(gc, sbg, g);
+		entityManager.renderEntities(gc, sbg, g);
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 
-		sbem.updateEntities(gc, sbg, delta);
+		entityManager.updateEntities(gc, sbg, delta);
 	}
 
 	public void setPlayerOneName(String name) {
-		if(name == null || name.isEmpty())
+		if (name == null || name.isEmpty())
 			return;
-		
+
 		MasterGame.getPlayerOne().setName(name);
 	}
-	
+
 	public void setPlayerTwoName(String name) {
-		if(name == null || name.isEmpty())
+		if (name == null || name.isEmpty())
 			return;
-		
+
 		MasterGame.getPlayerTwo().setName(name);
 	}
-	
-	public void letzteNamen(){
-		
+
+	public void letzteNamen() {
+
 	}
-	
-	public void playername1Textbox_TextChanged(){
-		/*AutoCompletionDataSource acds = new AutoCompletionDataSource() {
-			
-			@Override
-			public AutoCompletionResult collectSuggestions(String arg0, int arg1,
-					AutoCompletionResult arg2) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-		EditFieldAutoCompletionWindow ficken = new EditFieldAutoCompletionWindow(playername1Textbox);
-		playername1Textbox.setAutoCompletionWindow(ficken);
-		setPlayerOneName(io.FindeNamen(playername1Textbox.getText()));
-		*/
-		
-		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
-		{
-			if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
-				setPlayerOneName(playername1Textbox.getText());
-				setPlayerTwoName(playername2Textbox.getText());
-				
-				applyButton.setEnabled(true);
-			}
-			else
-			{
+
+	public void playername1Textbox_TextChanged() {
+		/*
+		 * AutoCompletionDataSource acds = new AutoCompletionDataSource() {
+		 * 
+		 * @Override public AutoCompletionResult collectSuggestions(String arg0,
+		 * int arg1, AutoCompletionResult arg2) { // TODO Auto-generated method
+		 * stub return null; } }; EditFieldAutoCompletionWindow ficken = new
+		 * EditFieldAutoCompletionWindow(playername1Textbox);
+		 * playername1Textbox.setAutoCompletionWindow(ficken);
+		 * setPlayerOneName(io.FindeNamen(playername1Textbox.getText()));
+		 */
+
+		String name1, name2;
+
+		name1 = playername1Textbox.getText();
+		name2 = playername2Textbox.getText();
+
+		if (name1 != null && name2 != null) {
+			if (!name1.isEmpty() && !name2.isEmpty()) {
+
+				if (name1.equals(name2)) {
+					applyButton.setEnabled(false);
+					applyEvent.SetPerformAction(false);
+				} else {
+
+					setPlayerOneName(name1);
+					setPlayerTwoName(name2);
+
+					applyButton.setEnabled(true);
+				}
+			} else {
 				applyButton.setEnabled(false);
+				applyEvent.SetPerformAction(false);
 			}
-		}
-		else
-		{
+		} else {
 			applyButton.setEnabled(true);
-		}	
+			applyEvent.SetPerformAction(false);
+		}
 	}
-	InputOutput io = new InputOutput();
-	public void playername2Textbox_TextChanged(){
-		
-		//playername2Textbox.setText(io.FindeNamen(playername2Textbox.getText()));
-		
-		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
-		{
-			if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
-				setPlayerOneName(playername1Textbox.getText());
-				
-				setPlayerTwoName(playername2Textbox.getText());
-				
-				
-				
-				
-				applyButton.setEnabled(true);
-			}
-			else
-			{
+
+	public void playername2Textbox_TextChanged() {
+
+		// playername2Textbox.setText(io.FindeNamen(playername2Textbox.getText()));
+
+		String name1, name2;
+
+		name1 = playername1Textbox.getText();
+		name2 = playername2Textbox.getText();
+
+		if (name1 != null && name2 != null) {
+			if (!name1.isEmpty() && !name2.isEmpty()) {
+
+				if (name1.equals(name2)) {
+					applyButton.setEnabled(false);
+					applyEvent.SetPerformAction(false);
+				} else {
+
+					setPlayerOneName(name1);
+					setPlayerTwoName(name2);
+
+					applyButton.setEnabled(true);
+				}
+			} else {
 				applyButton.setEnabled(false);
+				applyEvent.SetPerformAction(false);
 			}
-		}
-		else
-		{
+		} else {
 			applyButton.setEnabled(true);
+			applyEvent.SetPerformAction(false);
 		}
 	}
-	
-	
+
 	public void applyButton_Click() {
 		applyEvent.SetPerformAction(true);
 		io.speichereName(playername1Textbox.getText());
 		io.speichereName(playername2Textbox.getText());
 		io.FindeNamen(playername1Textbox.getText());
 	}
-	
+
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 
@@ -233,16 +223,16 @@ public class GameSetupState extends BasicTWLGameState {
 			@Override
 			public void callback(int arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
 		playername1Textbox.addCallback(new Callback() {
 			@Override
-			public void callback(int arg0) {		
+			public void callback(int arg0) {
 				playername1Textbox_TextChanged();
 			}
-			
+
 		});
 
 		playername2Textbox = new EditField();
@@ -264,7 +254,7 @@ public class GameSetupState extends BasicTWLGameState {
 		rp.add(playername2Textbox);
 		rp.add(playername1Label);
 		rp.add(playername2Label);
-		
+
 		return rp;
 	}
 
@@ -302,8 +292,4 @@ public class GameSetupState extends BasicTWLGameState {
 		return sb.toString();
 	}
 
-	@Override
-	public int getID() {
-		return stateID;
-	}
 }

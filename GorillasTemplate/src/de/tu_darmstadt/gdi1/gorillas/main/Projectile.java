@@ -17,7 +17,7 @@ public class Projectile extends Entity {
 
 	private PriorityQueue<Vector2f> nextPositions;
 	private static Vector2f position;
-	private float rotation = 10f;
+	private float rotation = 5f;
 	private Image bild;
 
 	private static boolean fliegt;
@@ -88,7 +88,7 @@ public class Projectile extends Entity {
 		{			
 			bild.setRotation(rotation);
 
-			rotation += 10;
+			rotation += 5;
 			rotation %= 360;	
 		}
 	}

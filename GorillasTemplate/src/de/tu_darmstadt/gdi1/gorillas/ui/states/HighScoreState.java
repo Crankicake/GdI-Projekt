@@ -5,14 +5,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import de.matthiasmann.twl.slick.BasicTWLGameState;
-
-public class HighScoreState extends BasicTWLGameState {
-
-	private int stateID;
+public class HighScoreState extends OwnState {
 	
 	public HighScoreState(int sid) {
-		stateID = sid;
+		super(sid);
 	}
 
 	@Override
@@ -34,10 +30,5 @@ public class HighScoreState extends BasicTWLGameState {
 			throws SlickException {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public int getID() {
-		return stateID;
 	}
 }

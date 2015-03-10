@@ -14,7 +14,6 @@ import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
-import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
@@ -25,13 +24,9 @@ import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
-import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.KeyPressedEvent;
 
-public class GamePlayState extends BasicTWLGameState {
-
-	protected StateBasedEntityManager sbem;
-	protected int stateID;
+public class GamePlayState extends OwnState {
 
 	protected Projectile projectile;
 
@@ -55,8 +50,7 @@ public class GamePlayState extends BasicTWLGameState {
 	protected int whichPlayersDraw;
 
 	public GamePlayState(int sid) {
-		stateID = sid;
-		sbem = StateBasedEntityManager.getInstance();
+		super(sid);
 
 		playerOne = MasterGame.getPlayerOne();
 		playerTwo = MasterGame.getPlayerTwo();
@@ -102,9 +96,9 @@ public class GamePlayState extends BasicTWLGameState {
 		sun.setPassable(true);
 		sun.setRotation(0.0f);
 
-		sbem.addEntity(stateID, background);
-		sbem.addEntity(stateID, escListener);
-		sbem.addEntity(stateID, sun);
+		entityManager.addEntity(stateID, background);
+		entityManager.addEntity(stateID, escListener);
+		entityManager.addEntity(stateID, sun);
 	}
 
 	protected void initBuildings() throws SlickException {
@@ -149,18 +143,18 @@ public class GamePlayState extends BasicTWLGameState {
 			if (i == indexFirstApe) {
 				playerOne
 						.createEntity(new Vector2f(buildingX, buildingY - 321));
-				sbem.addEntity(stateID, playerOne);
+				entityManager.addEntity(stateID, playerOne);
 			} else if (i == indexSecondApe) {
 				playerTwo
 						.createEntity(new Vector2f(buildingX, buildingY - 321));
-				sbem.addEntity(stateID, playerTwo);
+				entityManager.addEntity(stateID, playerTwo);
 			}
 
 			buildings[i].setScale(Launcher.SCALE);
 			buildings[i].setPassable(false);
 			buildings[i].setRotation(0.0f);
 
-			sbem.addEntity(stateID, buildings[i]);
+			entityManager.addEntity(stateID, buildings[i]);
 
 		}
 	}
@@ -169,21 +163,21 @@ public class GamePlayState extends BasicTWLGameState {
 		projectile = new Projectile("Banane");
 		projectile.setPosition(playerOne.getPosition());
 		projectile.createEntity();
-		sbem.addEntity(stateID, projectile);
+		entityManager.addEntity(stateID, projectile);
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 
-		sbem.renderEntities(gc, sbg, g);
+		entityManager.renderEntities(gc, sbg, g);
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
-		sbem.updateEntities(gc, sbg, i);
+		entityManager.updateEntities(gc, sbg, i);
 
 		if (projectile.isFlying()) {
 			try {
@@ -255,11 +249,6 @@ public class GamePlayState extends BasicTWLGameState {
 		} catch (NumberFormatException nfe) {
 
 		}
-	}
-	
-	@Override
-	public int getID() {
-		return stateID;
 	}
 
 	public Projectile getProjectile() {
