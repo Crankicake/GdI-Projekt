@@ -18,7 +18,6 @@ import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.gorillas.main.EscapePressedAction;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
@@ -27,7 +26,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.action.basicactions.ChangeStateAction;
-import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.DestructibleImageEntity;
 import eea.engine.entity.Entity;
@@ -73,7 +71,6 @@ public class GamePlayState extends OwnState {
 		initBackground();
 		initBuildings();
 		initProjectile();
-		// initEvents();
 	}
 
 	@Override
@@ -337,21 +334,6 @@ public class GamePlayState extends OwnState {
 		projectile.setPosition(playerOne.getPosition());
 		projectile.createEntity();
 		entityManager.addEntity(stateID, projectile);
-	}
-
-	protected void initEvents() throws SlickException {
-		Entity escapeListener = new Entity("Escape_Listener");
-
-		KeyPressedEvent escapePressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		EscapePressedAction escapePressedAction = new EscapePressedAction();
-		ChangeStateInitAction switchToMainMenuStateAction = new ChangeStateInitAction(
-				Gorillas.MAINMENUSTATE);
-
-		escapePressed.addAction(escapePressedAction);
-		escapePressed.addAction(switchToMainMenuStateAction);
-		escapeListener.addComponent(escapePressed);
-
-		entityManager.addEntity(getID(), escapeListener);
 	}
 
 	public void throwButton_Click() {

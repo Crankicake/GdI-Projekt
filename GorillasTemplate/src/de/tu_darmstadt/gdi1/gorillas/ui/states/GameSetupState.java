@@ -15,7 +15,6 @@ import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.model.AutoCompletionDataSource;
 import de.matthiasmann.twl.model.AutoCompletionResult;
 import de.matthiasmann.twl.slick.RootPane;
-import de.tu_darmstadt.gdi1.gorillas.main.ApplyEvent;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
@@ -197,7 +196,6 @@ public class GameSetupState extends OwnState {
 
 				if (name1.equals(name2)) {
 					applyButton.setEnabled(false);
-					ApplyEvent.SetPerformAction(false);
 				} else {
 
 					setPlayerOneName(name1);
@@ -207,11 +205,9 @@ public class GameSetupState extends OwnState {
 				}
 			} else {
 				applyButton.setEnabled(false);
-				ApplyEvent.SetPerformAction(false);
 			}
 		} else {
 			applyButton.setEnabled(true);
-			ApplyEvent.SetPerformAction(false);
 		}
 	}
 
@@ -229,7 +225,6 @@ public class GameSetupState extends OwnState {
 
 				if (name1.equals(name2)) {
 					applyButton.setEnabled(false);
-					ApplyEvent.SetPerformAction(false);
 				} else {
 
 					setPlayerOneName(name1);
@@ -239,16 +234,13 @@ public class GameSetupState extends OwnState {
 				}
 			} else {
 				applyButton.setEnabled(false);
-				ApplyEvent.SetPerformAction(false);
 			}
 		} else {
 			applyButton.setEnabled(true);
-			ApplyEvent.SetPerformAction(false);
 		}
 	}
 
 	public void applyButton_Click() {
-		ApplyEvent.SetPerformAction(true);
 		io.speichereName(playername1Textbox.getText());
 		io.speichereName(playername2Textbox.getText());
 		io.FindeNamen(playername1Textbox.getText());
