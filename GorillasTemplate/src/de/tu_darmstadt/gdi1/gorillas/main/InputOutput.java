@@ -1,4 +1,4 @@
-package de.tu_darmstadt.gdi1.gorillas.ui.main;
+package de.tu_darmstadt.gdi1.gorillas.main;
 
 import java.io.*;
 import java.util.ArrayList;
