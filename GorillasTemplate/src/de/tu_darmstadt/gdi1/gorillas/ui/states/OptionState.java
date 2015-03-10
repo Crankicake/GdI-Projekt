@@ -6,10 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
-import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -31,8 +28,8 @@ public class OptionState extends OwnState {
 		// Erstellung der Entität für den Hintergrund
 		Entity backgroundE = new Entity("Menue");
 
-		backgroundE.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 2));
+		backgroundE.setPosition(new Vector2f(windowWidth / 2,
+				windowHeight / 2));
 		backgroundE.setScale(1.5f);
 
 		// Hintergrundbild für das About-Fenster
@@ -40,32 +37,22 @@ public class OptionState extends OwnState {
 				new org.newdawn.slick.Image(
 						"/assets/gorillas/background/MenuBackground.jpg")));
 
-		// Hintergrund Entität wird an entityManager übergeben
-		entityManager.addEntity(stateID, backgroundE);
-
 		// Entität zum Zurückkehren zum Menübildschirm
 		String zurueck = "Zurück";
-		Entity zurueckE = new Entity(zurueck);
-
-		// Setzen der Komponenten
-		zurueckE.setPosition(new Vector2f(120, 80));
-		zurueckE.setScale(0.35f);
-		zurueckE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
+		Entity zurueckE = createMenuEntity(zurueck, new Vector2f(120, 80));
 
 		// Events und Actions
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
 		// Neues Spiel Action
-		Action zurueckAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
+		ChangeStateInitAction zurueckAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
 
 		// Entität des Gorilla Logos
-		String gorilla_logo = "";
+		String gorilla_logo = "GorillaLogo";
 		Entity gorilla_logoE = new Entity(gorilla_logo);
 
 		// Setzen der Komponenten
@@ -76,24 +63,17 @@ public class OptionState extends OwnState {
 						"assets/gorillas/background/Banner.png")));
 
 		// Hinzufügen der Entity zum Entitymanager
-		entityManager.addEntity(this.stateID, zurueckE);
-		entityManager.addEntity(this.stateID, gorilla_logoE);
-		;
+		entityManager.addEntity(getID(), backgroundE);
+		entityManager.addEntity(getID(), zurueckE);
+		entityManager.addEntity(getID(), gorilla_logoE);
 
-	}
-
-	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
-
-		entityManager.updateEntities(container, game, delta);
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 
-		entityManager.renderEntities(container, game, g);
+		super.render(container, game, g);
 
 		// Schreiben der Texte
 		g.drawString("Zurück", 85, 66);
@@ -103,18 +83,5 @@ public class OptionState extends OwnState {
 		g.drawString("Christoph Gombert", 320, 380);
 		g.drawString("Salim Karacaoglan", 320, 400);
 		g.drawString("Simon Foitzik", 320, 420);
-	}
-
-	@Override
-	protected RootPane createRootPane() {
-
-		RootPane rp = super.createRootPane();
-
-		return rp;
-	}
-
-	@Override
-	protected void layoutRootPane() {
-
 	}
 }

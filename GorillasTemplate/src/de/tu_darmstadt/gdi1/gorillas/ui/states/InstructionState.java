@@ -6,10 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
-import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -31,8 +28,8 @@ public class InstructionState extends OwnState{
 		// Erstellung der Entität für den Hintergrund
 		Entity backgroundE = new Entity("Menue");
 
-		backgroundE.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 2));
+		backgroundE.setPosition(new Vector2f(windowWidth / 2,
+				windowHeight / 2));
 		backgroundE.setScale(1.5f);
 
 		// Hintergrundbild für das About-Fenster
@@ -40,19 +37,9 @@ public class InstructionState extends OwnState{
 				new org.newdawn.slick.Image(
 						"/assets/gorillas/background/MenuBackground.jpg")));
 
-		// Hintergrund Entität wird an entityManager übergeben
-		entityManager.addEntity(stateID, backgroundE);
-
 		// Entität zum Zurückkehren zum Menübildschirm
-		String zurueck = "Zurück";
-		Entity zurueckE = new Entity(zurueck);
-
-		// Setzen der Komponenten
-		zurueckE.setPosition(new Vector2f(120, 80));
-		zurueckE.setScale(0.35f);
-		zurueckE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
+		String zurueck = "Zurueck";
+		Entity zurueckE = createMenuEntity(zurueck, new Vector2f(120, 80));
 
 		/*
 				// Entität des 1. Screenshots
@@ -105,32 +92,25 @@ public class InstructionState extends OwnState{
 				new MouseClickedEvent());
 
 		// Zurück Action
-		Action zurueckAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
+		ChangeStateInitAction zurueckAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
 
-
 		// Hinzufügen der Entity zum Entitymanager
-		entityManager.addEntity(this.stateID, zurueckE);
-		/*entityManager.addEntity(this.stateID, screen1E);
-		entityManager.addEntity(this.stateID, screen2E);
-		entityManager.addEntity(this.stateID, screen3E);
-		entityManager.addEntity(this.stateID, screen4E);*/
-	}
-
-	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta)
-			throws SlickException {
-
-		entityManager.updateEntities(container, game, delta);
+		entityManager.addEntity(getID(), backgroundE);
+		entityManager.addEntity(getID(), zurueckE);
+		
+	 	/* entityManager.addEntity(getID(), screen1E);
+		 * entityManager.addEntity(getID(), screen2E);
+		 * entityManager.addEntity(getID(), screen3E);
+		 * entityManager.addEntity(getID(), screen4E);*/
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-
-		entityManager.renderEntities(container, game, g);
+		super.render(container, game, g);
 
 		// Schreiben der Texte
 		g.drawString("Zurück", 85, 66);
@@ -138,25 +118,12 @@ public class InstructionState extends OwnState{
 		g.drawString("In der folgenden Anleitung werden sie Schritt für", 50, 160);
 		g.drawString("Schritt in die Welt von Gorillas eingeführt!", 50, 190);
 		g.drawString("1. Schritt: Wählen der Spielernamen", 30, 250);
-		//g.drawString("1. Schritt: Wählen der Spielernamen", 325, 365);
+		//  g.drawString("1. Schritt: Wählen der Spielernamen", 325, 365);
 		g.drawString("2. Schritt: Starten des Spiels", 30, 410);
-	//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 390);
+		//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 390);
 		g.drawString("3. Schritt: Wählen der Flugbahn", 450, 250);
-	//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 405);
+		//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 405);
 		g.drawString("4. Schritt: Viel Erfolg!", 450, 410);
-	//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 420);
-	}
-
-	@Override
-	protected RootPane createRootPane() {
-
-		RootPane rp = super.createRootPane();
-
-		return rp;
-	}
-
-	@Override
-	protected void layoutRootPane() {
-
+		//	g.drawString("1. Schritt: Wählen der Spielernamen", 325, 420);
 	}
 }

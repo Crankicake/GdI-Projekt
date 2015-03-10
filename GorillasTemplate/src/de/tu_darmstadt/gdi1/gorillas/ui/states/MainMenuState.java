@@ -7,18 +7,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.action.basicactions.QuitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
-import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
@@ -35,8 +31,8 @@ public class MainMenuState extends OwnState {
 		// Erstellung der Entität für den Hintergrund
 		Entity backgroundE = new Entity("Menue");
 
-		backgroundE.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 2));
+		backgroundE
+				.setPosition(new Vector2f(windowWidth / 2, windowHeight / 2));
 		backgroundE.setScale(1.5f);
 
 		// Hintergrundbild für das Menü
@@ -44,88 +40,56 @@ public class MainMenuState extends OwnState {
 				new org.newdawn.slick.Image(
 						"/assets/gorillas/background/MenuBackground.jpg")));
 
-		// Hintergrund Entität wird an entityManager übergeben
-		entityManager.addEntity(stateID, backgroundE);
-
 		// Entität zum starten eines neues Spiels
 		String neuesSpiel = "Neues Spiel";
-		Entity neuesSpielE = new Entity(neuesSpiel);
+		Entity neuesSpielE = createMenuEntity(neuesSpiel, new Vector2f(120, 80));
 
 		// Entität zum einsehen des Highscores
 		String highscore = "Highscore";
-		Entity highscoreE = new Entity(highscore);
+		Entity highscoreE = createMenuEntity(highscore, new Vector2f(120, 140));
 
 		// Entität zum lesen der Anleitung
 		String anleitung = "Anleitung";
-		Entity anleitungE = new Entity(anleitung);
+		Entity anleitungE = createMenuEntity(anleitung, new Vector2f(120, 200));
 
 		// Entität zum lesen des Abouts
 		String about = "About";
-		Entity aboutE = new Entity(about);
+		Entity aboutE = createMenuEntity(about, new Vector2f(120, 260));
 
 		// Entität zum Beenden des Spiels
 		String beenden = "Beenden";
-		Entity beendenE = new Entity(beenden);
-
-		// Setzen der Komponenten
-		neuesSpielE.setPosition(new Vector2f(120, 80));
-		neuesSpielE.setScale(0.35f);
-		neuesSpielE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
-
-		highscoreE.setPosition(new Vector2f(120, 140));
-		highscoreE.setScale(0.35f);
-		highscoreE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
-
-		anleitungE.setPosition(new Vector2f(120, 200));
-		anleitungE.setScale(0.35f);
-		anleitungE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
-
-		aboutE.setPosition(new Vector2f(400, 80));
-		aboutE.setScale(0.35f);
-		aboutE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
-
-		beendenE.setPosition(new Vector2f(120, 260));
-		beendenE.setScale(0.35f);
-		beendenE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
+		Entity beendenE = createMenuEntity(beenden, new Vector2f(120, 320));
 
 		// Events und Actions
-		Event neuesSpielEvent = new ANDEvent(new MouseEnteredEvent(),
+		ANDEvent neuesSpielEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
-		Event highscoreEvent = new ANDEvent(new MouseEnteredEvent(),
+		ANDEvent highscoreEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
-		Event anleitungEvent = new ANDEvent(new MouseEnteredEvent(),
+		ANDEvent anleitungEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
-		Event aboutEvent = new ANDEvent(new MouseEnteredEvent(),
+		ANDEvent aboutEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
-		Event spielBeendenEvent = new ANDEvent(new MouseEnteredEvent(),
+		ANDEvent spielBeendenEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
 		// Neues Spiel Action
-		Action neueAction = new ChangeStateInitAction(Gorillas.GAMESETUPSTATE);
+		ChangeStateInitAction neueAction = new ChangeStateInitAction(
+				Gorillas.GAMESETUPSTATE);
 
 		// Highscore Action
-		Action highscoreAction = new ChangeStateInitAction(
+		ChangeStateInitAction highscoreAction = new ChangeStateInitAction(
 				Gorillas.HIGHSCORESTATE);
 
 		// Anleitung Action
-		Action anleitungAction = new ChangeStateInitAction(
+		ChangeStateInitAction anleitungAction = new ChangeStateInitAction(
 				Gorillas.INSTRUCTIONSSTATE);
 
 		// About Action
-		Action aboutAction = new ChangeStateInitAction(Gorillas.OPTIONSTATE);
+		ChangeStateInitAction aboutAction = new ChangeStateInitAction(
+				Gorillas.OPTIONSTATE);
 
 		// Spiel beenden Action
-		Action beendenAction = new QuitAction();
+		QuitAction beendenAction = new QuitAction();
 
 		// Prüft ob N gedrückt wurde
 		Entity nListener = new Entity("N_Listener");
@@ -146,19 +110,19 @@ public class MainMenuState extends OwnState {
 		beendenE.addComponent(spielBeendenEvent);
 
 		// Hinzufügen der Entity zum Entitymanager
-		entityManager.addEntity(this.stateID, neuesSpielE);
-		entityManager.addEntity(this.stateID, highscoreE);
-		entityManager.addEntity(this.stateID, anleitungE);
-		entityManager.addEntity(this.stateID, aboutE);
-		entityManager.addEntity(this.stateID, beendenE);
-		entityManager.addEntity(this.stateID, nListener);
+		entityManager.addEntity(getID(), backgroundE);
+		entityManager.addEntity(getID(), neuesSpielE);
+		entityManager.addEntity(getID(), highscoreE);
+		entityManager.addEntity(getID(), anleitungE);
+		entityManager.addEntity(getID(), aboutE);
+		entityManager.addEntity(getID(), beendenE);
+		entityManager.addEntity(getID(), nListener);
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-
-		entityManager.updateEntities(container, game, delta);
+		super.update(container, game, delta);
 
 		Input input = container.getInput();
 
@@ -169,27 +133,12 @@ public class MainMenuState extends OwnState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-
-		entityManager.renderEntities(container, game, g);
+		super.render(container, game, g);
 
 		g.drawString("Neues Spiel", 85, 66);
 		g.drawString("Highscore", 85, 126);
 		g.drawString("Anleitung", 85, 186);
-		g.drawString("Spiel beenden", 85, 246);
-		g.drawString("About", 366, 66);
-
-	}
-
-	@Override
-	protected RootPane createRootPane() {
-
-		RootPane rp = super.createRootPane();
-
-		return rp;
-	}
-
-	@Override
-	protected void layoutRootPane() {
-
+		g.drawString("Spiel beenden", 85, 306);
+		g.drawString("About", 85, 246);
 	}
 }

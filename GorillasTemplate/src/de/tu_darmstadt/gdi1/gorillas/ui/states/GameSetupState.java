@@ -8,7 +8,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditFieldAutoCompletionWindow;
 import de.matthiasmann.twl.Label;
@@ -54,9 +53,9 @@ public class GameSetupState extends OwnState {
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
+	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		entityManager.renderEntities(gc, sbg, g);
+		super.render(container, game, g);
 
 		g.drawString("Zurück", 85, 66);
 		g.drawString("Spiel starten", windowWidth / 2 - 35,
@@ -65,15 +64,15 @@ public class GameSetupState extends OwnState {
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta)
+	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
+		super.update(container, game, delta);
 
-		entityManager.updateEntities(gc, sbg, delta);
-
-		Input input = gc.getInput();
+		Input input = container.getInput();
 
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			mouseLeftButton_Click(gc, sbg, input.getMouseX(), input.getMouseY());
+			mouseLeftButton_Click(container, game, input.getMouseX(),
+					input.getMouseY());
 		}
 	}
 
@@ -116,6 +115,7 @@ public class GameSetupState extends OwnState {
 
 	@Override
 	protected void layoutRootPane() {
+		super.layoutRootPane();
 
 		int width = windowWidth / 2;
 		int height = windowHeight / 2;
@@ -149,18 +149,10 @@ public class GameSetupState extends OwnState {
 	}
 
 	protected void initEntities() throws SlickException {
-		Entity newGameEntity = new Entity("Spiel wird gestartet");
-		newGameEntity.setPosition(new Vector2f(windowWidth / 2,
+		Entity newGameEntity = createMenuEntity("SpielStarten", new Vector2f(windowWidth / 2,
 				windowHeight / 2 + 50));
-		newGameEntity.setScale(0.35f);
-		newGameEntity.addComponent(new ImageRenderComponent(new Image(
-				"assets/gorillas/background/entry.png")));
 
-		Entity zurueckEntity = new Entity("Zurück");
-		zurueckEntity.setPosition(new Vector2f(120, 80));
-		zurueckEntity.setScale(0.35f);
-		zurueckEntity.addComponent(new ImageRenderComponent(new Image(
-				"assets/gorillas/background/entry.png")));
+		Entity zurueckEntity = createMenuEntity("Zurueck", new Vector2f(120, 80));
 
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
@@ -224,7 +216,7 @@ public class GameSetupState extends OwnState {
 
 	public void mouseLeftButton_Click(GameContainer gc, StateBasedGame sbg,
 			int x, int y) throws SlickException {
-		Image i = new Image("assets/gorillas/background/entry.png");
+		Image i = getMenuEntryImage();
 
 		double width = i.getWidth() * 0.35;
 		double height = i.getHeight() * 0.35;
@@ -244,13 +236,13 @@ public class GameSetupState extends OwnState {
 					return;
 				}
 
-				if(name1.equals(name2)) {
+				if (name1.equals(name2)) {
 					errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
 					return;
 				}
-				
+
 				errormessage = "";
-				
+
 				changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
 			}
 		}

@@ -100,6 +100,9 @@ public class GamePlayState extends OwnState {
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
 
+		if(arrowPosition == null)
+			arrowPosition = new Vector2f(0, 0);
+			
 		arrowPosition.x += wind;
 
 		if (arrowPosition.x > windowWidth + 30) {
@@ -356,7 +359,6 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void initWindIndicator() throws SlickException {
-
 		if (wind < 0) {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
 
