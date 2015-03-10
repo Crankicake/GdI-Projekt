@@ -90,7 +90,7 @@ public class GamePlayState extends OwnState {
 			MasterGame.setIsAGameRunning(true);
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
-
+		
 		entityManager.updateEntities(gc, sbg, i);
 
 		if (projectile.isFlying()) {

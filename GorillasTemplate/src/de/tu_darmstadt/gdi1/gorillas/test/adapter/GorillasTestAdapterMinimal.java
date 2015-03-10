@@ -158,20 +158,7 @@ public class GorillasTestAdapterMinimal {
 	 * GamePlayState. Otherwise it should stay in the GameSetupState.
 	 */
 	public void startGameButtonPressed() {
-		int stateID = gorillas.getCurrentStateID();
-
-		if (stateID != TestGorillas.GAMESETUPSTATE)
-			return;
-
-		GameState state = gorillas.getCurrentState();
-
-		if (!(state instanceof GameSetupState)) {
-			return;
-		}
-
-		GameSetupState gs = (GameSetupState) state;
-
-		gs.applyButton_Click();
+		// TODO: Implement
 	}
 
 	/**
@@ -204,9 +191,9 @@ public class GorillasTestAdapterMinimal {
 		}
 
 		GamePlayState gs = (GamePlayState) state;
-		
+
 		int velocity = gs.getProjectile().getVelocity();
-			
+
 		return velocity;
 	}
 
@@ -240,9 +227,9 @@ public class GorillasTestAdapterMinimal {
 		}
 
 		GamePlayState gs = (GamePlayState) state;
-		
+
 		int angle = gs.getProjectile().getAngle();
-			
+
 		return angle;
 	}
 

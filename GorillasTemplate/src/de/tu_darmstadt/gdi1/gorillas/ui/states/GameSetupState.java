@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -33,14 +34,15 @@ public class GameSetupState extends OwnState {
 	private Label playername1Label;
 	private Label playername2Label;
 
-	private Button applyButton = new Button();
-
 	private InputOutput io;
+
+	private String errormessage;
 
 	public GameSetupState(int sid) {
 		super(sid);
 
 		io = new InputOutput();
+		errormessage = "";
 	}
 
 	@Override
@@ -57,7 +59,9 @@ public class GameSetupState extends OwnState {
 		entityManager.renderEntities(gc, sbg, g);
 
 		g.drawString("Zurück", 85, 66);
-		g.drawString("Spiel starten", windowWidth / 2 - 35, windowHeight / 2 + 36);
+		g.drawString("Spiel starten", windowWidth / 2 - 35,
+				windowHeight / 2 + 36);
+		g.drawString(errormessage, 220, 500);
 	}
 
 	@Override
@@ -65,6 +69,12 @@ public class GameSetupState extends OwnState {
 			throws SlickException {
 
 		entityManager.updateEntities(gc, sbg, delta);
+
+		Input input = gc.getInput();
+
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			mouseLeftButton_Click(gc, sbg, input.getMouseX(), input.getMouseY());
+		}
 	}
 
 	protected RootPane createRootPane() {
@@ -143,24 +153,14 @@ public class GameSetupState extends OwnState {
 		newGameEntity.setPosition(new Vector2f(windowWidth / 2,
 				windowHeight / 2 + 50));
 		newGameEntity.setScale(0.35f);
-		newGameEntity.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
-
-		ANDEvent mainEvents = new ANDEvent(new MouseEnteredEvent(),
-				new MouseClickedEvent());
-
-		ChangeStateInitAction newGameAction = new ChangeStateInitAction(
-				Gorillas.GAMEPLAYSTATE);
-		mainEvents.addAction(newGameAction);
-		newGameEntity.addComponent(mainEvents);
+		newGameEntity.addComponent(new ImageRenderComponent(new Image(
+				"assets/gorillas/background/entry.png")));
 
 		Entity zurueckEntity = new Entity("Zurück");
 		zurueckEntity.setPosition(new Vector2f(120, 80));
 		zurueckEntity.setScale(0.35f);
-		zurueckEntity.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/entry.png")));
+		zurueckEntity.addComponent(new ImageRenderComponent(new Image(
+				"assets/gorillas/background/entry.png")));
 
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
@@ -194,20 +194,11 @@ public class GameSetupState extends OwnState {
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
-				if (name1.equals(name2)) {
-					applyButton.setEnabled(false);
-				} else {
-
+				if (!name1.equals(name2)) {
 					setPlayerOneName(name1);
 					setPlayerTwoName(name2);
-
-					applyButton.setEnabled(true);
 				}
-			} else {
-				applyButton.setEnabled(false);
 			}
-		} else {
-			applyButton.setEnabled(true);
 		}
 	}
 
@@ -223,27 +214,46 @@ public class GameSetupState extends OwnState {
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
-				if (name1.equals(name2)) {
-					applyButton.setEnabled(false);
-				} else {
-
+				if (!name1.equals(name2)) {
 					setPlayerOneName(name1);
 					setPlayerTwoName(name2);
-
-					applyButton.setEnabled(true);
 				}
-			} else {
-				applyButton.setEnabled(false);
 			}
-		} else {
-			applyButton.setEnabled(true);
 		}
 	}
 
-	public void applyButton_Click() {
-		io.speichereName(playername1Textbox.getText());
-		io.speichereName(playername2Textbox.getText());
-		io.FindeNamen(playername1Textbox.getText());
+	public void mouseLeftButton_Click(GameContainer gc, StateBasedGame sbg,
+			int x, int y) throws SlickException {
+		Image i = new Image("assets/gorillas/background/entry.png");
+
+		double width = i.getWidth() * 0.35;
+		double height = i.getHeight() * 0.35;
+
+		double ix = windowWidth / 2 - width / 2;
+		double iy = windowHeight / 2 + 50 - height / 2;
+
+		if (x >= ix && x <= ix + width) {
+			if (y >= iy && y <= iy + height) {
+
+				String name1 = playername1Textbox.getText();
+				String name2 = playername2Textbox.getText();
+
+				if (name1 == null || name2 == null || name1.isEmpty()
+						|| name2.isEmpty()) {
+					errormessage = "Die Spielernamen dürfen nicht leer sein!";
+					return;
+				}
+
+				if(name1.equals(name2)) {
+					errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
+					return;
+				}
+				
+				errormessage = "";
+				
+				changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
+			}
+		}
 	}
 
 	public void setPlayername1TextboxText(String text) {
