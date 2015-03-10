@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -7,6 +8,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+
 
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
@@ -19,6 +21,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerNameEvent;
+import de.tu_darmstadt.gdi1.gorillas.ui.main.InputOutput;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
@@ -39,12 +42,15 @@ public class GameSetupState extends BasicTWLGameState {
 	private Label playername2Label;
 	private Button applyButton;
 	
+
+	
 	public GameSetupState(int sid) {
 		stateID = sid;
 
 		sbem = StateBasedEntityManager.getInstance();
 		
 	}
+
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
@@ -88,6 +94,10 @@ public class GameSetupState extends BasicTWLGameState {
 		Action newGameAction = new ChangeStateInitAction(Gorillas.GAMEPLAYSTATE);
 		mainEvents.addAction(newGameAction);
 		newGameEntity.addComponent(mainEvents);
+		
+		
+		
+		
 
 		// Fuege die Entity zum StateBasedEntityManager hinzu
 		sbem.addEntity(this.stateID, newGameEntity);
@@ -121,6 +131,10 @@ public class GameSetupState extends BasicTWLGameState {
 		MasterGame.getPlayerTwo().setName(name);
 	}
 	
+	public void letzteNamen(){
+		
+	}
+	
 	public void playername1Textbox_TextChanged(){
 		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
 		{
@@ -140,13 +154,19 @@ public class GameSetupState extends BasicTWLGameState {
 			applyButton.setEnabled(true);
 		}	
 	}
-	
+	InputOutput io = new InputOutput();
 	public void playername2Textbox_TextChanged(){
+		
+		
 		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
 		{
 			if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
 				setPlayerOneName(playername1Textbox.getText());
+				
 				setPlayerTwoName(playername2Textbox.getText());
+				
+				
+				
 				
 				applyButton.setEnabled(true);
 			}
@@ -161,8 +181,11 @@ public class GameSetupState extends BasicTWLGameState {
 		}
 	}
 	
+	
 	public void applyButton_Click() {
 		applyEvent.SetPerformAction(true);
+		io.speichereName(playername1Textbox.getText());
+		io.speichereName(playername2Textbox.getText());
 	}
 	
 	protected RootPane createRootPane() {
@@ -180,10 +203,20 @@ public class GameSetupState extends BasicTWLGameState {
 
 		playername1Textbox = new EditField();
 		playername1Textbox.addCallback(new Callback() {
+
+			@Override
+			public void callback(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		playername1Textbox.addCallback(new Callback() {
 			@Override
 			public void callback(int arg0) {		
 				playername1Textbox_TextChanged();
 			}
+			
 		});
 
 		playername2Textbox = new EditField();
@@ -205,7 +238,7 @@ public class GameSetupState extends BasicTWLGameState {
 		rp.add(playername2Textbox);
 		rp.add(playername1Label);
 		rp.add(playername2Label);
-
+		
 		return rp;
 	}
 
