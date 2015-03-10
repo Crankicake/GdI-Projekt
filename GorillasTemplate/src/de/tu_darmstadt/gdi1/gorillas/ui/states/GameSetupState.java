@@ -10,18 +10,28 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 
+
+
+
+
+
+
+
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.EditField;
+import de.matthiasmann.twl.EditFieldAutoCompletionWindow;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
+import de.matthiasmann.twl.model.AutoCompletionDataSource;
+import de.matthiasmann.twl.model.AutoCompletionResult;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.ApplyEvent;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerNameEvent;
-import de.tu_darmstadt.gdi1.gorillas.ui.main.InputOutput;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
@@ -136,6 +146,20 @@ public class GameSetupState extends BasicTWLGameState {
 	}
 	
 	public void playername1Textbox_TextChanged(){
+		/*AutoCompletionDataSource acds = new AutoCompletionDataSource() {
+			
+			@Override
+			public AutoCompletionResult collectSuggestions(String arg0, int arg1,
+					AutoCompletionResult arg2) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+		EditFieldAutoCompletionWindow ficken = new EditFieldAutoCompletionWindow(playername1Textbox);
+		playername1Textbox.setAutoCompletionWindow(ficken);
+		setPlayerOneName(io.FindeNamen(playername1Textbox.getText()));
+		*/
+		
 		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
 		{
 			if(!playername1Textbox.getText().isEmpty() && !playername2Textbox.getText().isEmpty()) {
@@ -157,6 +181,7 @@ public class GameSetupState extends BasicTWLGameState {
 	InputOutput io = new InputOutput();
 	public void playername2Textbox_TextChanged(){
 		
+		//playername2Textbox.setText(io.FindeNamen(playername2Textbox.getText()));
 		
 		if(playername1Textbox.getText() != null && playername2Textbox.getText() != null)
 		{
@@ -186,6 +211,7 @@ public class GameSetupState extends BasicTWLGameState {
 		applyEvent.SetPerformAction(true);
 		io.speichereName(playername1Textbox.getText());
 		io.speichereName(playername2Textbox.getText());
+		io.FindeNamen(playername1Textbox.getText());
 	}
 	
 	protected RootPane createRootPane() {

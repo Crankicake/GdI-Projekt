@@ -1,8 +1,11 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.regex.Pattern;
+
 
 public class InputOutput {
 
@@ -13,8 +16,11 @@ public void speichereName(String name){
 	if(datei.exists()){
 	try {
 		 FileOutputStream bos = new FileOutputStream(datei,true);
-		  byte[] puffer= name.getBytes();
-		   bos.write(puffer);
+		 byte[] puffer= name.getBytes();
+		 for(int i = 0; i<puffer.length;i++){
+			 puffer[i] = (byte) (puffer[i] ^1001001);
+		   bos.write(puffer[i]);
+		   bos.flush();}
 		   bos.flush();
 		   bos.close();
 		   System.out.println("Datei existierte...");  
@@ -26,10 +32,12 @@ public void speichereName(String name){
 	else{
 		try {
 			FileOutputStream bos = new FileOutputStream(datei,false);
-			   byte[] puffer= name.getBytes();
-			   bos.write(puffer);
-			   bos.flush();
-			   
+			 byte[] puffer= name.getBytes();
+			 for(int i = 0; i<puffer.length;i++){
+				 puffer[i] = (byte) (puffer[i] ^1001001);
+			   bos.write(puffer[i]);
+			   bos.flush();}
+			   bos.flush();  
 			   bos.close();
 			   System.out.println("Datei existierte nicht...");  
 	      }
@@ -70,28 +78,34 @@ public void speichereHighscore(String name, int highscore){
 
 
 
-public String FindeNamen(String f) throws IOException{
-	String temp = null;
-	File datei = new File("Namen.bin");
-	ArrayList<String> namen = new ArrayList<String>();
-	if(datei.exists()){
+public String  FindeNamen(String n) {
+	
+	
+	Path datei = Paths.get("Namen.bin");
+	String[] segs = null;
+	
+	
 		  try{  
-			  Scanner s = new Scanner(datei);
-			  while (s.hasNext()){
-			      namen.add(s.next());
-			  }
-			  s.close();  
-			   
-			  }catch(Exception e){System.out.println(e);}  
-			 } 
-	
-	for(int i = 0;i<namen.size();i++)
-	{
-		if(namen.get(i).toString().equals(f))
-			temp = namen.get(i).toString();			
-	}
-	
-	return temp;
+			
+			 byte[] puffer =  Files.readAllBytes(datei);
+			 for(int i = 0; i<puffer.length;i++){
+				 puffer[i] = (byte) (puffer[i] ^1001001);
+				 }
+			 String str = new String(puffer, "UTF-8");
+		  	//System.out.print(str); 
+		  	segs = str.split( Pattern.quote( ";" ) );
+		  	
+		  	for(int i = 0;i<segs.length;i++){
+		  		if(segs[i].startsWith(n))
+		  			return segs[i].toString();
+		  	}
+		  	
+		  }
+		  
+		  catch(IOException e){
+		  						}
+		  return n; // Falls der eingegebene Name nicht gefunden wird
+		
 	}}
 
 
