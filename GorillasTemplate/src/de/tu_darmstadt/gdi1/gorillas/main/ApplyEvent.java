@@ -21,7 +21,7 @@ public class ApplyEvent extends Event {
 		return performActionBoolean;
 	}
 
-	public void SetPerformAction(boolean b) {
+	public static void SetPerformAction(boolean b) {
 		performActionBoolean = b;
 	}
 }

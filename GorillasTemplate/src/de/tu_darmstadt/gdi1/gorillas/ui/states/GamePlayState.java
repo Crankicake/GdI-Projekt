@@ -15,6 +15,7 @@ import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.main.EscapePressedAction;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
@@ -22,6 +23,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.action.basicactions.ChangeStateAction;
+import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.basicevents.KeyPressedEvent;
@@ -66,6 +68,105 @@ public class GamePlayState extends OwnState {
 		initBuildings();
 		initProjectile();
 	}
+
+	@Override
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
+			throws SlickException {
+
+		entityManager.renderEntities(gc, sbg, g);
+	}
+
+	@Override
+	public void update(GameContainer gc, StateBasedGame sbg, int i)
+			throws SlickException {
+
+		entityManager.updateEntities(gc, sbg, i);
+
+		if (projectile.isFlying()) {
+			try {
+				projectile.updateOwn(gc, sbg, i);
+			} catch (GorillasException ex) {
+				throwButton.setEnabled(true);
+				projectile.setPosition(whichPlayersDraw == 1 ? playerOne
+						.getPosition() : playerTwo.getPosition());
+			}
+		}
+	}
+
+	@Override
+	protected RootPane createRootPane() {
+
+		RootPane rp = super.createRootPane();
+
+		velocityTextField = new EditField();
+		velocityTextField.setText("0");
+		velocityTextField.addCallback(new Callback() {
+			@Override
+			public void callback(int arg0) {
+				velocityTextField_TextChanged();
+			}
+		});
+
+		velocityLabel = new Label();
+		velocityLabel.setText("Stärke:");
+
+		angleTextField = new EditField();
+		angleTextField.setText("0");
+		angleTextField.addCallback(new Callback() {
+			@Override
+			public void callback(int arg0) {
+				angleTextField_TextChanged();
+			}
+		});
+
+		angleLabel = new Label();
+		angleLabel.setText("Winkel: ");
+
+		throwButton = new Button();
+		throwButton.setText("Werfen");
+		throwButton.addCallback(new Runnable() {
+			@Override
+			public void run() {
+				throwButton_Click();
+			}
+		});
+
+		playerLabel = new Label();
+		playerLabel.setText(playerOne.getName() + ":");
+
+		rp.add(velocityTextField);
+		rp.add(velocityLabel);
+		rp.add(angleTextField);
+		rp.add(angleLabel);
+		rp.add(throwButton);
+		rp.add(playerLabel);
+		
+		return rp;
+	}
+
+	@Override
+	protected void layoutRootPane() {
+		
+		velocityTextField.adjustSize();
+		velocityTextField.setPosition(70, 20);
+
+		velocityLabel.adjustSize();
+		velocityLabel.setPosition(20, 23);
+
+		angleTextField.adjustSize();
+		angleTextField.setPosition(70, 55);
+
+		angleLabel.adjustSize();
+		angleLabel.setPosition(15, 58);
+
+		throwButton.adjustSize();
+		throwButton.setPosition(70, 90);
+		throwButton.setSize(88, throwButton.getHeight());
+
+		playerLabel.adjustSize();
+		playerLabel.setPosition(3, 93);
+	}
+
 
 	protected void initBackground() throws SlickException {
 
@@ -165,31 +266,23 @@ public class GamePlayState extends OwnState {
 		projectile.createEntity();
 		entityManager.addEntity(stateID, projectile);
 	}
-
-	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
-			throws SlickException {
-
-		entityManager.renderEntities(gc, sbg, g);
+	
+	protected void initEvents() throws SlickException {
+		Entity escapeListener = new Entity("Escape_Listener");
+		
+		KeyPressedEvent escapePressed = new KeyPressedEvent(Input.KEY_ESCAPE);
+		EscapePressedAction escapePressedAction = new EscapePressedAction();
+		ChangeStateInitAction switchToMainMenuStateAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
+		
+		escapePressed.addAction(escapePressedAction);
+		escapePressed.addAction(switchToMainMenuStateAction);
+		escapeListener.addComponent(escapePressed);
+		
+		entityManager.addEntity(getID(), escapeListener);
 	}
-
-	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int i)
-			throws SlickException {
-
-		entityManager.updateEntities(gc, sbg, i);
-
-		if (projectile.isFlying()) {
-			try {
-				projectile.updateOwn(gc, sbg, i);
-			} catch (GorillasException ex) {
-				throwButton.setEnabled(true);
-				projectile.setPosition(whichPlayersDraw == 1 ? playerOne
-						.getPosition() : playerTwo.getPosition());
-			}
-		}
-	}
-
+	
+	
+	
 	public void throwButton_Click() {
 		projectile.setParamter(
 				Integer.parseInt(angleTextField.getText()),
@@ -251,84 +344,11 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	
 	public Projectile getProjectile() {
 		return projectile;
 	}
 	
-	@Override
-	protected RootPane createRootPane() {
-
-		RootPane rp = super.createRootPane();
-
-		velocityTextField = new EditField();
-		velocityTextField.setText("0");
-		velocityTextField.addCallback(new Callback() {
-			@Override
-			public void callback(int arg0) {
-				velocityTextField_TextChanged();
-			}
-		});
-
-		velocityLabel = new Label();
-		velocityLabel.setText("Stärke:");
-
-		angleTextField = new EditField();
-		angleTextField.setText("0");
-		angleTextField.addCallback(new Callback() {
-			@Override
-			public void callback(int arg0) {
-				angleTextField_TextChanged();
-			}
-		});
-
-		angleLabel = new Label();
-		angleLabel.setText("Winkel: ");
-
-		throwButton = new Button();
-		throwButton.setText("Werfen");
-		throwButton.addCallback(new Runnable() {
-			@Override
-			public void run() {
-				throwButton_Click();
-			}
-		});
-
-		playerLabel = new Label();
-		playerLabel.setText(playerOne.getName() + ":");
-
-		rp.add(velocityTextField);
-		rp.add(velocityLabel);
-		rp.add(angleTextField);
-		rp.add(angleLabel);
-		rp.add(throwButton);
-		rp.add(playerLabel);
-		
-		return rp;
-	}
-
-	@Override
-	protected void layoutRootPane() {
-		
-		velocityTextField.adjustSize();
-		velocityTextField.setPosition(70, 20);
-
-		velocityLabel.adjustSize();
-		velocityLabel.setPosition(20, 23);
-
-		angleTextField.adjustSize();
-		angleTextField.setPosition(70, 55);
-
-		angleLabel.adjustSize();
-		angleLabel.setPosition(15, 58);
-
-		throwButton.adjustSize();
-		throwButton.setPosition(70, 90);
-		throwButton.setSize(88, throwButton.getHeight());
-
-		playerLabel.adjustSize();
-		playerLabel.setPosition(3, 93);
-	}
-
 	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 

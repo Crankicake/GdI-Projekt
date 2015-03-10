@@ -31,15 +31,14 @@ import eea.engine.event.basicevents.KeyPressedEvent;
 
 public class GameSetupState extends OwnState {
 
-	private ApplyEvent applyEvent;
-
 	private EditField playername1Textbox;
 	private EditField playername2Textbox;
 	private Label playername1Label;
 	private Label playername2Label;
 	private Button applyButton;
+	
 	private InputOutput io;
-
+	
 	public GameSetupState(int sid) {
 		super(sid);
 		
@@ -51,46 +50,7 @@ public class GameSetupState extends OwnState {
 			throws SlickException {
 
 		initBackground();
-		initGamePlayState();
-	}
-
-	protected void initBackground() throws SlickException {
-
-		Entity background = new Entity("Background");
-		background.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/background/MenuBackground.jpg")));
-		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 2));
-		background.setScale(1.5f);
-		background.setPassable(true);
-		background.setRotation(0.0f);
-
-		entityManager.addEntity(stateID, background);
-	}
-
-	protected void initGamePlayState() throws SlickException {
-		Entity newGameEntity = new Entity("Spiel wird gestartet");
-
-		// Setze Position und Bildkomponente
-		newGameEntity.setPosition(new Vector2f(0, 0));
-		newGameEntity.setScale(Launcher.SCALE);
-
-		// Prüft ob Tab gedrückt wurde
-		Entity tabListener = new Entity("Tab_Listener");
-		KeyPressedEvent tabPressed = new KeyPressedEvent(Input.KEY_TAB);
-		// Fabian mach nPressed.addComponent
-		tabListener.addComponent(tabPressed);
-
-		applyEvent = new ApplyEvent();
-		// Erstelle das Ausloese-Event und die zugehoerige Action
-		ANDEvent mainEvents = new ANDEvent(new PlayerNameEvent(), applyEvent);
-
-		Action newGameAction = new ChangeStateInitAction(Gorillas.GAMEPLAYSTATE);
-		mainEvents.addAction(newGameAction);
-		newGameEntity.addComponent(mainEvents);
-
-		// Fuege die Entity zum StateBasedEntityManager hinzu
-		entityManager.addEntity(this.stateID, newGameEntity);
+		initEvents();
 	}
 
 	@Override
@@ -107,103 +67,6 @@ public class GameSetupState extends OwnState {
 		entityManager.updateEntities(gc, sbg, delta);
 	}
 
-	public void setPlayerOneName(String name) {
-		if (name == null || name.isEmpty())
-			return;
-
-		MasterGame.getPlayerOne().setName(name);
-	}
-
-	public void setPlayerTwoName(String name) {
-		if (name == null || name.isEmpty())
-			return;
-
-		MasterGame.getPlayerTwo().setName(name);
-	}
-
-	public void letzteNamen() {
-
-	}
-
-	public void playername1Textbox_TextChanged() {
-		/*
-		 * AutoCompletionDataSource acds = new AutoCompletionDataSource() {
-		 * 
-		 * @Override public AutoCompletionResult collectSuggestions(String arg0,
-		 * int arg1, AutoCompletionResult arg2) { // TODO Auto-generated method
-		 * stub return null; } }; EditFieldAutoCompletionWindow ficken = new
-		 * EditFieldAutoCompletionWindow(playername1Textbox);
-		 * playername1Textbox.setAutoCompletionWindow(ficken);
-		 * setPlayerOneName(io.FindeNamen(playername1Textbox.getText()));
-		 */
-
-		String name1, name2;
-
-		name1 = playername1Textbox.getText();
-		name2 = playername2Textbox.getText();
-
-		if (name1 != null && name2 != null) {
-			if (!name1.isEmpty() && !name2.isEmpty()) {
-
-				if (name1.equals(name2)) {
-					applyButton.setEnabled(false);
-					applyEvent.SetPerformAction(false);
-				} else {
-
-					setPlayerOneName(name1);
-					setPlayerTwoName(name2);
-
-					applyButton.setEnabled(true);
-				}
-			} else {
-				applyButton.setEnabled(false);
-				applyEvent.SetPerformAction(false);
-			}
-		} else {
-			applyButton.setEnabled(true);
-			applyEvent.SetPerformAction(false);
-		}
-	}
-
-	public void playername2Textbox_TextChanged() {
-
-		// playername2Textbox.setText(io.FindeNamen(playername2Textbox.getText()));
-
-		String name1, name2;
-
-		name1 = playername1Textbox.getText();
-		name2 = playername2Textbox.getText();
-
-		if (name1 != null && name2 != null) {
-			if (!name1.isEmpty() && !name2.isEmpty()) {
-
-				if (name1.equals(name2)) {
-					applyButton.setEnabled(false);
-					applyEvent.SetPerformAction(false);
-				} else {
-
-					setPlayerOneName(name1);
-					setPlayerTwoName(name2);
-
-					applyButton.setEnabled(true);
-				}
-			} else {
-				applyButton.setEnabled(false);
-				applyEvent.SetPerformAction(false);
-			}
-		} else {
-			applyButton.setEnabled(true);
-			applyEvent.SetPerformAction(false);
-		}
-	}
-
-	public void applyButton_Click() {
-		applyEvent.SetPerformAction(true);
-		io.speichereName(playername1Textbox.getText());
-		io.speichereName(playername2Textbox.getText());
-		io.FindeNamen(playername1Textbox.getText());
-	}
-
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 
@@ -218,15 +81,6 @@ public class GameSetupState extends OwnState {
 		});
 
 		playername1Textbox = new EditField();
-		playername1Textbox.addCallback(new Callback() {
-
-			@Override
-			public void callback(int arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-		});
 		playername1Textbox.addCallback(new Callback() {
 			@Override
 			public void callback(int arg0) {
@@ -279,17 +133,134 @@ public class GameSetupState extends OwnState {
 		playername2Textbox.setSize(130, 20);
 		playername2Textbox.setPosition(30, 110);
 	}
+	
 
-	protected String removeUnusefullChars(String value) {
-		StringBuilder sb = new StringBuilder(value.length());
+	protected void initBackground() throws SlickException {
 
-		for (char c : value.toCharArray()) {
-			if (c != ' ' && c != '\n' && c != '\t') {
-				sb.append(c);
-			}
-		}
+		Entity background = new Entity("Background");
+		background.addComponent(new ImageRenderComponent(new Image(
+				"/assets/gorillas/background/MenuBackground.jpg")));
+		background.setPosition(new Vector2f(windowWidth / 2,
+				windowHeight / 2));
+		background.setScale(1.5f);
+		background.setPassable(true);
+		background.setRotation(0.0f);
 
-		return sb.toString();
+		entityManager.addEntity(stateID, background);
 	}
 
+	protected void initEvents() throws SlickException {
+		Entity newGameEntity = new Entity("Spiel wird gestartet");
+
+		ANDEvent mainEvents = new ANDEvent(new PlayerNameEvent(), new ApplyEvent());
+
+		ChangeStateInitAction newGameAction = new ChangeStateInitAction(Gorillas.GAMEPLAYSTATE);
+		mainEvents.addAction(newGameAction);
+		newGameEntity.addComponent(mainEvents);
+		
+		Entity tabListener = new Entity("Tab_Listener");
+		KeyPressedEvent tabPressed = new KeyPressedEvent(Input.KEY_TAB);
+		tabListener.addComponent(tabPressed);
+				
+		entityManager.addEntity(getID(), newGameEntity);
+	}
+
+	
+	public void playername1Textbox_TextChanged() {
+		/*
+		 * AutoCompletionDataSource acds = new AutoCompletionDataSource() {
+		 * 
+		 * @Override public AutoCompletionResult collectSuggestions(String arg0,
+		 * int arg1, AutoCompletionResult arg2) { // TODO Auto-generated method
+		 * stub return null; } }; EditFieldAutoCompletionWindow ficken = new
+		 * EditFieldAutoCompletionWindow(playername1Textbox);
+		 * playername1Textbox.setAutoCompletionWindow(ficken);
+		 * setPlayerOneName(io.FindeNamen(playername1Textbox.getText()));
+		 */
+
+		String name1, name2;
+
+		name1 = playername1Textbox.getText();
+		name2 = playername2Textbox.getText();
+
+		if (name1 != null && name2 != null) {
+			if (!name1.isEmpty() && !name2.isEmpty()) {
+
+				if (name1.equals(name2)) {
+					applyButton.setEnabled(false);
+					ApplyEvent.SetPerformAction(false);
+				} else {
+
+					setPlayerOneName(name1);
+					setPlayerTwoName(name2);
+
+					applyButton.setEnabled(true);
+				}
+			} else {
+				applyButton.setEnabled(false);
+				ApplyEvent.SetPerformAction(false);
+			}
+		} else {
+			applyButton.setEnabled(true);
+			ApplyEvent.SetPerformAction(false);
+		}
+	}
+
+	public void playername2Textbox_TextChanged() {
+
+		// playername2Textbox.setText(io.FindeNamen(playername2Textbox.getText()));
+
+		String name1, name2;
+
+		name1 = playername1Textbox.getText();
+		name2 = playername2Textbox.getText();
+
+		if (name1 != null && name2 != null) {
+			if (!name1.isEmpty() && !name2.isEmpty()) {
+
+				if (name1.equals(name2)) {
+					applyButton.setEnabled(false);
+					ApplyEvent.SetPerformAction(false);
+				} else {
+
+					setPlayerOneName(name1);
+					setPlayerTwoName(name2);
+
+					applyButton.setEnabled(true);
+				}
+			} else {
+				applyButton.setEnabled(false);
+				ApplyEvent.SetPerformAction(false);
+			}
+		} else {
+			applyButton.setEnabled(true);
+			ApplyEvent.SetPerformAction(false);
+		}
+	}
+
+	public void applyButton_Click() {
+		ApplyEvent.SetPerformAction(true);
+		io.speichereName(playername1Textbox.getText());
+		io.speichereName(playername2Textbox.getText());
+		io.FindeNamen(playername1Textbox.getText());
+	}
+	
+	
+	public void setPlayerOneName(String name) {
+		if (name == null || name.isEmpty() || name.equals(MasterGame.getPlayerTwo().getName()))
+			return;
+
+		MasterGame.getPlayerOne().setName(name);
+	}
+
+	public void setPlayerTwoName(String name) {
+		if (name == null || name.isEmpty() || name.equals(MasterGame.getPlayerOne().getName()))
+			return;
+
+		MasterGame.getPlayerTwo().setName(name);
+	}
+
+	public void letzteNamen() {
+
+	}
 }
