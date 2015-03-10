@@ -90,8 +90,6 @@ public class GamePlayState extends OwnState {
 			MasterGame.setIsAGameRunning(true);
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
-		
-		entityManager.updateEntities(gc, sbg, i);
 
 		if (projectile.isFlying()) {
 			try {
@@ -101,15 +99,19 @@ public class GamePlayState extends OwnState {
 
 				if (whichPlayersDraw == 1) {
 					projectile.setPosition(playerOne.getPosition());
+					projectile.setRotation(0);
 					playerOne.setImageState(PlayerImageState.LeftHandRised);
 					playerTwo.setImageState(PlayerImageState.NoHandsForYou);
 				} else {
 					projectile.setPosition(playerTwo.getPosition());
+					projectile.setRotation(0);
 					playerOne.setImageState(PlayerImageState.NoHandsForYou);
 					playerTwo.setImageState(PlayerImageState.LeftHandRised);
 				}
 			}
 		}
+		
+		entityManager.updateEntities(gc, sbg, i);
 	}
 
 	@Override

@@ -42,10 +42,12 @@ public class Projectile extends Entity {
 		setRotation(0.0f);
 	}
 
-	public void setParamter(int angle, int velocity, double gravity, int playerID) {
+	public void setParamter(int angle, int velocity, double gravity,
+			int playerID) {
 
 		try {
-			throwAttempt = new ThrowAttempt(angle, velocity, position, gravity, playerID);
+			throwAttempt = new ThrowAttempt(angle, velocity, position, gravity,
+					playerID);
 			fliegt = true;
 		} catch (GorillasException e) {
 			fliegt = false;
@@ -84,12 +86,14 @@ public class Projectile extends Entity {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i) {
-		if (fliegt) 
-		{			
+		if (fliegt) {
 			bild.setRotation(rotation);
 
 			rotation += 5;
-			rotation %= 360;	
+			rotation %= 360;
+		} else {
+			bild.setRotation(0);
+			rotation = 0;
 		}
 	}
 
@@ -111,9 +115,14 @@ public class Projectile extends Entity {
 
 	@Override
 	public void setPosition(Vector2f newPosition) {
-		position = newPosition;
+		Vector2f pos = new Vector2f(newPosition.x, newPosition.y);
+		
+		pos.x -= 5;
+		pos.y -= 5;
+		
+		position = pos;
 
-		super.setPosition(newPosition);
+		super.setPosition(pos);
 	}
 
 	@Override
