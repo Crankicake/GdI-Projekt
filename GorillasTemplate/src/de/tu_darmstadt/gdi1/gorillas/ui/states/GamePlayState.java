@@ -20,6 +20,7 @@ import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
@@ -52,7 +53,8 @@ public class GamePlayState extends OwnState {
 
 	private Image arrow;
 	private Vector2f arrowPosition;
-
+	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
+	
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -98,6 +100,8 @@ public class GamePlayState extends OwnState {
 
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			MasterGame.setIsAGameRunning(true);
+			jukebox.pausieren();
+			
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
 

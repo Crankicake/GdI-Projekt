@@ -1,5 +1,8 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -8,15 +11,17 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+
+
+
+
 import de.matthiasmann.twl.EditField;
-import de.matthiasmann.twl.EditFieldAutoCompletionWindow;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
-import de.matthiasmann.twl.model.AutoCompletionDataSource;
-import de.matthiasmann.twl.model.AutoCompletionResult;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
+import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.entity.Entity;
@@ -31,9 +36,15 @@ public class GameSetupState extends OwnState {
 	private EditField playername2Textbox;
 	private Label playername1Label;
 	private Label playername2Label;
+	
+	@SuppressWarnings("rawtypes")
+	private JComboBox liedbox;
+	private JFrame frame;
 
+	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
 	private InputOutput io;
 
+	
 	private String errormessage;
 
 	public GameSetupState(int sid) {
@@ -76,6 +87,7 @@ public class GameSetupState extends OwnState {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 
@@ -95,21 +107,46 @@ public class GameSetupState extends OwnState {
 				playername2Textbox_TextChanged();
 			}
 		});
-
+		
+		
+		
 		playername1Label = new Label();
 		playername1Label.setText("Name von Spieler 1:");
 
 		playername2Label = new Label();
 		playername2Label.setText("Name von Spieler 2:");
 
+		
+		
 		rp.add(playername1Textbox);
 		rp.add(playername2Textbox);
 		rp.add(playername1Label);
 		rp.add(playername2Label);
-
+		
 		setPlayername1TextboxText("Player 1");
 		setPlayername2TextboxText("Player 2");
 
+		// Jukeboxpart
+		if(!MasterGame.isJukeboxRunning()){
+		
+		liedbox = new JComboBox(io.FindeLieder());
+		frame = new JFrame("Jukebox 600 XS LIMITED EDITION");
+		frame.setSize(370, 300);
+		frame.setBounds(300,450,370,100);
+		liedbox.setBounds(150,200,200,100);
+		liedbox.setVisible(true);
+		liedbox.setEditable(false);
+		liedbox.setSelectedIndex(0);
+		frame.add(liedbox);
+		frame.setVisible(true);
+		frame.setAlwaysOnTop(false);	
+		}
+		
+		// Jukeboxpart ende		
+		
+		
+		
+		
 		return rp;
 	}
 
@@ -120,6 +157,8 @@ public class GameSetupState extends OwnState {
 		int width = windowWidth / 2;
 		int height = windowHeight / 2;
 
+	
+		
 		playername1Label.adjustSize();
 		playername1Label.setPosition(width - 150, height - 100);
 
@@ -133,6 +172,8 @@ public class GameSetupState extends OwnState {
 		playername2Textbox.adjustSize();
 		playername2Textbox.setSize(130, 20);
 		playername2Textbox.setPosition(width, height - 50);
+		
+		
 	}
 
 	protected void initEntities() throws SlickException {
@@ -144,6 +185,8 @@ public class GameSetupState extends OwnState {
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
+		
+		
 		ChangeStateInitAction zurueckAction = new ChangeStateInitAction(
 				Gorillas.MAINMENUSTATE);
 		zurueckEvent.addAction(zurueckAction);
@@ -154,16 +197,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	public void playername1Textbox_TextChanged() {
-		/*
-		 * AutoCompletionDataSource acds = new AutoCompletionDataSource() {
-		 * 
-		 * @Override public AutoCompletionResult collectSuggestions(String arg0,
-		 * int arg1, AutoCompletionResult arg2) { // TODO Auto-generated method
-		 * stub return null; } }; EditFieldAutoCompletionWindow ficken = new
-		 * EditFieldAutoCompletionWindow(playername1Textbox);
-		 * playername1Textbox.setAutoCompletionWindow(ficken);
-		 * setPlayerOneName(io.FindeNamen(playername1Textbox.getText()));
-		 */
+		
 
 		String name1, name2;
 
@@ -183,7 +217,6 @@ public class GameSetupState extends OwnState {
 
 	public void playername2Textbox_TextChanged() {
 
-		// playername2Textbox.setText(io.FindeNamen(playername2Textbox.getText()));
 
 		String name1, name2;
 
@@ -230,9 +263,13 @@ public class GameSetupState extends OwnState {
 
 				errormessage = "";
 
+				
 				changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
-			}
-		}
+			
+				jukebox.spiele(liedbox.getSelectedItem().toString());}}
+			
+			
+		
 	}
 
 	public void setPlayername1TextboxText(String text) {

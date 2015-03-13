@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.action.basicactions.QuitAction;
@@ -18,6 +19,8 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 
 public class MainMenuState extends OwnState {
 
+	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
+	
 	public MainMenuState(int sid) {
 		super(sid);
 
@@ -110,9 +113,11 @@ public class MainMenuState extends OwnState {
 
 		if (MasterGame.isAGameRunning() && input.isKeyPressed(Input.KEY_ESCAPE)) {
 			changeState(container, game, Gorillas.GAMEPLAYSTATE);
+			jukebox.spiele("");
 		}
 
 		if (!MasterGame.isAGameRunning() && input.isKeyPressed(Input.KEY_N)) {
+			jukebox.stoppe();
 			changeState(container, game, Gorillas.GAMESETUPSTATE);
 		}
 	}

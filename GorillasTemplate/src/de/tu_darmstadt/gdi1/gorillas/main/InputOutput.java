@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
+
 public class InputOutput {
 
 	public void speichereName(String name) {
@@ -75,6 +76,13 @@ public class InputOutput {
 		}
 	}
 
+	public String[] FindeLieder(){
+		File Pfad = new File("ressources/Musik/");
+		String[] dateien = Pfad.list();
+		return dateien;
+	}
+	
+	
 	public String FindeNamen(String n) {
 
 		Path datei = Paths.get("Namen.bin");
