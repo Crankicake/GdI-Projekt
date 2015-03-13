@@ -76,12 +76,16 @@ public class InputOutput {
 		}
 	}
 
-	public String[] FindeLieder(){
-		File Pfad = new File("ressources/Musik/");
-		String[] dateien = Pfad.list();
-		return dateien;
+	public static String[] FindeLieder(){
+			File Pfad = new File("ressources/Musik/");
+			String[] dateien = Pfad.list();		
+			return dateien;
 	}
 	
+	public static int anzahlLieder(){
+		
+		return FindeLieder().length;
+	}
 	
 	public String FindeNamen(String n) {
 

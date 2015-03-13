@@ -8,5 +8,6 @@ public enum ExceptionReason {
 	ThrowAttemptPositionOutsideWindow,
 	ThrowAttemptNoNextPosition,
 	StateHasWrongID,
-	UnknownPlayerID
+	UnknownPlayerID,
+	NoMusik
 }

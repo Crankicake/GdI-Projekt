@@ -129,7 +129,7 @@ public class GameSetupState extends OwnState {
 		// Jukeboxpart
 		if(!MasterGame.isJukeboxRunning()){
 		
-		liedbox = new JComboBox(io.FindeLieder());
+		liedbox = new JComboBox(InputOutput.FindeLieder());
 		frame = new JFrame("Jukebox 600 XS LIMITED EDITION");
 		frame.setSize(370, 300);
 		frame.setBounds(300,450,370,100);
@@ -139,7 +139,8 @@ public class GameSetupState extends OwnState {
 		liedbox.setSelectedIndex(0);
 		frame.add(liedbox);
 		frame.setVisible(true);
-		frame.setAlwaysOnTop(false);	
+		frame.setAlwaysOnTop(false);
+		MasterGame.setIsJukeboxRunning(true);
 		}
 		
 		// Jukeboxpart ende		
