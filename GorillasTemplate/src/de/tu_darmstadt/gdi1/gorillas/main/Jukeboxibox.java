@@ -61,10 +61,7 @@ public class Jukeboxibox extends Application {
 			 mp = new MediaPlayer(affe);
 			mp.play();
 		}
-	/*	pfad = Paths.get("ressources/Musik/"+lied).toUri();
-		 affe = new Media(pfad.toString());
-		 mp = new MediaPlayer(affe);
-		mp.play();*/
+	
 	}
 
 
