@@ -139,7 +139,8 @@ public class GameSetupState extends OwnState {
 		liedbox.setSelectedIndex(0);
 		frame.add(liedbox);
 		frame.setVisible(true);
-		frame.setAlwaysOnTop(false);	
+		frame.setAlwaysOnTop(false);
+		MasterGame.setIsJukeboxRunning(true);
 		}
 		
 		// Jukeboxpart ende		
