@@ -95,6 +95,8 @@ public class Projectile extends Entity {
 			picture.setRotation(0);
 			rotation = 0;
 		}
+		
+		super.update(gc, sbg, i);
 	}
 
 	public double getGravity() {

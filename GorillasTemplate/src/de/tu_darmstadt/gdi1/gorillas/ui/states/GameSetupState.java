@@ -34,6 +34,7 @@ public class GameSetupState extends OwnState {
 	private Label playername2Label;
 	private Label AutoCompleteTest;
 	
+
 	@SuppressWarnings("rawtypes")
 	private JComboBox liedbox;
 	private JFrame frame;

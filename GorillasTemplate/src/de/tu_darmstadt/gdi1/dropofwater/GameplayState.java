@@ -85,7 +85,8 @@ public class GameplayState extends BasicTWLGameState {
 				BufferedImage.TYPE_INT_ARGB);
 		// mit Graphics2D l�sst sich das Bild bemalen
 		Graphics2D graphic = image.createGraphics();
-		// die folgende Zeile bewirkt, dass sich auch wieder "ausradieren" l�sst
+		// die folgende Zeile bewirkt, dass sich auch wieder "ausradieren"
+		// l�sst
 		graphic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
 		// bemale das vollst�ndige Bild wei�
 		graphic.setColor(new Color(255, 255, 255));
@@ -95,7 +96,8 @@ public class GameplayState extends BasicTWLGameState {
 		graphic.fillRect(100, 50, 300, 100);
 
 		// erstelle eine DestructibleImageEntity mit dem gerade gemalten Bild
-		// als Image, das durch das Zerst�rungs-Pattern destruction.png zerst�rt
+		// als Image, das durch das Zerst�rungs-Pattern destruction.png
+		// zerst�rt
 		// werden kann
 		DestructibleImageEntity obstacle = new DestructibleImageEntity(
 				"obstacle", image, "dropofwater/destruction.png", false);
@@ -157,7 +159,8 @@ public class GameplayState extends BasicTWLGameState {
 			}
 		});
 
-		// analog zu einer Eingabem�glichkeit f�r x-Werte wird auch eine f�r
+		// analog zu einer Eingabem�glichkeit f�r x-Werte wird auch eine
+		// f�r
 		// y-Werte kreiert
 		yLabel = new Label("y:");
 		yInput = new EditField();
@@ -207,8 +210,10 @@ public class GameplayState extends BasicTWLGameState {
 		int yOffset = 50;
 		int gap = 5;
 
-		// alle GUI-Elemente m�ssen eine Gr��e zugewiesen bekommen. Soll die
-		// Gr��e automatisch �ber die Beschriftung des GUI-Elements bestimmt
+		// alle GUI-Elemente m�ssen eine Gr��e zugewiesen bekommen. Soll
+		// die
+		// Gr��e automatisch �ber die Beschriftung des GUI-Elements
+		// bestimmt
 		// werden, so muss adjustSize() aufgerufen werden.
 		xLabel.adjustSize();
 		yLabel.adjustSize();
@@ -218,7 +223,8 @@ public class GameplayState extends BasicTWLGameState {
 		yInput.setSize(50, 25);
 		dropButton.setSize(50, 25);
 
-		// Nachdem alle Gr��en adjustiert wurden, muss allen GUI-Elementen eine
+		// Nachdem alle Gr��en adjustiert wurden, muss allen GUI-Elementen
+		// eine
 		// Position (linke obere Ecke) zugewiesen werden
 		xLabel.setPosition(xOffset, yOffset);
 		xInput.setPosition(xOffset + xLabel.getWidth() + gap, yOffset);
@@ -232,19 +238,21 @@ public class GameplayState extends BasicTWLGameState {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn ein Zeichen in ein EditField eingegeben wurde.
+	 * Diese Methode wird aufgerufen, wenn ein Zeichen in ein EditField
+	 * eingegeben wurde.
 	 * 
 	 * @param key
-	 * 			die gedr�ckte Taste
+	 *            die gedr�ckte Taste
 	 * @param editField
-	 * 			das EditField, in das ein Zeichen eingef�gt wurde
+	 *            das EditField, in das ein Zeichen eingef�gt wurde
 	 * @param callback
-	 * 			der CallBack, der dem EditField hinzugef�gt wurde
+	 *            der CallBack, der dem EditField hinzugef�gt wurde
 	 * @param maxValue
-	 * 			die gr��te Zahl, die in das <code>editField</code> eingegeben werden kann
+	 *            die gr��te Zahl, die in das <code>editField</code>
+	 *            eingegeben werden kann
 	 */
-	void handleEditFieldInput(int key, EditField editField,
-			Callback callback, int maxValue) {
+	void handleEditFieldInput(int key, EditField editField, Callback callback,
+			int maxValue) {
 
 		if (key == de.matthiasmann.twl.Event.KEY_NONE) {
 			String inputText = editField.getText();
@@ -300,7 +308,8 @@ public class GameplayState extends BasicTWLGameState {
 				CollisionEvent collider = (CollisionEvent) event;
 				Entity entity = collider.getCollidedEntity();
 
-				// wenn diese durch ein Pattern zerst�rt werden kann, dann caste
+				// wenn diese durch ein Pattern zerst�rt werden kann, dann
+				// caste
 				// zu IDestructible
 				// ansonsten passiert bei der Kollision nichts
 				IDestructible destructible = null;

@@ -26,13 +26,19 @@ import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
+import eea.engine.action.Action;
+import eea.engine.action.basicactions.DestroyEntityAction;
+import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.DestructibleImageEntity;
 import eea.engine.entity.Entity;
+import eea.engine.event.Event;
+import eea.engine.event.basicevents.CollisionEvent;
+import eea.engine.interfaces.IDestructible;
 
 public class GamePlayState extends OwnState {
 
-	protected Projectile projectile;
+	protected static Projectile projectile;
 	protected Player playerOne;
 	protected Player playerTwo;
 
@@ -54,7 +60,7 @@ public class GamePlayState extends OwnState {
 	private Image arrow;
 	private Vector2f arrowPosition;
 	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
-	
+
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -101,7 +107,7 @@ public class GamePlayState extends OwnState {
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			MasterGame.setIsAGameRunning(true);
 			jukebox.pausieren();
-			
+
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
 
@@ -243,8 +249,8 @@ public class GamePlayState extends OwnState {
 		// Sowas gibt es tatsaechlich, hat aber einen komischen Konstruktor, hab
 		// mich damit noch nciht auseinander gesetzt.
 
-		Entity[] buildings = new Entity[8];
-
+		DestructibleImageEntity[] buildings = new DestructibleImageEntity[8];
+		
 		// Graphics2D[] theArry = new Graphics2D[8];
 
 		Random r = new Random();
@@ -255,8 +261,6 @@ public class GamePlayState extends OwnState {
 		float buildingX, buildingY;
 
 		for (int i = 0; i < 8; ++i) {
-			buildings[i] = new Entity(names[2] + i);
-
 			// ImageRenderComponent image = new ImageRenderComponent(new Image(
 			// "/assets/gorillas/background/building_green.png"));
 
@@ -285,7 +289,6 @@ public class GamePlayState extends OwnState {
 			BufferedImage img3 = new BufferedImage(100, 600,
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D redHouse = img3.createGraphics();
-
 			redHouse.setColor(new Color(239, 60, 60));
 			redHouse.fillRect(0, 0, 100, 600);
 
@@ -303,22 +306,21 @@ public class GamePlayState extends OwnState {
 
 			switch (r.nextInt(3)) {
 			case 0:
-				buildings[i] = new DestructibleImageEntity(names[3] + i,
-						img, "dropofwater/destruction.png", false);
+				buildings[i] = new DestructibleImageEntity(names[3] + i, img,
+						"dropofwater/destruction.png", false);
 				break;
 			case 1:
-				buildings[i] = new DestructibleImageEntity(names[3] + i,
-						img2, "dropofwater/destruction.png", false);
+				buildings[i] = new DestructibleImageEntity(names[3] + i, img2,
+						"dropofwater/destruction.png", false);
 				break;
 			case 2:
-				buildings[i] = new DestructibleImageEntity(names[3] + i,
-						img3, "dropofwater/destruction.png", false);
+				buildings[i] = new DestructibleImageEntity(names[3] + i, img3,
+						"dropofwater/destruction.png", false);
 				break;
 			}
 
 			buildingX = (50f + 100f * i) * windowWidth / 800;
-			buildingY = windowHeight + (r.nextInt(7) - 3)
-					* windowHeight / 20;
+			buildingY = windowHeight + (r.nextInt(7) - 3) * windowHeight / 20;
 
 			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
 
@@ -346,6 +348,29 @@ public class GamePlayState extends OwnState {
 		projectile = new Projectile(names[4]);
 		projectile.setPosition(playerOne.getPosition());
 		projectile.createEntity();
+
+		CollisionEvent collisionEvent = new CollisionEvent();
+		collisionEvent.addAction(new Action() {
+			@Override
+			public void update(GameContainer gc, StateBasedGame sb, int delta,
+					Component event) {
+				CollisionEvent collider = (CollisionEvent) event;
+				Entity entity = collider.getCollidedEntity();
+
+				IDestructible destructible = null;
+				if (entity instanceof IDestructible) {
+					destructible = (IDestructible) entity;
+				} else {
+					return;
+				}
+
+				destructible.impactAt(event.getOwnerEntity().getPosition());
+			}
+		});
+		
+		collisionEvent.addAction(new DestroyEntityAction());
+		projectile.addComponent(collisionEvent);
+
 		entityManager.addEntity(stateID, projectile);
 	}
 
@@ -354,7 +379,7 @@ public class GamePlayState extends OwnState {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
 
 			arrow = new Image("/assets/gorillas/arrow.png");
-			
+
 			arrow.rotate(180);
 		} else if (wind > 0) {
 			arrowPosition = new Vector2f(30, windowHeight - 20);
