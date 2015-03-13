@@ -4,8 +4,6 @@ import javafx.application.Application;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.*;
 import javafx.stage.Stage;
-
-import java.io.File;
 import java.net.URI;
 import java.nio.file.Paths;
 
@@ -19,10 +17,7 @@ public class Jukeboxibox extends Application {
 	private JFXPanel fxPanel = new JFXPanel();
 	private static Jukeboxibox instanz;
 	
-	private String[] lieder = InputOutput.FindeLieder();
-	
-
-	URI pfad = Paths.get("ressources/Musik/"+ lieder[0]).toUri();
+	URI pfad = Paths.get("ressources/Musik/salim.wav").toUri();
 	Media affe = new Media(pfad.toString());
 	MediaPlayer mp= new MediaPlayer(affe);
 	
@@ -75,5 +70,5 @@ public class Jukeboxibox extends Application {
 		
 		
 	}
-	
+
 }
