@@ -15,9 +15,13 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 
+
+
+import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
+import de.matthiasmann.twl.model.ListSelectionModel;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
@@ -36,11 +40,13 @@ public class GameSetupState extends OwnState {
 	private EditField playername2Textbox;
 	private Label playername1Label;
 	private Label playername2Label;
+	private Label AutoCompleteTest;
 	
 	@SuppressWarnings("rawtypes")
 	private JComboBox liedbox;
 	private JFrame frame;
 
+	
 	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
 	private InputOutput io;
 
@@ -116,8 +122,9 @@ public class GameSetupState extends OwnState {
 		playername2Label = new Label();
 		playername2Label.setText("Name von Spieler 2:");
 
+		AutoCompleteTest = new Label();
 		
-		
+		rp.add(AutoCompleteTest);
 		rp.add(playername1Textbox);
 		rp.add(playername2Textbox);
 		rp.add(playername1Label);
@@ -158,7 +165,9 @@ public class GameSetupState extends OwnState {
 		int width = windowWidth / 2;
 		int height = windowHeight / 2;
 
-	
+		AutoCompleteTest.adjustSize();
+		AutoCompleteTest.setSize(130, 20);
+		AutoCompleteTest.setPosition(width, height-10);
 		
 		playername1Label.adjustSize();
 		playername1Label.setPosition(width - 150, height - 100);
@@ -201,10 +210,11 @@ public class GameSetupState extends OwnState {
 		
 
 		String name1, name2;
-
+	
 		name1 = playername1Textbox.getText();
 		name2 = playername2Textbox.getText();
-
+				
+		AutoCompleteTest.setText(io.FindeNamen(name1));		
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
@@ -224,6 +234,7 @@ public class GameSetupState extends OwnState {
 		name1 = playername1Textbox.getText();
 		name2 = playername2Textbox.getText();
 
+		AutoCompleteTest.setText(io.FindeNamen(name2));	
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
@@ -266,6 +277,8 @@ public class GameSetupState extends OwnState {
 
 				
 				changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
+				io.speichereName(name1);
+				io.speichereName(name2);
 			
 				jukebox.spiele(liedbox.getSelectedItem().toString());}}
 			
@@ -297,7 +310,4 @@ public class GameSetupState extends OwnState {
 		MasterGame.getPlayerTwo().setName(name);
 	}
 
-	public void letzteNamen() {
-
 	}
-}

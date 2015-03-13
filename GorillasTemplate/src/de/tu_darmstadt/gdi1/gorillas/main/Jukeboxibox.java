@@ -5,7 +5,6 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.*;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.net.URI;
 import java.nio.file.Paths;
 
@@ -67,6 +66,7 @@ public class Jukeboxibox extends Application {
 
 	public void pausieren(){ mp.pause(); }
 	public void stoppe(){mp.stop();}
+	
 	@Override
 	public void start(Stage arg0) throws Exception {
 		
