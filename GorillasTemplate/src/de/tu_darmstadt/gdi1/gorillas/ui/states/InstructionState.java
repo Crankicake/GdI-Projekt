@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import eea.engine.action.basicactions.ChangeStateInitAction;
+import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -83,7 +83,7 @@ public class InstructionState extends OwnState{
 				new MouseClickedEvent());
 
 		// Zurueck Action
-		ChangeStateInitAction zurueckAction = new ChangeStateInitAction(Gorillas.MAINMENUSTATE);
+		ChangeStateAction zurueckAction = new ChangeStateAction(Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);

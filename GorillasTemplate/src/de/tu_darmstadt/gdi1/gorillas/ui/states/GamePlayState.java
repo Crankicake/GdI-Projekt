@@ -354,12 +354,12 @@ public class GamePlayState extends OwnState {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
 
 			arrow = new Image("/assets/gorillas/arrow.png");
+			
+			arrow.rotate(180);
 		} else if (wind > 0) {
 			arrowPosition = new Vector2f(30, windowHeight - 20);
 
 			arrow = new Image("/assets/gorillas/arrow.png");
-
-			arrow.rotate(180);
 		}
 	}
 

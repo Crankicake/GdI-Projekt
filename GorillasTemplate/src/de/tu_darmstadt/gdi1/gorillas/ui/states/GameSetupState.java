@@ -11,23 +11,15 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-
-
-
-
-
-
-import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
-import de.matthiasmann.twl.model.ListSelectionModel;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import eea.engine.action.basicactions.ChangeStateInitAction;
+import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -197,7 +189,7 @@ public class GameSetupState extends OwnState {
 
 		
 		
-		ChangeStateInitAction zurueckAction = new ChangeStateInitAction(
+		ChangeStateAction zurueckAction = new ChangeStateAction(
 				Gorillas.MAINMENUSTATE);
 		zurueckEvent.addAction(zurueckAction);
 		zurueckEntity.addComponent(zurueckEvent);
@@ -274,16 +266,12 @@ public class GameSetupState extends OwnState {
 				}
 
 				errormessage = "";
-
 				
 				changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
 				io.speichereName(name1);
 				io.speichereName(name2);
 			
-				jukebox.spiele(liedbox.getSelectedItem().toString());}}
-			
-			
-		
+				jukebox.spiele(liedbox.getSelectedItem().toString());}}	
 	}
 
 	public void setPlayername1TextboxText(String text) {

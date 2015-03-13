@@ -159,16 +159,16 @@ public abstract class OwnState extends BasicTWLGameState {
 
 		game.enterState(state);
 
-		entityManager.clearEntitiesFromState(state);
+		//entityManager.clearEntitiesFromState(state);
 
-		try {
+		//try {
 			container.getInput().clearKeyPressedRecord();
 			container.getInput().clearControlPressedRecord();
 			container.getInput().clearMousePressedRecord();
-			game.init(container);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+			//game.init(container);
+		//} catch (SlickException e) {
+			//e.printStackTrace();
+		//}
 
 		if (container.isPaused())
 			container.resume();

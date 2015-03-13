@@ -1,19 +1,10 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
-import java.awt.List;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-
-import de.matthiasmann.twl.model.ListModel;
-import de.matthiasmann.twl.model.ListSelectionModel;
-
 
 public class InputOutput {
 

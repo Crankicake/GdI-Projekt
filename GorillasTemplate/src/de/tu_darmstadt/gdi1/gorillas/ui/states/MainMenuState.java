@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
+import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.action.basicactions.QuitAction;
 import eea.engine.entity.Entity;
@@ -70,15 +71,15 @@ public class MainMenuState extends OwnState {
 				Gorillas.GAMESETUPSTATE);
 
 		// Highscore Action
-		ChangeStateInitAction highscoreAction = new ChangeStateInitAction(
+		ChangeStateAction highscoreAction = new ChangeStateAction(
 				Gorillas.HIGHSCORESTATE);
 
 		// Anleitung Action
-		ChangeStateInitAction anleitungAction = new ChangeStateInitAction(
+		ChangeStateAction anleitungAction = new ChangeStateAction(
 				Gorillas.INSTRUCTIONSSTATE);
 
 		// About Action
-		ChangeStateInitAction aboutAction = new ChangeStateInitAction(
+		ChangeStateAction aboutAction = new ChangeStateAction(
 				Gorillas.OPTIONSTATE);
 
 		// Spiel beenden Action
