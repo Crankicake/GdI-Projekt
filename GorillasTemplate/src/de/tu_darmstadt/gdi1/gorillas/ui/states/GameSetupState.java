@@ -1,8 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,7 +14,6 @@ import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
-import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.entity.Entity;
@@ -35,12 +31,7 @@ public class GameSetupState extends OwnState {
 	private Label AutoCompleteTest;
 	
 
-	@SuppressWarnings("rawtypes")
-	private JComboBox liedbox;
-	private JFrame frame;
-
 	
-	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
 	private InputOutput io;
 
 	
@@ -86,7 +77,7 @@ public class GameSetupState extends OwnState {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 
@@ -126,24 +117,7 @@ public class GameSetupState extends OwnState {
 		setPlayername1TextboxText("Player 1");
 		setPlayername2TextboxText("Player 2");
 
-		// Jukeboxpart
-		if(!MasterGame.isJukeboxRunning()){
 		
-		liedbox = new JComboBox(InputOutput.FindeLieder());
-		frame = new JFrame("Jukebox 600 XS LIMITED EDITION");
-		frame.setSize(370, 300);
-		frame.setBounds(300,450,370,100);
-		liedbox.setBounds(150,200,200,100);
-		liedbox.setVisible(true);
-		liedbox.setEditable(false);
-		liedbox.setSelectedIndex(0);
-		frame.add(liedbox);
-		frame.setVisible(true);
-		frame.setAlwaysOnTop(false);
-		MasterGame.setIsJukeboxRunning(true);
-		}
-		
-		// Jukeboxpart ende		
 		
 		
 		
@@ -272,7 +246,7 @@ public class GameSetupState extends OwnState {
 				io.speichereName(name1);
 				io.speichereName(name2);
 			
-				jukebox.spiele(liedbox.getSelectedItem().toString());}}	
+			}}
 	}
 
 	public void setPlayername1TextboxText(String text) {
