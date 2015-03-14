@@ -1,5 +1,2 @@
 GamePlayState/GameSetupState: Wenn lange Namen eingegeben werden, liegen Sie über den Textboxen zur Eingabe der Wurfparameter im GamePlayState
 
-GamePlayState : Wenn ein Lied in der Jukebox ausgewählt wird, wird das Spiel im Hintergrund nicht mehr "gerendert" bzw. es wird angehalten bis der Focus wieder auf dem Fenster ist.
-
-JukeBoxiBox: Warum zur Hölle muss man manchmal nochmal auf das Mainfester klicken, damit der Scheiß gezeichnet wird in GameSetupState (Eventuell Reihenfolge der Aufrufe?

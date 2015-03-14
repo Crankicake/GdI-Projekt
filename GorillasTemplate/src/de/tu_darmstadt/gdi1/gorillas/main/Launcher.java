@@ -43,6 +43,7 @@ public class Launcher {
 		AppGameContainer app = new AppGameContainer(new Gorillas(false));
 
 		// Set window properties and start it
+		app.setAlwaysRender(true);
 		app.setShowFPS(false);
 		app.setVSync(false);
 		app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
