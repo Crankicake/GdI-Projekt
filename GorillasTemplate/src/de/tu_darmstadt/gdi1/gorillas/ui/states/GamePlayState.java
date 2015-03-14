@@ -57,6 +57,7 @@ public class GamePlayState extends OwnState {
 
 	private Image arrow;
 	private Vector2f arrowPosition;
+	
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -105,6 +106,14 @@ public class GamePlayState extends OwnState {
 
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
+		
+		if(input.isKeyPressed(Input.KEY_ENTER)) {
+			String one = velocityTextField.getText(), two = angleTextField.getText();
+			
+			if(one != null && two != null && !one.isEmpty() && !two.isEmpty()) {
+				throwButton_Click();
+			}
+		}	
 
 		if (arrowPosition == null)
 			arrowPosition = new Vector2f(0, 0);
@@ -121,7 +130,7 @@ public class GamePlayState extends OwnState {
 			try {
 				projectile.updateOwn(gc, sbg, i);
 			} catch (GorillasException ex) {
-				throwButton.setEnabled(true);
+				setVisibility(true);
 
 				if (whichPlayersDraw == 1) {
 					projectile.setPosition(playerOne.getPosition());
@@ -384,15 +393,15 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void throwButton_Click() {
-		projectile.setParamter(Integer.parseInt(angleTextField.getText()),
-				Integer.parseInt(velocityTextField.getText()), 9.81,
+		projectile.setParameter(Integer.parseInt(angleTextField.getText()),
+				Integer.parseInt(velocityTextField.getText()), MasterGame.getGravitation(),
 				whichPlayersDraw);
 
 		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
 				: playerOne.getName()) + ":");
 
 		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
-		throwButton.setEnabled(false);
+		setVisibility(false);
 	}
 
 	public void velocityTextField_TextChanged() {
@@ -443,6 +452,15 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	private void setVisibility(boolean b) {
+		throwButton.setVisible(b);
+		playerLabel.setVisible(b);
+		angleLabel.setVisible(b);
+		angleTextField.setVisible(b);
+		velocityLabel.setVisible(b);
+		velocityTextField.setVisible(b);
+	}
+	
 	public Projectile getProjectile() {
 		return projectile;
 	}
