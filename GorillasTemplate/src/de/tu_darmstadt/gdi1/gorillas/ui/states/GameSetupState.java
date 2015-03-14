@@ -1,5 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -7,12 +9,13 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-
-import de.matthiasmann.twl.CallbackWithReason;
 import de.matthiasmann.twl.EditField;
+import de.matthiasmann.twl.EditFieldAutoCompletionWindow;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
-import de.matthiasmann.twl.Label.CallbackReason;
+import de.matthiasmann.twl.model.AutoCompletionDataSource;
+import de.matthiasmann.twl.model.AutoCompletionResult;
+import de.matthiasmann.twl.model.SimpleAutoCompletionResult;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
@@ -31,12 +34,9 @@ public class GameSetupState extends OwnState {
 	private Label playername1Label;
 	private Label playername2Label;
 	private Label AutoCompleteTest;
-	
 
-	
 	private InputOutput io;
 
-	
 	private String errormessage;
 
 	public GameSetupState(int sid) {
@@ -79,7 +79,6 @@ public class GameSetupState extends OwnState {
 		}
 	}
 
-	
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 
@@ -99,54 +98,73 @@ public class GameSetupState extends OwnState {
 				playername2Textbox_TextChanged();
 			}
 		});
-		
-		
-		
+
 		playername1Label = new Label();
 		playername1Label.setText("Name von Spieler 1:");
 
 		playername2Label = new Label();
 		playername2Label.setText("Name von Spieler 2:");
 
-		AutoCompleteTest = new Label();
-		AutoCompleteTest.addCallback(new CallbackWithReason<Label.CallbackReason>() {
-			
-			@Override
-			public void callback(CallbackReason arg0) {
-				AutoCompleteTest_Clicked();
-				
+		AutoCompletionDataSource acds = new AutoCompletionDataSource() {
+			public AutoCompletionResult collectSuggestions(String text,
+					int cursorPos, AutoCompletionResult prev) {
+				// text = text.substring(0, cursorPos);
+				ArrayList<String> ergebnis = new ArrayList<String>();
+				ergebnis.add(io.FindeNamen(text).toString());
+
+				if (ergebnis.isEmpty()) {
+					return null;
+				}
+				return new SimpleAutoCompletionResult(text, 0, ergebnis);
 			}
-		});
-		rp.add(AutoCompleteTest);
+		};
+
+		EditFieldAutoCompletionWindow efacw1 = new EditFieldAutoCompletionWindow(
+				playername1Textbox, acds);
+		EditFieldAutoCompletionWindow efacw2 = new EditFieldAutoCompletionWindow(
+				playername2Textbox, acds);
+
+		efacw1.setSize(130, 80);
+		efacw1.adjustSize();
+		efacw2.setSize(130, 80);
+		efacw2.adjustSize();
+		playername1Textbox.setAutoCompletion(acds);
+		playername1Textbox.setAutoCompletionWindow(efacw1);
+		playername2Textbox.setAutoCompletion(acds);
+		playername2Textbox.setAutoCompletionWindow(efacw2);
+
+		/*
+		 * AutoCompleteTest = new Label(); AutoCompleteTest.addCallback(new
+		 * CallbackWithReason<Label.CallbackReason>() {
+		 * 
+		 * @Override public void callback(CallbackReason arg0) {
+		 * AutoCompleteTest_Clicked();
+		 * 
+		 * } });
+		 */
+
 		rp.add(playername1Textbox);
 		rp.add(playername2Textbox);
 		rp.add(playername1Label);
 		rp.add(playername2Label);
-		
-		if(!MasterGame.isAGameRunning()){
-		setPlayername1TextboxText("Player 1");
-		setPlayername2TextboxText("Player 2");
-		}
-		else
-		{
-		setPlayername1TextboxText(MasterGame.getPlayerOne().getName());
-		setPlayername2TextboxText(MasterGame.getPlayerTwo().getName());
+
+		if (!MasterGame.isAGameRunning()) {
+			setPlayername1TextboxText("Player 1");
+			setPlayername2TextboxText("Player 2");
+		} else {
+			setPlayername1TextboxText(MasterGame.getPlayerOne().getName());
+			setPlayername2TextboxText(MasterGame.getPlayerTwo().getName());
 		}
 
-		
-		
-		
-		
-		
 		return rp;
 	}
 
 	protected void AutoCompleteTest_Clicked() {
-		if(playername1Textbox.hasKeyboardFocus())
+		if (playername1Textbox.hasKeyboardFocus())
 			playername1Textbox.setText(AutoCompleteTest.getText());
-		if(playername2Textbox.hasKeyboardFocus())
+		if (playername2Textbox.hasKeyboardFocus())
 			playername2Textbox.setText(AutoCompleteTest.getText());
-		
+
 	}
 
 	@Override
@@ -156,10 +174,11 @@ public class GameSetupState extends OwnState {
 		int width = windowWidth / 2;
 		int height = windowHeight / 2;
 
-		AutoCompleteTest.adjustSize();
-		AutoCompleteTest.setSize(130, 20);
-		AutoCompleteTest.setPosition(width, height-10);
-		
+		/*
+		 * AutoCompleteTest.adjustSize(); AutoCompleteTest.setSize(130, 20);
+		 * AutoCompleteTest.setPosition(width, height-10);
+		 */
+
 		playername1Label.adjustSize();
 		playername1Label.setPosition(width - 150, height - 100);
 
@@ -173,8 +192,7 @@ public class GameSetupState extends OwnState {
 		playername2Textbox.adjustSize();
 		playername2Textbox.setSize(130, 20);
 		playername2Textbox.setPosition(width, height - 50);
-		
-		
+
 	}
 
 	protected void initEntities() throws SlickException {
@@ -186,8 +204,6 @@ public class GameSetupState extends OwnState {
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
-		
-		
 		ChangeStateAction zurueckAction = new ChangeStateAction(
 				Gorillas.MAINMENUSTATE);
 		zurueckEvent.addAction(zurueckAction);
@@ -198,14 +214,13 @@ public class GameSetupState extends OwnState {
 	}
 
 	public void playername1Textbox_TextChanged() {
-		
 
 		String name1, name2;
-	
+
 		name1 = playername1Textbox.getText();
 		name2 = playername2Textbox.getText();
-				
-		AutoCompleteTest.setText(io.FindeNamen(name1));		
+
+		// AutoCompleteTest.setText(io.FindeNamen(name1));
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
@@ -219,13 +234,12 @@ public class GameSetupState extends OwnState {
 
 	public void playername2Textbox_TextChanged() {
 
-
 		String name1, name2;
 
 		name1 = playername1Textbox.getText();
 		name2 = playername2Textbox.getText();
 
-		AutoCompleteTest.setText(io.FindeNamen(name2));	
+		// AutoCompleteTest.setText(io.FindeNamen(name2));
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
@@ -265,12 +279,13 @@ public class GameSetupState extends OwnState {
 				}
 
 				errormessage = "";
-				
+
 				changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
 				io.speichereName(name1);
 				io.speichereName(name2);
-			
-			}}
+
+			}
+		}
 	}
 
 	public void setPlayername1TextboxText(String text) {
@@ -297,4 +312,4 @@ public class GameSetupState extends OwnState {
 		MasterGame.getPlayerTwo().setName(name);
 	}
 
-	}
+}
