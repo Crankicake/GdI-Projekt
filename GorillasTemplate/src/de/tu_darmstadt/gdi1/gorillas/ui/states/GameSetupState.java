@@ -8,9 +8,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import de.matthiasmann.twl.CallbackWithReason;
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.EditField.Callback;
+import de.matthiasmann.twl.Label.CallbackReason;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
@@ -107,7 +109,14 @@ public class GameSetupState extends OwnState {
 		playername2Label.setText("Name von Spieler 2:");
 
 		AutoCompleteTest = new Label();
-		
+		AutoCompleteTest.addCallback(new CallbackWithReason<Label.CallbackReason>() {
+			
+			@Override
+			public void callback(CallbackReason arg0) {
+				AutoCompleteTest_Clicked();
+				
+			}
+		});
 		rp.add(AutoCompleteTest);
 		rp.add(playername1Textbox);
 		rp.add(playername2Textbox);
@@ -123,6 +132,14 @@ public class GameSetupState extends OwnState {
 		
 		
 		return rp;
+	}
+
+	protected void AutoCompleteTest_Clicked() {
+		if(playername1Textbox.hasKeyboardFocus())
+			playername1Textbox.setText(AutoCompleteTest.getText());
+		if(playername2Textbox.hasKeyboardFocus())
+			playername2Textbox.setText(AutoCompleteTest.getText());
+		
 	}
 
 	@Override
