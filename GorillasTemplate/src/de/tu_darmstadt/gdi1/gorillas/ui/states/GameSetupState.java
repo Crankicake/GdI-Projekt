@@ -123,8 +123,15 @@ public class GameSetupState extends OwnState {
 		rp.add(playername1Label);
 		rp.add(playername2Label);
 		
+		if(!MasterGame.isAGameRunning()){
 		setPlayername1TextboxText("Player 1");
 		setPlayername2TextboxText("Player 2");
+		}
+		else
+		{
+		setPlayername1TextboxText(MasterGame.getPlayerOne().getName());
+		setPlayername2TextboxText(MasterGame.getPlayerTwo().getName());
+		}
 
 		
 		
