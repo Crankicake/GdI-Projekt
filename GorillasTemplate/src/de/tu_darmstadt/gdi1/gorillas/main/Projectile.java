@@ -42,7 +42,7 @@ public class Projectile extends Entity {
 		setRotation(0.0f);
 	}
 
-	public void setParamter(int angle, int velocity, double gravity,
+	public void setParameter(int angle, int velocity, double gravity,
 			int playerID) {
 
 		try {

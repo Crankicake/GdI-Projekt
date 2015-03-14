@@ -10,12 +10,15 @@ public class MasterGame {
 	
 	private static boolean laeuftJukebox;
 	
+	private static double grav;
+	
 	static  {
 		playerOne = new Player("One");
 		playerTwo = new Player("Two");
 		applyPlayerNames = false;
 		running = false;
 		laeuftJukebox = false;
+		grav = 9.81;
 	}
 
 	public static Player getPlayerOne() {
@@ -45,5 +48,13 @@ public class MasterGame {
 	
 	public static void setIsJukeboxRunning(boolean b){
 		laeuftJukebox = b;
+	}
+
+	public static void setGravitation(double g) {
+		grav = g;
+	}
+	
+	public static double getGravitation() {
+		return grav;
 	}
 }
