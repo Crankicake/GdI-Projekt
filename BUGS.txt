@@ -1,6 +1,4 @@
 GamePlayState/GameSetupState: Wenn lange Namen eingegeben werden, liegen Sie über den Textboxen zur Eingabe der Wurfparameter im GamePlayState
 
-Wenn man das Spiel mit Escape pausiert, lŠsst sich nicht mehr mit ãnÒ ein neues Spiel starten
-
 Bitte nachmachen und beheben:
 Neues Spiel klicken - weiter - escape - about - escape - zurück. Funktioniert auch bei Highscore und dem anderen Fenster

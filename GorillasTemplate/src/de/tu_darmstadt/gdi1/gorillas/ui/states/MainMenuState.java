@@ -206,7 +206,7 @@ public class MainMenuState extends OwnState {
 			
 		}
 
-		if (!MasterGame.isAGameRunning() && input.isKeyPressed(Input.KEY_N)) {
+		if (input.isKeyPressed(Input.KEY_N)) {
 			//jukebox.stoppe();
 			changeState(container, game, Gorillas.GAMESETUPSTATE);
 		}
