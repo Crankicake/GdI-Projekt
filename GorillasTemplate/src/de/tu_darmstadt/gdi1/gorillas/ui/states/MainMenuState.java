@@ -13,7 +13,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
@@ -140,6 +139,7 @@ public class MainMenuState extends OwnState {
 						
 					}
 				});
+				
 				frame.addWindowListener(new WindowListener() {
 					
 					@Override
@@ -198,16 +198,14 @@ public class MainMenuState extends OwnState {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		super.update(container, game, delta);
-
 		Input input = container.getInput();
-
+		
 		if (MasterGame.isAGameRunning() && input.isKeyPressed(Input.KEY_ESCAPE)) {
 			changeState(container, game, Gorillas.GAMEPLAYSTATE);
 			
 		}
-
+		
 		if (input.isKeyPressed(Input.KEY_N)) {
-			//jukebox.stoppe();
 			changeState(container, game, Gorillas.GAMESETUPSTATE);
 		}
 	}
