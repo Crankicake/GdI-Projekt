@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Diese Klasse repräsentiert die Struktur eines Highscoreeintrags. Sie ist Serialisierbar, da das von Nöten ist,
  * um diese Struktur später in der {@link InputOutput} in die entsprechende Datei schreiben zu können.
  * 
- * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappas
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  *
  */
 
