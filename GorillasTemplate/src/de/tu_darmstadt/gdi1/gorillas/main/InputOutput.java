@@ -6,6 +6,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
+
+/**
+ * Diese Klasse ist für alle Input- und Outputbelange gedacht.
+ * 
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
+ *
+ */
 public class InputOutput {
 	/**
 	 * Diese Methode speichert in der Datei "Namen.bin" den eingegebenen Spielernamen, der als Parameter übergeben wird
