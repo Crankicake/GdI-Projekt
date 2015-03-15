@@ -14,7 +14,7 @@ public class Jukeboxibox extends Application {
 	private JFXPanel fxPanel = new JFXPanel();
 	private static Jukeboxibox instanz;
 
-	private String[] lieder = InputOutput.FindeLieder();
+	private String[] lieder = InputOutput.findeLieder();
 
 	URI pfad = Paths.get("ressources/Musik/" + lieder[0]).toUri();
 	Media affe = new Media(pfad.toString());

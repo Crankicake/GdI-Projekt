@@ -122,7 +122,7 @@ public class MainMenuState extends OwnState {
 		// Jukeboxpart
 				if(!MasterGame.isJukeboxRunning()){
 				
-				liedbox = new JComboBox(InputOutput.FindeLieder());
+				liedbox = new JComboBox(InputOutput.findeLieder());
 				frame = new JFrame("Jukebox 600 XS LIMITED EDITION");
 				frame.setSize(370, 300);
 				frame.setBounds(150,450,370,100);

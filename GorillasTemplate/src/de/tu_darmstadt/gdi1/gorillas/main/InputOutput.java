@@ -7,7 +7,11 @@ import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
 public class InputOutput {
-
+	/**
+	 * Diese Methode speichert in der Datei "Namen.bin" den eingegebenen Spielernamen, der als Parameter übergeben wird
+	 * 
+	 * @param name
+	 */
 	public void speichereName(String name) {
 		File datei = new File("Namen.bin");
 		name = name + ";";
@@ -25,7 +29,7 @@ public class InputOutput {
 				bos.close();
 				System.out.println("Datei existierte...");
 			} catch (IOException e) {
-				System.out.println("Fehler beim Ah�ngen des Namens: "
+				System.out.println("Fehler beim Ah�ngen des Namens: "
 						+ e.toString());
 			}
 		} else {
@@ -47,46 +51,13 @@ public class InputOutput {
 		}
 	}
 
-	public void speichereHighscore(String name, int highscore) {
-		File datei = new File("Highscore.hcs");
-		if (datei.exists()) {
-			try {
-				FileOutputStream bos = new FileOutputStream(datei, true);
-				byte[] puffer = name.getBytes();
-				bos.write(puffer);
-				bos.write(highscore); // Eventuell probleme beim einlesen
-				bos.close();
-			} catch (IOException e) {
-				System.out
-						.println("Fehler beim Anh�ngen eines neuen Highscores: "
-								+ e.toString());
-			}
-		} else {
-			try {
-				FileOutputStream bos = new FileOutputStream(datei, false);
-				byte[] puffer = name.getBytes();
-				bos.write(puffer);
-				bos.write(highscore);
-				bos.close();
-			} catch (IOException e) {
-				System.out.println("Fehler beim Schreiben des Highscores: "
-						+ e.toString());
-			}
-		}
-	}
-
-	public static String[] FindeLieder(){
-			File Pfad = new File("ressources/Musik/");
-			String[] dateien = Pfad.list();		
-			return dateien;
-	}
 	
-	public static int anzahlLieder(){
-		return FindeLieder().length;
-	}
-	
-	
-		
+	/**
+	 * Diese Klasse durchsucht die Datei "Namen.bin" nach einem String der als Parameter übergeben wird
+	 * 	
+	 * @param n - The Name to search for
+	 * @return The found name or the parameter n
+	 */
 	public String FindeNamen(String n) {
 
 		Path datei = Paths.get("Namen.bin");
@@ -110,8 +81,113 @@ public class InputOutput {
 		}
 
 		catch (IOException e) {
+			e.printStackTrace();
 		}
 		return n; // Falls der eingegebene Name nicht gefunden wird
 
 	}
+	
+	
+	
+	/**
+	 * Diese Methode liest alle Higscore Einträge aus der "Highscore.hcs" Datei und liefert ein Array aus Highscores zurück
+	 * 
+	 * @return Array of Highscores
+	 */
+	@SuppressWarnings("null")
+	public Highscore[] leseHighscore(){
+		File datei = new File("Highscore.hcs");
+		InputStream fis = null;
+		Highscore tmp1[] = null;
+		int i = 0;
+		
+		if(datei.exists()){
+			try {
+				fis = new FileInputStream(datei);
+				ObjectInputStream ois = new ObjectInputStream( fis );
+				
+				while(ois.readObject()!=null){
+					tmp1[i] = (Highscore) ois.readObject();
+					i++;
+					}
+				fis.close();
+				ois.close();
+			}catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return tmp1;
+	}
+	
+	/**
+	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hcs" hinzu bzw. updated sie mit dem
+	 * übergebenen Parameter
+	 * 
+	 * @param hsc
+	 */
+	public void addHighscore(Highscore hsc){
+		File datei = new File("Highscore.hcs");
+		OutputStream fos = null;
+		Highscore tmp[] = leseHighscore();
+				
+		boolean flag = false;
+		
+		
+		try {
+			  fos = new FileOutputStream( datei );
+			  ObjectOutputStream oos = new ObjectOutputStream( fos);
+			  
+			  for(int i = 0; i<tmp.length;i++){
+				  if(tmp[i].getName().equals(hsc.getName())){
+					  tmp[i].setAnzahlRunden(tmp[i].getAnzahlRunden()+hsc.getAnzahlRunden());
+					  tmp[i].setAnzahlGewonnen(tmp[i].getAnzahlGewonnen()+hsc.getAnzahlGewonnen());
+					  tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()+hsc.getAnzahlBananen());
+					  oos.writeObject(tmp[i]);
+					  flag=true;
+					  
+				  }
+				  else{
+					  oos.writeObject(tmp[i]);
+				  }
+				  
+			  }
+			  if(!flag)
+				  oos.writeObject(hsc);
+			  
+			  oos.flush();
+			  oos.close();
+			  fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+		
+
+	/**
+	 * Diese Methode durchsucht den Pfad "../ressources/Musik/" nach allen dort vorhandenen Audiodateien 
+	 * und liefert einen String mit deren Namen zurück
+	 * 
+	 * @return Array of Strings with filenames of the audiofiles
+	 */
+	public static String[] findeLieder(){
+			File Pfad = new File("ressources/Musik/");
+			String[] dateien = Pfad.list();		
+			return dateien;
+	}
+	
+	/**
+	 * Diese Methode liefert die Anzahl der Audiodateien im Pfad "../ressources/Musik/" zurück
+	 * 
+	 * @return The amount of Audiofiles 
+	 */
+	public static int anzahlLieder(){
+		return findeLieder().length;
+	}
+	
+	
+	
+	
 }
