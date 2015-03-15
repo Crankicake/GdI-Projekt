@@ -53,11 +53,11 @@ public class GamePlayState extends OwnState {
 	private int whichPlayersDraw;
 	public static double wind = 0;
 	public static double windScale = 0.2;
-	public static double timeScale = 0.01;
+	public static double timeScale = 0.005;
 
 	private Image arrow;
 	private Vector2f arrowPosition;
-	
+
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -94,6 +94,21 @@ public class GamePlayState extends OwnState {
 
 		if (wind != 0)
 			g.drawImage(arrow, arrowPosition.x, arrowPosition.y);
+
+		if (whichPlayersDraw == 1) {
+			float x = playerOne.getPosition().x;
+			float y = playerOne.getPosition().y - 30;
+
+			g.setColor(org.newdawn.slick.Color.green);
+			g.drawString(playerOne.getName(), x, y);
+		} else {
+			float x = playerTwo.getPosition().x;
+			float y = playerTwo.getPosition().y - 30;
+
+			g.setColor(org.newdawn.slick.Color.green);
+			g.drawString(playerTwo.getName(), x, y);
+		}
+
 	}
 
 	@Override
@@ -106,14 +121,15 @@ public class GamePlayState extends OwnState {
 
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 		}
-		
-		if(input.isKeyPressed(Input.KEY_ENTER)) {
-			String one = velocityTextField.getText(), two = angleTextField.getText();
-			
-			if(one != null && two != null && !one.isEmpty() && !two.isEmpty()) {
-				throwButton_Click();
+
+		if (input.isKeyPressed(Input.KEY_ENTER)) {
+			String one = velocityTextField.getText(), two = angleTextField
+					.getText();
+
+			if (one != null && two != null && !one.isEmpty() && !two.isEmpty()) {
+				throwBanana();
 			}
-		}	
+		}
 
 		if (arrowPosition == null)
 			arrowPosition = new Vector2f(0, 0);
@@ -178,7 +194,8 @@ public class GamePlayState extends OwnState {
 		angleLabel.setText("Winkel: ");
 
 		throwButton = new Button();
-		throwButton.setText("Werfen");
+		throwButton.setText("           Werfen");
+		throwButton.adjustSize();
 		throwButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
@@ -201,32 +218,48 @@ public class GamePlayState extends OwnState {
 
 	@Override
 	protected void layoutRootPane() {
-		velocityTextField.adjustSize();
-		velocityTextField.setPosition(70, 20);
-
-		velocityLabel.adjustSize();
-		velocityLabel.setPosition(12, 23);
-
-		angleTextField.adjustSize();
-		angleTextField.setPosition(70, 55);
-
-		angleLabel.adjustSize();
-		angleLabel.setPosition(15, 58);
-
-		throwButton.adjustSize();
-		throwButton.setPosition(70, 90);
-		throwButton.setSize(88, throwButton.getHeight());
 
 		playerLabel.adjustSize();
-		playerLabel.setPosition(3, 93);
+		playerLabel.setPosition(12, 10);
+
+		velocityTextField.adjustSize();
+		velocityTextField.setPosition(70, 40);
+
+		velocityLabel.adjustSize();
+		velocityLabel.setPosition(12, 43);
+
+		angleTextField.adjustSize();
+		angleTextField.setPosition(70, 75);
+
+		angleLabel.adjustSize();
+		angleLabel.setPosition(12, 78);
+
+		throwButton.adjustSize();
+		throwButton.setPosition(10, 110);
+		throwButton.setSize(148, throwButton.getHeight());
+
 	}
 
 	@Override
 	protected void initBackground() throws SlickException {
 
 		Entity background = new Entity(names[0]);
-		background.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/background/background.png")));
+
+		switch (new Random().nextInt(3)) {
+		case 0:
+			background.addComponent(new ImageRenderComponent(new Image(
+					"/assets/gorillas/background/Skyline_Frankfurt.png")));
+			break;
+		case 1:
+			background.addComponent(new ImageRenderComponent(new Image(
+					"/assets/gorillas/background/Skyline_Sydney.png")));
+			break;
+		case 2:
+			background.addComponent(new ImageRenderComponent(new Image(
+					"/assets/gorillas/background/Skyline_New_York.png")));
+			break;
+		}
+
 		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
 				Launcher.FRAME_HEIGHT / 2));
 		background.setScale(Launcher.SCALE);
@@ -254,7 +287,7 @@ public class GamePlayState extends OwnState {
 		// mich damit noch nciht auseinander gesetzt.
 
 		DestructibleImageEntity[] buildings = new DestructibleImageEntity[8];
-		
+
 		// Graphics2D[] theArry = new Graphics2D[8];
 
 		Random r = new Random();
@@ -371,7 +404,7 @@ public class GamePlayState extends OwnState {
 				destructible.impactAt(event.getOwnerEntity().getPosition());
 			}
 		});
-		
+
 		collisionEvent.addAction(new DestroyEntityAction());
 		projectile.addComponent(collisionEvent);
 
@@ -393,15 +426,9 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void throwButton_Click() {
-		projectile.setParameter(Integer.parseInt(angleTextField.getText()),
-				Integer.parseInt(velocityTextField.getText()), MasterGame.getGravitation(),
-				whichPlayersDraw);
-
-		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
-				: playerOne.getName()) + ":");
-
-		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
-		setVisibility(false);
+		throwBanana();
+		
+		saveInput();
 	}
 
 	public void velocityTextField_TextChanged() {
@@ -452,6 +479,22 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	private void throwBanana() {
+		projectile.setParameter(Integer.parseInt(angleTextField.getText()),
+				Integer.parseInt(velocityTextField.getText()),
+				MasterGame.getGravitation(), whichPlayersDraw);
+
+		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
+				: playerOne.getName()) + ":");
+
+		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
+		setVisibility(false);
+	}
+	
+	private void saveInput() {
+		
+	}
+	
 	private void setVisibility(boolean b) {
 		throwButton.setVisible(b);
 		playerLabel.setVisible(b);
@@ -460,7 +503,7 @@ public class GamePlayState extends OwnState {
 		velocityLabel.setVisible(b);
 		velocityTextField.setVisible(b);
 	}
-	
+
 	public Projectile getProjectile() {
 		return projectile;
 	}

@@ -124,8 +124,10 @@ public class ThrowAttempt {
 	}
 
 	public Vector2f getNextPoint(double time) throws GorillasException {
-
-		timePassed += 0.02;
+		
+		time *= GamePlayState.timeScale;
+		
+		timePassed += time;
 
 		int x = (int) (x0 + (playerID == 1? (velocityX * timePassed): -(velocityX * timePassed)));
 		x = (int) (x + (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));

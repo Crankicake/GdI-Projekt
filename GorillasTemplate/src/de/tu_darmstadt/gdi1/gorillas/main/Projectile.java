@@ -3,7 +3,6 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -22,9 +21,6 @@ public class Projectile extends Entity {
 
 	private static boolean flying;
 	private static ThrowAttempt throwAttempt;
-
-	private long lastFrame;
-
 	float r = 0;
 
 	public Projectile(String entityID) {
@@ -69,15 +65,13 @@ public class Projectile extends Entity {
 	}
 
 	public void updateOwn(GameContainer gc, StateBasedGame sbg, int i)
-			throws GorillasException {
-
-		int delta = getDelta();
+			throws GorillasException {;
 
 		if (!flying)
 			return;
 
 		try {
-			setPosition(throwAttempt.getNextPoint(delta));
+			setPosition(throwAttempt.getNextPoint(i));
 		} catch (GorillasException ex) {
 			flying = false;
 			throw ex;
@@ -142,19 +136,5 @@ public class Projectile extends Entity {
 
 	public float getRotation() {
 		return rotation;
-	}
-
-	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29
-	public long getTime() {
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
-
-	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29
-	public int getDelta() {
-		long time = getTime();
-		int delta = (int) (time - lastFrame);
-		lastFrame = time;
-
-		return delta;
 	}
 }

@@ -12,6 +12,7 @@ public class MasterGame {
 	
 	private static double grav;
 	
+	
 	static  {
 		playerOne = new Player("One");
 		playerTwo = new Player("Two");
