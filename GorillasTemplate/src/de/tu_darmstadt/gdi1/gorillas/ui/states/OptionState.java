@@ -48,7 +48,7 @@ public class OptionState extends OwnState {
 		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
-		gorilla_logoE.setPosition(new Vector2f(370, 200));
+		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30, windowHeight / 2 - 100));
 		gorilla_logoE.setScale(1f);
 		gorilla_logoE.addComponent(new ImageRenderComponent(
 				new org.newdawn.slick.Image(
@@ -68,11 +68,12 @@ public class OptionState extends OwnState {
 		// Schreiben der Texte
 		g.setColor(org.newdawn.slick.Color.white);
 		g.drawString("Zurueck", 85, 66);
-		g.drawString("Version: 1.0", 320, 260);
-		g.drawString("Gorillas wird entwickelt von:", 260, 320);
-		g.drawString("Fabian Czappa", 320, 360);
-		g.drawString("Christoph Gombert", 320, 380);
-		g.drawString("Salim Karacaoglan", 320, 400);
-		g.drawString("Simon Foitzik", 320, 420);
+		
+		g.drawString("Version: 1.0", windowWidth / 2 - 80, windowHeight / 2 - 40);
+		g.drawString("Gorillas wird entwickelt von:",  windowWidth / 2 - 140, windowHeight / 2 + 20);
+		g.drawString("Fabian Czappa", windowWidth / 2 - 80, windowHeight / 2 + 60);
+		g.drawString("Christoph Gombert", windowWidth / 2 - 80, windowHeight / 2 + 80);
+		g.drawString("Salim Karacaoglan", windowWidth / 2 - 80, windowHeight / 2 + 100);
+		g.drawString("Simon Foitzik", windowWidth / 2 - 80, windowHeight / 2 + 120);
 	}
 }

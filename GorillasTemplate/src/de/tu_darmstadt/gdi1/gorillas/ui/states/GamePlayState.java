@@ -22,7 +22,6 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Building;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
-import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
@@ -275,9 +274,9 @@ public class GamePlayState extends OwnState {
 			break;
 		}
 
-		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 2));
-		background.setScale(Launcher.SCALE);
+		background.setPosition(new Vector2f(windowWidth / 2,
+				windowHeight / 2));
+		background.setScale(scale);
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
@@ -384,7 +383,7 @@ public class GamePlayState extends OwnState {
 				entityManager.addEntity(stateID, playerTwo);
 			}
 
-			buildings[i].setScale(Launcher.SCALE);
+			buildings[i].setScale(scale);
 			buildings[i].setPassable(false);
 			buildings[i].setRotation(0.0f);
 
@@ -428,9 +427,9 @@ public class GamePlayState extends OwnState {
 		sun = new Sun(names[1], null);
 		sun.addImage(new Image("/assets/gorillas/sun/sun_smiling.png"));
 		sun.addImage(new Image("/assets/gorillas/sun/sun_astonished.png"));
-		sun.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 8));
-		sun.setScale(Launcher.SCALE);
+		sun.setPosition(new Vector2f(windowWidth / 2,
+				windowHeight / 8));
+		sun.setScale(scale);
 		sun.setPassable(true);
 		sun.setRotation(0.0f);
 

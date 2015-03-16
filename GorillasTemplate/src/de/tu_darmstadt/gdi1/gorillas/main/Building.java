@@ -8,31 +8,18 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import eea.engine.entity.Entity;
-
-public class Building extends Entity {
+public class Building{
 
 	private static BufferedImage baseBuilding;
 	private static BufferedImage window1;
 	private static BufferedImage window2;
 	private static Random random;
-	private static int counter;
-
-	private int mode;
 
 	static {
 		random = new Random();
 	}
 
-	public Building(int mode) {
-		super(String.valueOf(counter));
-
-		this.mode = mode;
-	}
-
 	public static BufferedImage generateBuilding() throws IOException {
-
-		counter++;
 
 		int mode = random.nextInt(2);
 
@@ -59,7 +46,6 @@ public class Building extends Entity {
 
 		g.drawImage(baseBuilding, 0, 0, null);
 
-		int maxX = mode == 0 ? 3 : 2;
 		int maxY = mode == 0 ? 12 : 12;
 
 		for (int y = 0; y < maxY; ++y) {

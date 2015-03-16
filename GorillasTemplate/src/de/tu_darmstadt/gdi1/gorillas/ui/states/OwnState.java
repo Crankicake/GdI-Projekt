@@ -27,8 +27,9 @@ public abstract class OwnState extends BasicTWLGameState {
 	protected StateBasedEntityManager entityManager;
 	protected int stateID;
 
-	protected int windowWidth;
-	protected int windowHeight;
+	protected static int windowWidth;
+	protected static int windowHeight;
+	protected static float scale;
 
 	protected String[] names;
 
@@ -44,6 +45,13 @@ public abstract class OwnState extends BasicTWLGameState {
 		// Pseudobild geesetzt,
 		// damit sie nicht null sind und andere Exceptions ausloesen. Zur Not
 		// haben wir keine Bilder
+		// Zusaetzlich werden noch die Hoehe, die Breite des Fensters und die
+		// Skalierung gespeichert,
+		// um dadurch einen einfacheren Zugriff zu erlauben
+		
+		windowWidth = Launcher.FRAME_WIDTH;
+		windowHeight = Launcher.FRAME_HEIGHT;
+		scale = Launcher.SCALE;
 
 		try {
 			menuEntry = new Image("assets/gorillas/background/entry.png");
@@ -67,16 +75,10 @@ public abstract class OwnState extends BasicTWLGameState {
 		// Der Konstruktor setzt nicht nur die StateID, sondern auch den
 		// EntityManager,
 		// da der in jeder erbenden Klasse gebraucht wird.
-		// Zusaetzlich werden noch die Hoehe und die Breite des Fensters
-		// gespeichert,
-		// um dadurch einen einfacheren Zugriff zu erlauben
 
 		stateID = sid;
 
 		entityManager = StateBasedEntityManager.getInstance();
-
-		windowWidth = Launcher.FRAME_WIDTH;
-		windowHeight = Launcher.FRAME_HEIGHT;
 	}
 
 	/**

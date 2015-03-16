@@ -48,7 +48,7 @@ public class HighScoreState extends OwnState {
 		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
-		gorilla_logoE.setPosition(new Vector2f(370, 200));
+		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30, windowHeight / 2 - 100));
 		gorilla_logoE.setScale(1f);
 		gorilla_logoE.addComponent(new ImageRenderComponent(
 				new org.newdawn.slick.Image(
