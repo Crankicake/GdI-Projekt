@@ -215,6 +215,7 @@ public class MainMenuState extends OwnState {
 			throws SlickException {
 		super.render(container, game, g);
 
+		g.setColor(org.newdawn.slick.Color.white);
 		g.drawString(names[0], windowWidth / 2 - 35, windowHeight / 2 - 134);
 		g.drawString(names[1], windowWidth / 2 - 35, windowHeight / 2 - 74);
 		g.drawString(names[2], windowWidth / 2 - 35, windowHeight / 2 - 14);

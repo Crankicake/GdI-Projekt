@@ -1,0 +1,30 @@
+package de.matthiasmann.twl;
+
+public class Container
+  extends Widget
+{
+  public int getMinWidth()
+  {
+    return Math.max(super.getMinWidth(), getBorderHorizontal() + BoxLayout.computeMinWidthVertical(this));
+  }
+  
+  public int getMinHeight()
+  {
+    return Math.max(super.getMinHeight(), getBorderVertical() + BoxLayout.computeMinHeightHorizontal(this));
+  }
+  
+  public int getPreferredInnerWidth()
+  {
+    return BoxLayout.computePreferredWidthVertical(this);
+  }
+  
+  public int getPreferredInnerHeight()
+  {
+    return BoxLayout.computePreferredHeightHorizontal(this);
+  }
+  
+  protected void layout()
+  {
+    layoutChildrenFullInnerArea();
+  }
+}

@@ -1,12 +1,8 @@
-GamePlayState/GameSetupState: Wenn lange Namen eingegeben werden, liegen Sie über den Textboxen zur Eingabe der Wurfparameter im GamePlayState
-
 Bitte nachmachen und beheben:
 Neues Spiel klicken - weiter - escape - about - escape - zurück. Funktioniert auch bei Highscore und dem anderen Fenster
 
 Wenn die Banane am Rand eines Hochhauses explodiert, dann bekommt nur eins den Krater
 
 Leute, Skalierung beachten! Zentriert bitte eure UI Elemente mit den Attributen aus OwnState. Dazu gibts in Launcher einen Scalingfaktor, denkt mal dran
-
-Vor jedem drawString bitte die Farbe setzen!
 
 Die Sonne und die Banane treffen sich, collides sagt aber, dass nix passiert :(

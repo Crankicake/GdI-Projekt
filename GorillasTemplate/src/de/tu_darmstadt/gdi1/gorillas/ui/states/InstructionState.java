@@ -102,6 +102,7 @@ public class InstructionState extends OwnState{
 			throws SlickException {
 		super.render(container, game, g);
 
+		g.setColor(org.newdawn.slick.Color.white);
 		//  Schreiben der Texte
 		g.drawString("Zurueck", 85, 66);
 		g.drawString("Willkommen bei Gorillas!", 250, 130);

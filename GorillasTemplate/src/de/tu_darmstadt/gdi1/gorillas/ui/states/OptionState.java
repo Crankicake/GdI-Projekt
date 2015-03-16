@@ -66,6 +66,7 @@ public class OptionState extends OwnState {
 		super.render(container, game, g);
 
 		// Schreiben der Texte
+		g.setColor(org.newdawn.slick.Color.white);
 		g.drawString("Zurueck", 85, 66);
 		g.drawString("Version: 1.0", 320, 260);
 		g.drawString("Gorillas wird entwickelt von:", 260, 320);

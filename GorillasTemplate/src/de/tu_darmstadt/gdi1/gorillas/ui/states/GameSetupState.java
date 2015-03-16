@@ -60,6 +60,7 @@ public class GameSetupState extends OwnState {
 			throws SlickException {
 		super.render(container, game, g);
 
+		g.setColor(org.newdawn.slick.Color.white);
 		g.drawString(names[0], 85, 66);
 		g.drawString("Spiel starten", windowWidth / 2 - 35,
 				windowHeight / 2 + 36);
@@ -120,6 +121,7 @@ public class GameSetupState extends OwnState {
 
 		EditFieldAutoCompletionWindow efacw1 = new EditFieldAutoCompletionWindow(
 				playername1Textbox, acds);
+		
 		EditFieldAutoCompletionWindow efacw2 = new EditFieldAutoCompletionWindow(
 				playername2Textbox, acds);
 
