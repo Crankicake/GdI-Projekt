@@ -3,8 +3,8 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 import java.io.Serializable;
 
 /**
- * Diese Klasse repräsentiert die Struktur eines Highscoreeintrags. Sie ist Serialisierbar, da das von Nöten ist,
- * um diese Struktur später in der {@link InputOutput} in die entsprechende Datei schreiben zu können.
+ * Diese Klasse repraesentiert die Struktur eines Highscoreeintrags. Sie ist Serialisierbar, da das von Noeten ist,
+ * um diese Struktur spaeter in der {@link InputOutput} in die entsprechende Datei schreiben zu koennen.
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  *
@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class Highscore implements Serializable{
 
 	/**
-	 * Deklaration der benötigten Attribute
+	 * Deklaration der benoetigten Attribute
 	 */
 	private String name;
 	private int anzahlRunden;
@@ -32,7 +32,7 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Überladener Konstruktor zur direkten Initialisierung der Attribute
+	 * Ueberladener Konstruktor zur direkten Initialisierung der Attribute
 	 * 
 	 * @param Name
 	 * @param AnzRunden
@@ -47,7 +47,7 @@ public class Highscore implements Serializable{
 	}
 
 	/**
-	 * Getter für den Namen
+	 * Getter fuer den Namen
 	 * @return The Name
 	 */
 	public String getName() {
@@ -55,7 +55,7 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Setter für den Namen
+	 * Setter fuer den Namen
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -63,7 +63,7 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Getter für Anzahl der Runden
+	 * Getter fuer Anzahl der Runden
 	 * @return The amount of played rounds
 	 */
 	public int getAnzahlRunden() {
@@ -71,7 +71,7 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Setter für Anzahl der Runden
+	 * Setter fuer Anzahl der Runden
 	 * @param anzahlRunden
 	 */
 	public void setAnzahlRunden(int anzahlRunden) {
@@ -79,7 +79,7 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Getter für Anzahl der gewonnenen Runden
+	 * Getter fuer Anzahl der gewonnenen Runden
 	 * @return The amount of won rounds
 	 */
 	public int getAnzahlGewonnen() {
@@ -87,7 +87,7 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Setter für Anzahl der gewonnenen Runden
+	 * Setter fuer Anzahl der gewonnenen Runden
 	 * @param anzahlGewonnen
 	 */
 	public void setAnzahlGewonnen(int anzahlGewonnen) {
@@ -95,7 +95,7 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Getter für Anzahl der Bananen
+	 * Getter fuer Anzahl der Bananen
 	 * @return The amount of thrown bananas
 	 */
 	public int getAnzahlBananen() {
@@ -103,12 +103,11 @@ public class Highscore implements Serializable{
 	}
 	
 	/**
-	 * Setter für Anzahl der Bananen
+	 * Setter fuer Anzahl der Bananen
 	 * @param anzahlBananen
 	 */
 	public void setAnzahlBananen(int anzahlBananen) {
 		this.anzahlBananen = anzahlBananen;
 	}
-	
 
 }

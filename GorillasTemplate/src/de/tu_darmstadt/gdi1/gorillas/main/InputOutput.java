@@ -65,7 +65,7 @@ public class InputOutput {
 	 * @param n - The Name to search for
 	 * @return The found name or the parameter n
 	 */
-	public String FindeNamen(String n) {
+	public String findeNamen(String n) {
 
 		Path datei = Paths.get("Namen.bin");
 		String[] segs = null;

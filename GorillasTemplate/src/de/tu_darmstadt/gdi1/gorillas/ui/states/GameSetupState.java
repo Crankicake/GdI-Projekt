@@ -110,7 +110,7 @@ public class GameSetupState extends OwnState {
 			public AutoCompletionResult collectSuggestions(String text,
 					int cursorPos, AutoCompletionResult prev) {
 				ArrayList<String> ergebnis = new ArrayList<String>();
-				ergebnis.add(io.FindeNamen(text).toString());
+				ergebnis.add(io.findeNamen(text).toString());
 
 				if (ergebnis.isEmpty()) {
 					return null;
