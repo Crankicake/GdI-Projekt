@@ -3,6 +3,7 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -18,6 +19,7 @@ import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.main.Building;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
@@ -344,7 +346,7 @@ public class GamePlayState extends OwnState {
 
 			// graphic.drawImage(img, x, y, null);
 
-			switch (r.nextInt(3)) {
+			/*switch (r.nextInt(3)) {
 			case 0:
 				buildings[i] = new DestructibleImageEntity(names[3] + i, img,
 						"dropofwater/destruction.png", false);
@@ -357,6 +359,14 @@ public class GamePlayState extends OwnState {
 				buildings[i] = new DestructibleImageEntity(names[3] + i, img3,
 						"dropofwater/destruction.png", false);
 				break;
+			}*/
+			
+			try {
+				buildings[i] = new DestructibleImageEntity(names[3] + i, Building.generateBuilding(),
+						"dropofwater/destruction.png", false);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			buildingX = (50f + 100f * i) * windowWidth / 800;

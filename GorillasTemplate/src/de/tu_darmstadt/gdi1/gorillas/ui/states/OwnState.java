@@ -37,8 +37,7 @@ public abstract class OwnState extends BasicTWLGameState {
 
 	static {
 		// Da die Bilder fuer den Menueeintrag und den Hintergrund oftmals
-		// geladen
-		// werden
+		// geladen werden,
 		// werden sie hier im static-Konstruktor geladen, um sicherzugehen, dass
 		// das ganze nur einmal geschieht.
 		// Sollte eine Exception auftreten, dann werden beiden als in ein
@@ -159,16 +158,16 @@ public abstract class OwnState extends BasicTWLGameState {
 
 		game.enterState(state);
 
-		//entityManager.clearEntitiesFromState(state);
+		// entityManager.clearEntitiesFromState(state);
 
-		//try {
-			container.getInput().clearKeyPressedRecord();
-			container.getInput().clearControlPressedRecord();
-			container.getInput().clearMousePressedRecord();
-			//game.init(container);
-		//} catch (SlickException e) {
-			//e.printStackTrace();
-		//}
+		// try {
+		container.getInput().clearKeyPressedRecord();
+		container.getInput().clearControlPressedRecord();
+		container.getInput().clearMousePressedRecord();
+		// game.init(container);
+		// } catch (SlickException e) {
+		// e.printStackTrace();
+		// }
 
 		if (container.isPaused())
 			container.resume();

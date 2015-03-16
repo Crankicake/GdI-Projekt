@@ -17,6 +17,7 @@ public class ThrowAttempt {
 	private int angle;
 
 	private int playerID;
+	
 	/*
 	 * Einen neuen Wurf starten mit: Dem Winkel Der Kraft Der Position, von der
 	 * aus geworfen wird Der Gravitation
