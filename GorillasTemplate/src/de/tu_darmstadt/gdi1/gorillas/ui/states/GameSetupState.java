@@ -125,24 +125,11 @@ public class GameSetupState extends OwnState {
 		EditFieldAutoCompletionWindow efacw2 = new EditFieldAutoCompletionWindow(
 				playername2Textbox, acds);
 
-		efacw1.setSize(130, 80);
-		//efacw1.adjustSize();
-		efacw2.setSize(130, 80);
-		// efacw2.adjustSize();
+				
 		playername1Textbox.setAutoCompletion(acds);
 		playername1Textbox.setAutoCompletionWindow(efacw1);
 		playername2Textbox.setAutoCompletion(acds);
 		playername2Textbox.setAutoCompletionWindow(efacw2);
-
-		/*
-		 * AutoCompleteTest = new Label(); AutoCompleteTest.addCallback(new
-		 * CallbackWithReason<Label.CallbackReason>() {
-		 * 
-		 * @Override public void callback(CallbackReason arg0) {
-		 * AutoCompleteTest_Clicked();
-		 * 
-		 * } });
-		 */
 
 		rp.add(playername1Textbox);
 		rp.add(playername2Textbox);
@@ -160,6 +147,7 @@ public class GameSetupState extends OwnState {
 		return rp;
 	}
 
+	
 	protected void AutoCompleteTest_Clicked() {
 		if (playername1Textbox.hasKeyboardFocus())
 			playername1Textbox.setText(AutoCompleteTest.getText());
@@ -175,11 +163,7 @@ public class GameSetupState extends OwnState {
 		int width = windowWidth / 2;
 		int height = windowHeight / 2;
 
-		/*
-		 * AutoCompleteTest.adjustSize(); AutoCompleteTest.setSize(130, 20);
-		 * AutoCompleteTest.setPosition(width, height-10);
-		 */
-
+	
 		playername1Label.adjustSize();
 		playername1Label.setPosition(width - 150, height - 100);
 
@@ -221,7 +205,6 @@ public class GameSetupState extends OwnState {
 		name1 = playername1Textbox.getText();
 		name2 = playername2Textbox.getText();
 
-		// AutoCompleteTest.setText(io.FindeNamen(name1));
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
