@@ -1,6 +1,3 @@
-Bitte nachmachen und beheben:
-Neues Spiel klicken - weiter - escape - about - escape - zurück. Funktioniert auch bei Highscore und dem anderen Fenster
-
 Wenn die Banane am Rand eines Hochhauses explodiert, dann bekommt nur eins den Krater
 
 Die Sonne und die Banane treffen sich, collides sagt aber, dass nix passiert :(

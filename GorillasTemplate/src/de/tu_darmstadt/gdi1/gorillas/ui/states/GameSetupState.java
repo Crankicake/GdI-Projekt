@@ -256,8 +256,8 @@ public class GameSetupState extends OwnState {
 			int x, int y) throws SlickException {
 		Image i = getMenuEntryImage();
 
-		double width = i.getWidth() * 0.35;
-		double height = i.getHeight() * 0.35;
+		double width = i.getWidth() * 0.35 * scale;
+		double height = i.getHeight() * 0.35 * scale;
 
 		double ix = windowWidth / 2 - width / 2;
 		double iy = windowHeight / 2 + 50 - height / 2;

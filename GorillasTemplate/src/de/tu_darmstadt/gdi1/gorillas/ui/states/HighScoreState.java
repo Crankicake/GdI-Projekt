@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import eea.engine.action.basicactions.ChangeStateAction;
+import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
@@ -39,7 +39,7 @@ public class HighScoreState extends OwnState {
 				new MouseClickedEvent());
 
 		//Zurueck Action
-		ChangeStateAction zurueckAction = new ChangeStateAction(Gorillas.MAINMENUSTATE);
+		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
