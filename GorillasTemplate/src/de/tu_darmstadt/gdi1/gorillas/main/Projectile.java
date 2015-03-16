@@ -15,12 +15,12 @@ import eea.engine.entity.Entity;
 public class Projectile extends Entity {
 
 	private PriorityQueue<Vector2f> nextPositions;
-	private static Vector2f position;
+	private Vector2f position;
 	private float rotation = 5f;
 	private Image picture;
 
-	private static boolean flying;
-	private static ThrowAttempt throwAttempt;
+	private boolean flying;
+	private ThrowAttempt throwAttempt;
 	float r = 0;
 
 	public Projectile(String entityID) {
@@ -65,7 +65,7 @@ public class Projectile extends Entity {
 	}
 
 	public void updateOwn(GameContainer gc, StateBasedGame sbg, int i)
-			throws GorillasException {;
+			throws GorillasException {
 
 		if (!flying)
 			return;
@@ -89,7 +89,7 @@ public class Projectile extends Entity {
 			picture.setRotation(0);
 			rotation = 0;
 		}
-		
+
 		super.update(gc, sbg, i);
 	}
 
@@ -112,10 +112,10 @@ public class Projectile extends Entity {
 	@Override
 	public void setPosition(Vector2f newPosition) {
 		Vector2f pos = new Vector2f(newPosition.x, newPosition.y);
-		
+
 		pos.x -= 5;
 		pos.y -= 5;
-		
+
 		position = pos;
 
 		super.setPosition(pos);
@@ -131,7 +131,12 @@ public class Projectile extends Entity {
 		super.setRotation(newRotation);
 
 		rotation = newRotation;
-		picture.setRotation(newRotation);
+		try{
+			picture.setRotation(newRotation);
+		}
+		catch (NullPointerException ex) {
+			
+		}
 	}
 
 	public float getRotation() {

@@ -414,12 +414,23 @@ public class GamePlayState extends OwnState {
 				}
 
 				destructible.impactAt(event.getOwnerEntity().getPosition());
+				//projectile = projectile.createNew();
+				//entityManager.addEntity(stateID, projectile);
+				
+				try {
+					initProjectile();
+					setVisibility(true);
+					System.out.println(whichPlayersDraw);
+				} catch (SlickException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 
 		collisionEvent.addAction(new DestroyEntityAction());
 		projectile.addComponent(collisionEvent);
-
+		
 		entityManager.addEntity(stateID, projectile);
 	}
 
