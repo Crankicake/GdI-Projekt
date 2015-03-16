@@ -33,8 +33,6 @@ public class GameSetupState extends OwnState {
 	private EditField playername2Textbox;
 	private Label playername1Label;
 	private Label playername2Label;
-	private Label AutoCompleteTest;
-
 	private InputOutput io;
 
 	private String errormessage;
@@ -148,13 +146,6 @@ public class GameSetupState extends OwnState {
 	}
 
 	
-	protected void AutoCompleteTest_Clicked() {
-		if (playername1Textbox.hasKeyboardFocus())
-			playername1Textbox.setText(AutoCompleteTest.getText());
-		if (playername2Textbox.hasKeyboardFocus())
-			playername2Textbox.setText(AutoCompleteTest.getText());
-
-	}
 
 	@Override
 	protected void layoutRootPane() {
@@ -223,7 +214,7 @@ public class GameSetupState extends OwnState {
 		name1 = playername1Textbox.getText();
 		name2 = playername2Textbox.getText();
 
-		// AutoCompleteTest.setText(io.FindeNamen(name2));
+	
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
