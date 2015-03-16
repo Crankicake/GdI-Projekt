@@ -108,7 +108,6 @@ public class GameSetupState extends OwnState {
 		AutoCompletionDataSource acds = new AutoCompletionDataSource() {
 			public AutoCompletionResult collectSuggestions(String text,
 					int cursorPos, AutoCompletionResult prev) {
-				// text = text.substring(0, cursorPos);
 				ArrayList<String> ergebnis = new ArrayList<String>();
 				ergebnis.add(io.FindeNamen(text).toString());
 
@@ -125,9 +124,9 @@ public class GameSetupState extends OwnState {
 				playername2Textbox, acds);
 
 		efacw1.setSize(130, 80);
-		efacw1.adjustSize();
+		//efacw1.adjustSize();
 		efacw2.setSize(130, 80);
-		efacw2.adjustSize();
+		// efacw2.adjustSize();
 		playername1Textbox.setAutoCompletion(acds);
 		playername1Textbox.setAutoCompletionWindow(efacw1);
 		playername2Textbox.setAutoCompletion(acds);
