@@ -3,7 +3,6 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -16,15 +15,12 @@ import eea.engine.entity.Entity;
 public class Projectile extends Entity {
 
 	private PriorityQueue<Vector2f> nextPositions;
-	private static Vector2f position;
+	private Vector2f position;
 	private float rotation = 5f;
 	private Image picture;
 
-	private static boolean flying;
-	private static ThrowAttempt throwAttempt;
-
-	private long lastFrame;
-
+	private boolean flying;
+	private ThrowAttempt throwAttempt;
 	float r = 0;
 
 	public Projectile(String entityID) {
@@ -42,7 +38,7 @@ public class Projectile extends Entity {
 		setRotation(0.0f);
 	}
 
-	public void setParamter(int angle, int velocity, double gravity,
+	public void setParameter(int angle, int velocity, double gravity,
 			int playerID) {
 
 		try {
@@ -71,13 +67,11 @@ public class Projectile extends Entity {
 	public void updateOwn(GameContainer gc, StateBasedGame sbg, int i)
 			throws GorillasException {
 
-		int delta = getDelta();
-
 		if (!flying)
 			return;
 
 		try {
-			setPosition(throwAttempt.getNextPoint(delta));
+			setPosition(throwAttempt.getNextPoint(i));
 		} catch (GorillasException ex) {
 			flying = false;
 			throw ex;
@@ -95,7 +89,7 @@ public class Projectile extends Entity {
 			picture.setRotation(0);
 			rotation = 0;
 		}
-		
+
 		super.update(gc, sbg, i);
 	}
 
@@ -118,10 +112,10 @@ public class Projectile extends Entity {
 	@Override
 	public void setPosition(Vector2f newPosition) {
 		Vector2f pos = new Vector2f(newPosition.x, newPosition.y);
-		
+
 		pos.x -= 5;
 		pos.y -= 5;
-		
+
 		position = pos;
 
 		super.setPosition(pos);
@@ -137,24 +131,15 @@ public class Projectile extends Entity {
 		super.setRotation(newRotation);
 
 		rotation = newRotation;
-		picture.setRotation(newRotation);
+		try{
+			picture.setRotation(newRotation);
+		}
+		catch (NullPointerException ex) {
+			
+		}
 	}
 
 	public float getRotation() {
 		return rotation;
-	}
-
-	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29
-	public long getTime() {
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
-
-	// http://wiki.lwjgl.org/index.php?title=LWJGL_Basics_4_%28Timing%29
-	public int getDelta() {
-		long time = getTime();
-		int delta = (int) (time - lastFrame);
-		lastFrame = time;
-
-		return delta;
 	}
 }

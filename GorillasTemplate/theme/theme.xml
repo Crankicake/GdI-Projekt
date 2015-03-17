@@ -278,7 +278,7 @@
 			<font>button_font</font>
 		</param>
 		<param name="autocompletion-height">
-			<int>0</int>
+			<int>30</int>
 		</param>
 		<param name="passwordChar">
 			<int>42</int>

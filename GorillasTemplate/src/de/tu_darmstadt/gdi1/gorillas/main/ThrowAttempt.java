@@ -17,6 +17,7 @@ public class ThrowAttempt {
 	private int angle;
 
 	private int playerID;
+	
 	/*
 	 * Einen neuen Wurf starten mit: Dem Winkel Der Kraft Der Position, von der
 	 * aus geworfen wird Der Gravitation
@@ -124,8 +125,10 @@ public class ThrowAttempt {
 	}
 
 	public Vector2f getNextPoint(double time) throws GorillasException {
-
-		timePassed += 0.02;
+		
+		time *= GamePlayState.timeScale;
+		
+		timePassed += time;
 
 		int x = (int) (x0 + (playerID == 1? (velocityX * timePassed): -(velocityX * timePassed)));
 		x = (int) (x + (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));

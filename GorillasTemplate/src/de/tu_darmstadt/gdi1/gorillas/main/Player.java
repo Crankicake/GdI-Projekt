@@ -21,10 +21,15 @@ public class Player extends Entity {
 
 	private PlayerImageState imageState;
 
+	private int formerVelocity;
+	private int formerAngle;
+	
 	public Player(String entityID) {
 		super(entityID);
 
 		imageState = PlayerImageState.NoHandsForYou;
+		
+		System.out.println("Spieler erzeugt");
 	}
 
 	public void setName(String value) {
@@ -104,5 +109,21 @@ public class Player extends Entity {
 			if (counter == 401)
 				counter = 0;
 		}
+	}
+
+	public void setFormerAngle(int angle) {
+		formerAngle = angle;
+	}
+
+	public void setFormerVelocity(int velocity) {
+		formerVelocity = velocity;
+	}
+	
+	public int getFormerAngle() {
+		return formerAngle;
+	}
+	
+	public int getFormerVelocity() {
+		return formerVelocity;
 	}
 }

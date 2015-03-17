@@ -13,9 +13,9 @@ public class GorillasException extends Throwable {
 
 		this.innerException = innerException;
 		this.message = message;
-		ExceptionReason[] gründe = ExceptionReason.values();
-		this.exceptionReason = (exceptionReason < 0 || exceptionReason > gründe.length - 1) ? ExceptionReason.Undefined
-				: gründe[exceptionReason];
+		ExceptionReason[] gruende = ExceptionReason.values();
+		this.exceptionReason = (exceptionReason < 0 || exceptionReason > gruende.length - 1) ? ExceptionReason.Undefined
+				: gruende[exceptionReason];
 	}
 
 	public GorillasException(Throwable innerException, String message,

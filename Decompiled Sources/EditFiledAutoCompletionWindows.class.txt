@@ -1,0 +1,356 @@
+package de.matthiasmann.twl;
+
+import de.matthiasmann.twl.model.AutoCompletionDataSource;
+import de.matthiasmann.twl.model.AutoCompletionResult;
+import de.matthiasmann.twl.model.SimpleListModel;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class EditFieldAutoCompletionWindow
+  extends InfoWindow
+{
+  private final ResultListModel listModel;
+  private final ListBox<String> listBox;
+  private boolean captureKeys;
+  private boolean useInvokeAsync;
+  private AutoCompletionDataSource dataSource;
+  private ExecutorService executorService;
+  private Future<AutoCompletionResult> future;
+  
+  public EditFieldAutoCompletionWindow(EditField editField)
+  {
+    super(editField);
+    
+    this.listModel = new ResultListModel();
+    this.listBox = new ListBox(this.listModel);
+    
+    add(this.listBox);
+    
+    Callbacks cb = new Callbacks();
+    this.listBox.addCallback(cb);
+  }
+  
+  public EditFieldAutoCompletionWindow(EditField editField, AutoCompletionDataSource dataSource)
+  {
+    this(editField);
+    this.dataSource = dataSource;
+  }
+  
+  public EditFieldAutoCompletionWindow(EditField editField, AutoCompletionDataSource dataSource, ExecutorService executorService)
+  {
+    this(editField);
+    this.dataSource = dataSource;
+    this.executorService = executorService;
+  }
+  
+  public final EditField getEditField()
+  {
+    return (EditField)getOwner();
+  }
+  
+  public ExecutorService getExecutorService()
+  {
+    return this.executorService;
+  }
+  
+  public boolean isUseInvokeAsync()
+  {
+    return this.useInvokeAsync;
+  }
+  
+  public void setExecutorService(ExecutorService executorService)
+  {
+    this.executorService = executorService;
+    this.useInvokeAsync = false;
+    cancelFuture();
+  }
+  
+  public void setUseInvokeAsync(boolean useInvokeAsync)
+  {
+    this.executorService = null;
+    this.useInvokeAsync = useInvokeAsync;
+    cancelFuture();
+  }
+  
+  public AutoCompletionDataSource getDataSource()
+  {
+    return this.dataSource;
+  }
+  
+  public void setDataSource(AutoCompletionDataSource dataSource)
+  {
+    this.dataSource = dataSource;
+    cancelFuture();
+    if (isOpen()) {
+      updateAutoCompletion();
+    }
+  }
+  
+  public void updateAutoCompletion()
+  {
+    cancelFuture();
+    AutoCompletionResult result = null;
+    if (this.dataSource != null)
+    {
+      EditField ef = getEditField();
+      int cursorPos = ef.getCursorPos();
+      if (cursorPos > 0)
+      {
+        String text = ef.getText();
+        GUI gui = ef.getGUI();
+        if (this.listModel.result != null) {
+          result = this.listModel.result.refine(text, cursorPos);
+        }
+        if (result == null) {
+          if ((gui != null) && ((this.useInvokeAsync) || (this.executorService != null))) {
+            this.future = (this.useInvokeAsync ? gui.executorService : this.executorService).submit(new AsyncQuery(gui, this.dataSource, text, cursorPos, this.listModel.result));
+          } else {
+            try
+            {
+              result = this.dataSource.collectSuggestions(text, cursorPos, this.listModel.result);
+            }
+            catch (Exception ex)
+            {
+              reportQueryException(ex);
+            }
+          }
+        }
+      }
+    }
+    updateAutoCompletion(result);
+  }
+  
+  public void stopAutoCompletion()
+  {
+    this.listModel.setResult(null);
+    installAutoCompletion();
+  }
+  
+  protected void infoWindowClosed()
+  {
+    stopAutoCompletion();
+  }
+  
+  protected void updateAutoCompletion(AutoCompletionResult results)
+  {
+    this.listModel.setResult(results);
+    this.captureKeys = false;
+    installAutoCompletion();
+  }
+  
+  void checkFuture()
+  {
+    if ((this.future != null) && 
+      (this.future.isDone()))
+    {
+      AutoCompletionResult result = null;
+      try
+      {
+        result = (AutoCompletionResult)this.future.get();
+      }
+      catch (InterruptedException ex)
+      {
+        Thread.currentThread().interrupt();
+      }
+      catch (ExecutionException ex)
+      {
+        reportQueryException(ex.getCause());
+      }
+      this.future = null;
+      updateAutoCompletion(result);
+    }
+  }
+  
+  void cancelFuture()
+  {
+    if (this.future != null)
+    {
+      this.future.cancel(true);
+      this.future = null;
+    }
+  }
+  
+  protected void reportQueryException(Throwable ex)
+  {
+    Logger.getLogger(EditFieldAutoCompletionWindow.class.getName()).log(Level.SEVERE, "Exception while collecting auto completion results", ex);
+  }
+  
+  protected boolean handleEvent(Event evt)
+  {
+    if (evt.isKeyEvent())
+    {
+      if (this.captureKeys)
+      {
+        if (evt.isKeyPressedEvent()) {
+          switch (evt.getKeyCode())
+          {
+          case 28: 
+          case 156: 
+            return acceptAutoCompletion();
+          case 1: 
+            stopAutoCompletion();
+            break;
+          case 199: 
+          case 200: 
+          case 201: 
+          case 207: 
+          case 208: 
+          case 209: 
+            this.listBox.handleEvent(evt);
+            break;
+          case 203: 
+          case 205: 
+            return false;
+          default: 
+            if ((evt.hasKeyChar()) || (evt.getKeyCode() == 14))
+            {
+              if (!acceptAutoCompletion()) {
+                stopAutoCompletion();
+              }
+              return false;
+            }
+            break;
+          }
+        }
+        return true;
+      }
+      switch (evt.getKeyCode())
+      {
+      case 200: 
+      case 208: 
+      case 209: 
+        this.listBox.handleEvent(evt);
+        startCapture();
+        return this.captureKeys;
+      case 1: 
+        stopAutoCompletion();
+        return false;
+      case 57: 
+        if ((evt.getModifiers() & 0x24) != 0)
+        {
+          updateAutoCompletion();
+          return true;
+        }
+        return false;
+      }
+      return false;
+    }
+    return super.handleEvent(evt);
+  }
+  
+  boolean acceptAutoCompletion()
+  {
+    int selected = this.listBox.getSelected();
+    if (selected >= 0)
+    {
+      EditField editField = getEditField();
+      String text = this.listModel.getEntry(selected);
+      int pos = this.listModel.getCursorPosForEntry(selected);
+      
+      editField.setText(text);
+      if ((pos >= 0) && (pos < text.length())) {
+        editField.setCursorPos(pos);
+      }
+      stopAutoCompletion();
+      return true;
+    }
+    return false;
+  }
+  
+  private void startCapture()
+  {
+    this.captureKeys = true;
+    installAutoCompletion();
+  }
+  
+  private void installAutoCompletion()
+  {
+    if (this.listModel.getNumEntries() > 0)
+    {
+      openInfo();
+    }
+    else
+    {
+      this.captureKeys = false;
+      closeInfo();
+    }
+  }
+  
+  static class ResultListModel
+    extends SimpleListModel<String>
+  {
+    AutoCompletionResult result;
+    
+    public void setResult(AutoCompletionResult result)
+    {
+      this.result = result;
+      fireAllChanged();
+    }
+    
+    public int getNumEntries()
+    {
+      return this.result == null ? 0 : this.result.getNumResults();
+    }
+    
+    public String getEntry(int index)
+    {
+      return this.result.getResult(index);
+    }
+    
+    public int getCursorPosForEntry(int index)
+    {
+      return this.result.getCursorPosForResult(index);
+    }
+  }
+  
+  class Callbacks
+    implements CallbackWithReason<ListBox.CallbackReason>
+  {
+    Callbacks() {}
+    
+    public void callback(ListBox.CallbackReason reason)
+    {
+      switch (EditFieldAutoCompletionWindow.1.$SwitchMap$de$matthiasmann$twl$ListBox$CallbackReason[reason.ordinal()])
+      {
+      case 1: 
+        EditFieldAutoCompletionWindow.this.acceptAutoCompletion();
+      }
+    }
+  }
+  
+  class AsyncQuery
+    implements Callable<AutoCompletionResult>, Runnable
+  {
+    private final GUI gui;
+    private final AutoCompletionDataSource dataSource;
+    private final String text;
+    private final int cursorPos;
+    private final AutoCompletionResult prevResult;
+    
+    public AsyncQuery(GUI gui, AutoCompletionDataSource dataSource, String text, int cursorPos, AutoCompletionResult prevResult)
+    {
+      this.gui = gui;
+      this.dataSource = dataSource;
+      this.text = text;
+      this.cursorPos = cursorPos;
+      this.prevResult = prevResult;
+    }
+    
+    public AutoCompletionResult call()
+      throws Exception
+    {
+      AutoCompletionResult acr = this.dataSource.collectSuggestions(this.text, this.cursorPos, this.prevResult);
+      this.gui.invokeLater(this);
+      return acr;
+    }
+    
+    public void run()
+    {
+      EditFieldAutoCompletionWindow.this.checkFuture();
+    }
+  }
+}

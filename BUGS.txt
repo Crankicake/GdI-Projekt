@@ -1,7 +1,3 @@
-GamePlayState/GameSetupState: Wenn lange Namen eingegeben werden, liegen Sie über den Textboxen zur Eingabe der Wurfparameter im GamePlayState
+Wenn die Banane am Rand eines Hochhauses explodiert, dann bekommt nur eins den Krater
 
-GamePlayState : Wenn ein Lied in der Jukebox ausgewählt wird, wird das Spiel im Hintergrund nicht mehr "gerendert" bzw. es wird angehalten bis der Focus wieder auf dem Fenster ist.(Vielleicht während des Spiels unsichtbar machen)
-
-JukeBoxiBox: Warum zur Hölle muss man manchmal nochmal auf das Mainfester klicken, damit der Scheiß gezeichnet wird in GameSetupState (Eventuell Reihenfolge der Aufrufe?)
-
-Jukeboxibox: Wenn man ein Spiel startet, mit Escape pausiert, neues Spiel startet und KEIN Lied auswählt dann gibt es eine leckere Nullpointerexception
+Die Sonne und die Banane treffen sich, collides sagt aber, dass nix passiert :(

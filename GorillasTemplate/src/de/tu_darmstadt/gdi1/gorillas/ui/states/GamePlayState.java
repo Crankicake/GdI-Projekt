@@ -2,7 +2,9 @@ package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.List;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -18,29 +20,30 @@ import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.main.Building;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
-import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
-import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
+import de.tu_darmstadt.gdi1.gorillas.main.Sun;
+import de.tu_darmstadt.gdi1.gorillas.main.SunMode;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.DestroyEntityAction;
 import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.DestructibleImageEntity;
 import eea.engine.entity.Entity;
-import eea.engine.event.Event;
 import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.interfaces.IDestructible;
 
 public class GamePlayState extends OwnState {
 
-	protected static Projectile projectile;
+	protected Projectile projectile;
 	protected Player playerOne;
 	protected Player playerTwo;
+	protected Sun sun;
 
 	protected Button throwButton;
 	protected EditField velocityTextField;
@@ -55,11 +58,22 @@ public class GamePlayState extends OwnState {
 	private int whichPlayersDraw;
 	public static double wind = 0;
 	public static double windScale = 0.2;
-	public static double timeScale = 0.01;
+	public static double timeScale = 0.005;
 
 	private Image arrow;
 	private Vector2f arrowPosition;
-	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
+
+	public static Entity explosion;
+	private Vector2f explosionPosition;
+	private int explosionTime;
+	private boolean explosionHappened;
+	
+	
+	
+	private Vector2f[] ape1;
+	
+	private Vector2f[] ape2;
+	
 
 	public GamePlayState(int sid) {
 		super(sid);
@@ -78,6 +92,11 @@ public class GamePlayState extends OwnState {
 				"BuildingDestrucable_", "Banana"
 
 		};
+
+		playerOne.setFormerAngle(0);
+		playerTwo.setFormerAngle(0);
+		playerOne.setFormerVelocity(0);
+		playerTwo.setFormerVelocity(0);
 	}
 
 	@Override
@@ -86,6 +105,7 @@ public class GamePlayState extends OwnState {
 		initBackground();
 		initBuildings();
 		initProjectile();
+		initSun();
 		initWindIndicator();
 	}
 
@@ -97,6 +117,22 @@ public class GamePlayState extends OwnState {
 
 		if (wind != 0)
 			g.drawImage(arrow, arrowPosition.x, arrowPosition.y);
+
+		if (whichPlayersDraw == 1) {
+			float x = playerOne.getPosition().x;
+			float y = playerOne.getPosition().y - 30;
+
+			g.setColor(org.newdawn.slick.Color.green);
+			g.drawString(playerOne.getName(), x, y);
+		} else {
+			float x = playerTwo.getPosition().x;
+			float y = playerTwo.getPosition().y - 30;
+
+			g.setColor(org.newdawn.slick.Color.green);
+			g.drawString(playerTwo.getName(), x, y);
+			g.setColor(org.newdawn.slick.Color.white);
+		}
+
 	}
 
 	@Override
@@ -106,9 +142,17 @@ public class GamePlayState extends OwnState {
 
 		if (input.isKeyPressed(Input.KEY_ESCAPE)) {
 			MasterGame.setIsAGameRunning(true);
-			jukebox.pausieren();
 
 			changeState(gc, sbg, Gorillas.MAINMENUSTATE);
+		}
+
+		if (input.isKeyPressed(Input.KEY_ENTER)) {
+			String one = velocityTextField.getText(), two = angleTextField
+					.getText();
+
+			if (one != null && two != null && !one.isEmpty() && !two.isEmpty()) {
+				throwBanana();
+			}
 		}
 
 		if (arrowPosition == null)
@@ -126,7 +170,9 @@ public class GamePlayState extends OwnState {
 			try {
 				projectile.updateOwn(gc, sbg, i);
 			} catch (GorillasException ex) {
-				throwButton.setEnabled(true);
+				setVisibility(true);
+
+				sun.setSunMode(SunMode.normal);
 
 				if (whichPlayersDraw == 1) {
 					projectile.setPosition(playerOne.getPosition());
@@ -142,6 +188,39 @@ public class GamePlayState extends OwnState {
 			}
 		}
 
+		if (sun.getShape().intersects(projectile.getShape()))
+			sun.setSunMode(SunMode.astonished);
+
+		if (explosionHappened == true) {
+			explosionTime += i;
+
+			if (explosionTime >= 150) {
+				explosion.setVisible(false);
+
+				entityManager.removeEntity(stateID, explosion);
+				explosionTime = 0;
+				explosionHappened = false;
+			}
+		}
+		
+		//Affe getroffen?
+		
+		
+		if(projectile.getPosition().equals(playerOne.getPosition()))
+		{
+			
+			System.out.println("Der Affe wurde getroffen!");
+			
+		}
+		
+		if(projectile.getPosition().equals(playerTwo.getPosition()))
+		{
+			
+			System.out.println("Der Affe wurde getroffen!");
+			
+		}
+		
+		
 		entityManager.updateEntities(gc, sbg, i);
 	}
 
@@ -174,7 +253,8 @@ public class GamePlayState extends OwnState {
 		angleLabel.setText("Winkel: ");
 
 		throwButton = new Button();
-		throwButton.setText("Werfen");
+		throwButton.setText("           Werfen");
+		throwButton.adjustSize();
 		throwButton.addCallback(new Runnable() {
 			@Override
 			public void run() {
@@ -197,49 +277,53 @@ public class GamePlayState extends OwnState {
 
 	@Override
 	protected void layoutRootPane() {
-		velocityTextField.adjustSize();
-		velocityTextField.setPosition(70, 20);
-
-		velocityLabel.adjustSize();
-		velocityLabel.setPosition(12, 23);
-
-		angleTextField.adjustSize();
-		angleTextField.setPosition(70, 55);
-
-		angleLabel.adjustSize();
-		angleLabel.setPosition(15, 58);
-
-		throwButton.adjustSize();
-		throwButton.setPosition(70, 90);
-		throwButton.setSize(88, throwButton.getHeight());
 
 		playerLabel.adjustSize();
-		playerLabel.setPosition(3, 93);
+		playerLabel.setPosition(12, 10);
+
+		velocityTextField.adjustSize();
+		velocityTextField.setPosition(70, 40);
+
+		velocityLabel.adjustSize();
+		velocityLabel.setPosition(12, 43);
+
+		angleTextField.adjustSize();
+		angleTextField.setPosition(70, 75);
+
+		angleLabel.adjustSize();
+		angleLabel.setPosition(12, 78);
+
+		throwButton.adjustSize();
+		throwButton.setPosition(10, 110);
+		throwButton.setSize(148, throwButton.getHeight());
+
 	}
 
 	@Override
 	protected void initBackground() throws SlickException {
-
 		Entity background = new Entity(names[0]);
-		background.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/background/background.png")));
-		background.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 2));
-		background.setScale(Launcher.SCALE);
+
+		switch (new Random().nextInt(3)) {
+		case 0:
+			background.addComponent(new ImageRenderComponent(new Image(
+					"/assets/gorillas/background/Skyline_Frankfurt.png")));
+			break;
+		case 1:
+			background.addComponent(new ImageRenderComponent(new Image(
+					"/assets/gorillas/background/Skyline_Sydney.png")));
+			break;
+		case 2:
+			background.addComponent(new ImageRenderComponent(new Image(
+					"/assets/gorillas/background/Skyline_New_York.png")));
+			break;
+		}
+
+		background.setPosition(new Vector2f(windowWidth / 2, windowHeight / 2));
+		background.setScale(scale);
 		background.setPassable(true);
 		background.setRotation(0.0f);
 
-		Entity sun = new Entity(names[1]);
-		sun.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/sun/sun_smiling.png")));
-		sun.setPosition(new Vector2f(Launcher.FRAME_WIDTH / 2,
-				Launcher.FRAME_HEIGHT / 8));
-		sun.setScale(Launcher.SCALE);
-		sun.setPassable(true);
-		sun.setRotation(0.0f);
-
 		entityManager.addEntity(stateID, background);
-		entityManager.addEntity(stateID, sun);
 	}
 
 	protected void initBuildings() throws SlickException {
@@ -250,7 +334,7 @@ public class GamePlayState extends OwnState {
 		// mich damit noch nciht auseinander gesetzt.
 
 		DestructibleImageEntity[] buildings = new DestructibleImageEntity[8];
-		
+
 		// Graphics2D[] theArry = new Graphics2D[8];
 
 		Random r = new Random();
@@ -261,62 +345,14 @@ public class GamePlayState extends OwnState {
 		float buildingX, buildingY;
 
 		for (int i = 0; i < 8; ++i) {
-			// ImageRenderComponent image = new ImageRenderComponent(new Image(
-			// "/assets/gorillas/background/building_green.png"));
 
-			// DestructibleImageEntity imd = new
-
-			// DestructibleImageEntity en = new
-			// DestructibleImageEntity("Building" + i, image,
-			// "/assets/gorillas/expolosions/explosion_1.png", false);
-
-			// DestructibleImageEntity es = new DestructibleImageEntity
-			// ("Building" + i,"/assets/gorillas/background/building_green.png",
-			// "gorillas/expolosions/explosion_1.png",false);
-
-			BufferedImage img = new BufferedImage(100, 600,
-					BufferedImage.TYPE_INT_ARGB);
-			Graphics2D blueHouse = img.createGraphics();
-			blueHouse.setColor(new Color(23, 100, 201));
-			blueHouse.fillRect(0, 0, 100, 600);
-
-			BufferedImage img2 = new BufferedImage(100, 600,
-					BufferedImage.TYPE_INT_ARGB);
-			Graphics2D greenHouse = img2.createGraphics();
-			greenHouse.setColor(new Color(15, 252, 165));
-			greenHouse.fillRect(0, 0, 100, 600);
-
-			BufferedImage img3 = new BufferedImage(100, 600,
-					BufferedImage.TYPE_INT_ARGB);
-			Graphics2D redHouse = img3.createGraphics();
-			redHouse.setColor(new Color(239, 60, 60));
-			redHouse.fillRect(0, 0, 100, 600);
-
-			/**
-			 * 
-			 * Nuetzliche Links:
-			 * http://www.rapidtables.com/web/color/RGB_Color.html
-			 * http://www.dpunkt
-			 * .de/java/Programmieren_mit_Java/Grafikprogrammierung/5.htm
-			 * https:/
-			 * /moodle.informatik.tu-darmstadt.de/mod/forum/discuss.php?d=34033
-			 */
-
-			// graphic.drawImage(img, x, y, null);
-
-			switch (r.nextInt(3)) {
-			case 0:
-				buildings[i] = new DestructibleImageEntity(names[3] + i, img,
+			try {
+				buildings[i] = new DestructibleImageEntity(names[3] + i,
+						Building.generateBuilding(),
 						"dropofwater/destruction.png", false);
-				break;
-			case 1:
-				buildings[i] = new DestructibleImageEntity(names[3] + i, img2,
-						"dropofwater/destruction.png", false);
-				break;
-			case 2:
-				buildings[i] = new DestructibleImageEntity(names[3] + i, img3,
-						"dropofwater/destruction.png", false);
-				break;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			buildingX = (50f + 100f * i) * windowWidth / 800;
@@ -325,16 +361,27 @@ public class GamePlayState extends OwnState {
 			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
 
 			if (i == indexFirstApe) {
+
 				playerOne
 						.createEntity(new Vector2f(buildingX, buildingY - 321));
+
+				for(int x = 0; x < (37*42); x++)
+					
+				{
+					
+					
+				}
+				
 				entityManager.addEntity(stateID, playerOne);
-			} else if (i == indexSecondApe) {
+			}
+
+			else if (i == indexSecondApe) {
 				playerTwo
 						.createEntity(new Vector2f(buildingX, buildingY - 321));
 				entityManager.addEntity(stateID, playerTwo);
 			}
 
-			buildings[i].setScale(Launcher.SCALE);
+			buildings[i].setScale(scale);
 			buildings[i].setPassable(false);
 			buildings[i].setRotation(0.0f);
 
@@ -346,7 +393,18 @@ public class GamePlayState extends OwnState {
 
 	protected void initProjectile() throws SlickException {
 		projectile = new Projectile(names[4]);
-		projectile.setPosition(playerOne.getPosition());
+
+		if (whichPlayersDraw == 1) {
+			projectile.setPosition(playerOne.getPosition());
+			projectile.setRotation(0);
+			playerOne.setImageState(PlayerImageState.LeftHandRised);
+			playerTwo.setImageState(PlayerImageState.NoHandsForYou);
+		} else {
+			projectile.setPosition(playerTwo.getPosition());
+			projectile.setRotation(0);
+			playerOne.setImageState(PlayerImageState.NoHandsForYou);
+			playerTwo.setImageState(PlayerImageState.LeftHandRised);
+		}
 		projectile.createEntity();
 
 		CollisionEvent collisionEvent = new CollisionEvent();
@@ -360,21 +418,71 @@ public class GamePlayState extends OwnState {
 				IDestructible destructible = null;
 				if (entity instanceof IDestructible) {
 					destructible = (IDestructible) entity;
+					explosionHappened = true;
 				} else {
 					return;
 				}
 
 				destructible.impactAt(event.getOwnerEntity().getPosition());
+				// projectile = projectile.createNew();
+				// entityManager.addEntity(stateID, projectile);
+
+				explosionPosition = event.getOwnerEntity().getPosition();
+
+				try {
+
+					try {
+
+						explosion = new Entity("Explo");
+						explosion
+								.addComponent(new ImageRenderComponent(
+										new Image(
+												"/assets/gorillas/explosions/explosion_1.png")));
+
+						explosion.setPosition(explosionPosition);
+
+						// Banane setzen
+
+						entityManager.addEntity(stateID, explosion);
+
+						// Wurde Affe getroffen?
+
+					}
+
+					catch (SlickException setExpl) {
+
+					}
+
+					initProjectile();
+					setVisibility(true);
+					System.out.println(whichPlayersDraw);
+
+				} catch (SlickException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
-		
+
 		collisionEvent.addAction(new DestroyEntityAction());
 		projectile.addComponent(collisionEvent);
 
 		entityManager.addEntity(stateID, projectile);
 	}
 
-	private void initWindIndicator() throws SlickException {
+	protected void initSun() throws SlickException {
+		sun = new Sun(names[1], null);
+		sun.addImage(new Image("/assets/gorillas/sun/sun_smiling.png"));
+		sun.addImage(new Image("/assets/gorillas/sun/sun_astonished.png"));
+		sun.setPosition(new Vector2f(windowWidth / 2, windowHeight / 8));
+		sun.setScale(scale);
+		sun.setPassable(true);
+		sun.setRotation(0.0f);
+
+		entityManager.addEntity(stateID, sun);
+	}
+
+	protected void initWindIndicator() throws SlickException {
 		if (wind < 0) {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
 
@@ -389,15 +497,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void throwButton_Click() {
-		projectile.setParamter(Integer.parseInt(angleTextField.getText()),
-				Integer.parseInt(velocityTextField.getText()), 9.81,
-				whichPlayersDraw);
-
-		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
-				: playerOne.getName()) + ":");
-
-		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
-		throwButton.setEnabled(false);
+		throwBanana();
 	}
 
 	public void velocityTextField_TextChanged() {
@@ -446,6 +546,51 @@ public class GamePlayState extends OwnState {
 		} catch (NumberFormatException nfe) {
 
 		}
+	}
+
+	private void throwBanana() {
+		projectile.setParameter(Integer.parseInt(angleTextField.getText()),
+				Integer.parseInt(velocityTextField.getText()),
+				MasterGame.getGravitation(), whichPlayersDraw);
+
+		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
+				: playerOne.getName()) + ":");
+
+		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
+		setVisibility(false);
+
+		saveInput();
+	}
+
+	private void saveInput() {
+		if (whichPlayersDraw == 2) {
+			playerOne
+					.setFormerAngle(Integer.parseInt(angleTextField.getText()));
+			playerOne.setFormerVelocity(Integer.parseInt(velocityTextField
+					.getText()));
+
+			angleTextField.setText(String.valueOf(playerTwo.getFormerAngle()));
+			velocityTextField.setText(String.valueOf(playerTwo
+					.getFormerVelocity()));
+		} else {
+			playerTwo
+					.setFormerAngle(Integer.parseInt(angleTextField.getText()));
+			playerTwo.setFormerVelocity(Integer.parseInt(velocityTextField
+					.getText()));
+
+			angleTextField.setText(String.valueOf(playerOne.getFormerAngle()));
+			velocityTextField.setText(String.valueOf(playerOne
+					.getFormerVelocity()));
+		}
+	}
+
+	private void setVisibility(boolean b) {
+		throwButton.setVisible(b);
+		playerLabel.setVisible(b);
+		angleLabel.setVisible(b);
+		angleTextField.setVisible(b);
+		velocityLabel.setVisible(b);
+		velocityTextField.setVisible(b);
 	}
 
 	public Projectile getProjectile() {

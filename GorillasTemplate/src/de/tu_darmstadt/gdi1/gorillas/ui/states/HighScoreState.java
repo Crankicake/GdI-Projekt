@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import eea.engine.action.basicactions.ChangeStateAction;
+import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
@@ -39,7 +39,7 @@ public class HighScoreState extends OwnState {
 				new MouseClickedEvent());
 
 		//Zurueck Action
-		ChangeStateAction zurueckAction = new ChangeStateAction(Gorillas.MAINMENUSTATE);
+		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
@@ -48,7 +48,7 @@ public class HighScoreState extends OwnState {
 		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
-		gorilla_logoE.setPosition(new Vector2f(370, 200));
+		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30, windowHeight / 2 - 100));
 		gorilla_logoE.setScale(1f);
 		gorilla_logoE.addComponent(new ImageRenderComponent(
 				new org.newdawn.slick.Image(
@@ -64,6 +64,7 @@ public class HighScoreState extends OwnState {
 			throws SlickException {
 		super.render(container, game, g);
 		
+		g.setColor(org.newdawn.slick.Color.white);
 		// Schreiben der Texte
 		g.drawString("Zurueck", 85, 66);
 	}
