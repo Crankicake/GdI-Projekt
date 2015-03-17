@@ -7,13 +7,12 @@ public class MasterGame {
 
 	private static boolean applyPlayerNames;
 	private static boolean running;
-	
+
 	private static boolean laeuftJukebox;
-	
+
 	private static double grav;
-	
-	
-	static  {
+
+	static {
 		playerOne = new Player("One");
 		playerTwo = new Player("Two");
 		applyPlayerNames = false;
@@ -35,26 +34,29 @@ public class MasterGame {
 	}
 
 	public static void setIsAGameRunning(boolean b) {
-		if(b != running)
+		if (b != running)
 			running = b;
 	}
-	
+
 	public static boolean isAGameRunning() {
 		return running;
 	}
-	
-	public static boolean isJukeboxRunning(){
+
+	public static boolean isJukeboxRunning() {
 		return laeuftJukebox;
 	}
-	
-	public static void setIsJukeboxRunning(boolean b){
+
+	public static void setIsJukeboxRunning(boolean b) {
 		laeuftJukebox = b;
 	}
 
 	public static void setGravitation(double g) {
+		if (Double.isNaN(g) || Double.isInfinite(g))
+			return;
+
 		grav = g;
 	}
-	
+
 	public static double getGravitation() {
 		return grav;
 	}

@@ -31,8 +31,10 @@ public class GameSetupState extends OwnState {
 
 	private EditField playername1Textbox;
 	private EditField playername2Textbox;
+	private EditField gravitationTextbox;
 	private Label playername1Label;
 	private Label playername2Label;
+	private Label gravitationLabel;
 	private InputOutput io;
 
 	private String errormessage;
@@ -98,12 +100,30 @@ public class GameSetupState extends OwnState {
 			}
 		});
 
+		gravitationTextbox = new EditField();
+		gravitationTextbox.addCallback(new Callback() {
+			@Override
+			public void callback(int arg0) {
+				try {
+					double d = Double.valueOf(gravitationTextbox.getText());
+					MasterGame.setGravitation(d);
+				} catch (NumberFormatException nfe) {
+					errormessage = "Gravitation muss eine Zahl sein";
+				} catch(NullPointerException npe) {
+					errormessage = "null";
+				}
+			}
+		});
+		
 		playername1Label = new Label();
 		playername1Label.setText("Name von Spieler 1:");
 
 		playername2Label = new Label();
 		playername2Label.setText("Name von Spieler 2:");
 
+		gravitationLabel = new Label();
+		gravitationLabel.setText("Gravitation:");
+		
 		AutoCompletionDataSource acds = new AutoCompletionDataSource() {
 			public AutoCompletionResult collectSuggestions(String text,
 					int cursorPos, AutoCompletionResult prev) {
@@ -131,9 +151,11 @@ public class GameSetupState extends OwnState {
 
 		rp.add(playername1Textbox);
 		rp.add(playername2Textbox);
+		rp.add(gravitationTextbox);
 		rp.add(playername1Label);
 		rp.add(playername2Label);
-
+		rp.add(gravitationLabel);
+		
 		if (!MasterGame.isAGameRunning()) {
 			setPlayername1TextboxText("Player 1");
 			setPlayername2TextboxText("Player 2");
@@ -154,7 +176,6 @@ public class GameSetupState extends OwnState {
 		int width = windowWidth / 2;
 		int height = windowHeight / 2;
 
-	
 		playername1Label.adjustSize();
 		playername1Label.setPosition(width - 150, height - 100);
 
@@ -162,12 +183,19 @@ public class GameSetupState extends OwnState {
 		playername1Textbox.setSize(130, 20);
 		playername1Textbox.setPosition(width, height - 100);
 
+		gravitationLabel.adjustSize();
+		gravitationLabel.setPosition(width - 150, height - 20);
+		
+		gravitationTextbox.adjustSize();
+		gravitationTextbox.setSize(130, 20);
+		gravitationTextbox.setPosition(width, height - 20);
+		
 		playername2Label.adjustSize();
-		playername2Label.setPosition(width - 150, height - 50);
+		playername2Label.setPosition(width - 150, height - 60);
 
 		playername2Textbox.adjustSize();
 		playername2Textbox.setSize(130, 20);
-		playername2Textbox.setPosition(width, height - 50);
+		playername2Textbox.setPosition(width, height - 60);
 
 	}
 

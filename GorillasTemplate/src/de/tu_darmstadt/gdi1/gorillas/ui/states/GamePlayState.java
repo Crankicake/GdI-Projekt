@@ -63,13 +63,27 @@ public class GamePlayState extends OwnState {
 	private Vector2f explosionPosition;
 	private int explosionTime;
 	private boolean explosionHappened;
-	
-	
-	
-	private Vector2f[] ape1;
-	
-	private Vector2f[] ape2;
-	
+	private boolean readyForHit = false;
+
+	public static Entity apeHit;
+	private Vector2f apeHitPosition;
+
+	int count1 = 0;
+	int countXApe1 = 0;
+	int countYApe1 = 0;
+
+	int count2 = 0;
+	int countXApe2 = 0;
+	int countYApe2 = 0;
+
+	private boolean hitHappenedP1 = false;
+	private int timeSinceHit = 0;
+	private boolean hitHappenedP2 = false;
+
+	private Vector2f[] ape1 = new Vector2f[45 * 50];
+	private Vector2f[] ape2 = new Vector2f[45 * 50];
+
+	private Vector2f[] bananaBox = new Vector2f[20 * 20];
 
 	public GamePlayState(int sid) {
 		super(sid);
@@ -198,25 +212,63 @@ public class GamePlayState extends OwnState {
 				explosionHappened = false;
 			}
 		}
-		
-		//Affe getroffen?
-		
-		
-		if(projectile.getPosition().equals(playerOne.getPosition()))
-		{
-			
-			System.out.println("Der Affe wurde getroffen!");
-			
+
+		// Welcher Affe Wurde getroffen
+
+		for (Vector2f v : ape1) {
+
+			if (v.equals(projectile.getPosition())) {
+
+				hitHappenedP1 = true;
+
+				if (hitHappenedP1 = true) {
+					System.out.println("Den Affen 1 hats erwischt!");
+					apeHit = new Entity("Apehit");
+					apeHit.addComponent(new ImageRenderComponent(new Image(
+							"gorillas/gorillaHit.png")));
+					apeHit.setPosition(playerOne.getPosition());
+					// entityManager.addEntity(stateID, apeHit);
+					hitHappenedP1 = false;
+
+					timeSinceHit += i;
+
+					if (timeSinceHit >= 500) {
+
+						apeHit.setVisible(false);
+						entityManager.removeEntity(stateID, apeHit);
+						timeSinceHit = 0;
+
+						break;
+					}
+				}
+
+			}
 		}
-		
-		if(projectile.getPosition().equals(playerTwo.getPosition()))
-		{
-			
-			System.out.println("Der Affe wurde getroffen!");
-			
+
+		if (readyForHit == true) {
+
+			for (Vector2f s : ape2) {
+
+				if (s.equals(projectile.getPosition())) {
+
+					hitHappenedP2 = true;
+
+					if (hitHappenedP2 = true) {
+
+						System.out.println("Den Affen 2 hats erwischt!");
+						apeHit = new Entity("Apehit");
+						apeHit.addComponent(new ImageRenderComponent(new Image(
+								"gorillas/gorillaHit.png")));
+						apeHit.setPosition(playerTwo.getPosition());
+						// entityManager.addEntity(stateID, apeHit);
+						hitHappenedP2 = false;
+
+						timeSinceHit += i;
+					}
+				}
+			}
 		}
-		
-		
+
 		entityManager.updateEntities(gc, sbg, i);
 	}
 
@@ -361,19 +413,57 @@ public class GamePlayState extends OwnState {
 				playerOne
 						.createEntity(new Vector2f(buildingX, buildingY - 321));
 
-				for(int x = 0; x < (37*42); x++)
-					
-				{
-					
-					
+				// Create invisible "Hitbox" for player one
+
+				while (count1 < ape1.length) {
+
+					ape1[count1] = new Vector2f(playerOne.getPosition().x
+							+ countXApe1, playerOne.getPosition().y
+							+ countYApe1);
+
+					if (countXApe1 == 45)
+						countXApe1 = 0;
+
+					if (countYApe1 == 50)
+						countYApe1 = 0;
+
+					countXApe1 += 1;
+					countYApe1 += 1;
+					count1 += 1;
 				}
-				
+
+				System.out.println("Affenbox 1: " + ape1[0]);
+				System.out.println("Player1:" + playerOne.getPosition());
+
 				entityManager.addEntity(stateID, playerOne);
 			}
 
 			else if (i == indexSecondApe) {
 				playerTwo
 						.createEntity(new Vector2f(buildingX, buildingY - 321));
+
+				System.out.println("Affenbox 2 Länge = "
+						+ playerTwo.getPosition().x);
+				while (count2 < ape2.length) {
+
+					ape2[count2] = new Vector2f(playerTwo.getPosition().x
+							+ countXApe2, playerTwo.getPosition().y
+							+ countYApe2);
+
+					if (countXApe2 == 45)
+						countXApe2 = 0;
+
+					if (countYApe2 == 50)
+						countYApe2 = 0;
+
+					countXApe2 += 1;
+					countYApe2 += 1;
+					count2 += 1;
+				}
+
+				System.out.println("Affenbox 2: " + ape2[0]);
+				System.out.println("Player2:" + playerTwo.getPosition());
+
 				entityManager.addEntity(stateID, playerTwo);
 			}
 
@@ -382,8 +472,6 @@ public class GamePlayState extends OwnState {
 			buildings[i].setRotation(0.0f);
 
 			entityManager.addEntity(stateID, buildings[i]);
-
-			// sbem.addEntity(stateID, theArry[i]);
 		}
 	}
 
@@ -437,11 +525,7 @@ public class GamePlayState extends OwnState {
 
 						explosion.setPosition(explosionPosition);
 
-						// Banane setzen
-
 						entityManager.addEntity(stateID, explosion);
-
-						// Wurde Affe getroffen?
 
 					}
 
@@ -493,6 +577,8 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void throwButton_Click() {
+		readyForHit = true;
+
 		throwBanana();
 	}
 
