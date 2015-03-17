@@ -1,9 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.List;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 
@@ -328,7 +324,7 @@ public class GamePlayState extends OwnState {
 
 	protected void initBuildings() throws SlickException {
 
-		// Sind die EntitÃ¤ten zerstÃ¶rbar? Ich glaube es gibt da eine extra
+		// Sind die Entitäten zerstörbar? Ich glaube es gibt da eine extra
 		// destructable entity...
 		// Sowas gibt es tatsaechlich, hat aber einen komischen Konstruktor, hab
 		// mich damit noch nciht auseinander gesetzt.
