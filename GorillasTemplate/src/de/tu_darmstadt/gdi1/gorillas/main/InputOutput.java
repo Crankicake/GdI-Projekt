@@ -122,7 +122,6 @@ public class InputOutput {
 				ois.close();
 
 			} catch (IOException e) {
-				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				
 			}
