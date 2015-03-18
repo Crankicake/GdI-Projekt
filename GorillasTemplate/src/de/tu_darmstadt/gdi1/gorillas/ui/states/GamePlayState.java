@@ -798,6 +798,7 @@ public class GamePlayState extends OwnState {
 			g.fillRect(v.x, v.y, 1, 1);
 			g.flush();
 		}
+<<<<<<< HEAD
 	}
 	
 	public static void setVelocity(String value)
@@ -824,6 +825,8 @@ public class GamePlayState extends OwnState {
 	{
 		Double.valueOf(MasterGame.getTimeScale());
 		 
+=======
+>>>>>>> 29b6fd10b2958577aa93728ed7a1f1a37ca19923
 	}
 	
 }

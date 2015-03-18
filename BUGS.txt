@@ -1,7 +1,3 @@
 Banane fliegt an Spitzen und so vorbei ohne mit ihnen zu kollidieren.
 
-GamePlayState: Gleicher Wurf wird von Runde zu Runde, mal als Treffer des Affen erkannt, mal nicht
-
-Wenn die Banane am Rand eines Hochhauses explodiert, dann bekommt nur eins den Krater
-
-Die Sonne und die Banane treffen sich, collides sagt aber, dass nix passiert :(
+Wenn die Banane am Rand eines Hochhauses explodiert, bekommen nicht alle perfekt die Treffer
