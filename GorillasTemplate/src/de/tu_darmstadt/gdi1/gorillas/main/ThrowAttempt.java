@@ -142,7 +142,7 @@ public class ThrowAttempt {
 			return new Vector2f(x, y);
 
 		throw new GorillasException(new Exception(),
-				"Banane ist ausserhalb vom Bild",
+				"Banane ist ausserhalb vom Bild, " + x + " " + y,
 				ExceptionReason.ThrowAttemptNoNextPosition);
 	}
 }

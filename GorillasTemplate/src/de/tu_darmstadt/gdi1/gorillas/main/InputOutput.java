@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 /**
@@ -110,7 +111,9 @@ public class InputOutput {
 				fis = new FileInputStream(datei);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 
-				while (i <= anzahlHighscore()) {
+				int anzahl = anzahlHighscore();
+				
+				while (i <= anzahl) {
 					tmp1[i] = (Highscore) ois.readObject();
 					i++;
 				}
@@ -119,7 +122,7 @@ public class InputOutput {
 				ois.close();
 
 			} catch (IOException e) {
-				
+				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				
 			}
@@ -137,7 +140,14 @@ public class InputOutput {
 				}
 			}
 		}
-		return tmp1;
+		
+		Highscore[] temp = new Highscore[i];
+		
+		for(int x = 0; x < i; ++x) {
+			temp[x] = tmp1[x];
+		}
+		
+		return temp;
 	}
 
 	public int anzahlHighscore() {
@@ -185,18 +195,17 @@ public class InputOutput {
 	public void addHighscore(Highscore hsc) {
 		File datei = new File("Highscore.hcs");
 		OutputStream fos = null;
-		Highscore[] tmp = new Highscore[10000];
+		Highscore[] tmp;
 
+		LinkedList<Highscore> liste = new LinkedList<Highscore>();
+		
 		boolean flag = false;
 
 		if (datei.exists()) {
 			tmp = leseHighscore();
+			
 			try {
-				fos = new FileOutputStream(datei, true);
-				AppendingObjectOutputStream aoos = new AppendingObjectOutputStream(
-						fos);
-
-				int counter = anzahlHighscore();
+				int counter = tmp.length;
 				
 				for (int i = 0; i < counter; i++) {
 					if (tmp[i].getName().equals(hsc.getName())) {
@@ -206,13 +215,36 @@ public class InputOutput {
 								+ hsc.getAnzahlGewonnen());
 						tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
 								+ hsc.getAnzahlBananen());
-						aoos.writeObject(tmp[i]);
 						flag = true;
 					} 
+					
+					liste.add(tmp[i]);
 				}
-				if (!flag)
-					aoos.writeObject(hsc);
 
+				if(!flag)
+					liste.add(hsc);
+				
+				fos = new FileOutputStream(datei, false);
+				
+				if(liste.size() > 0)
+				{
+					ObjectOutputStream oos = new ObjectOutputStream(fos);
+					oos.writeObject(liste.removeFirst());
+					oos.flush();
+					oos.close();
+				}
+				
+				fos.close();
+				
+				fos = new FileOutputStream(datei, true);
+				
+				AppendingObjectOutputStream aoos = new AppendingObjectOutputStream(
+						fos);
+				
+				while(liste.size() > 0) {
+					aoos.writeObject(liste.removeFirst());
+				}
+				
 				aoos.flush();
 				aoos.close();
 				fos.close();
