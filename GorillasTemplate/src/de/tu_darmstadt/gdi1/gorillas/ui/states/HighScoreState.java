@@ -69,16 +69,22 @@ public class HighScoreState extends OwnState {
 			throws SlickException {
 		super.render(container, game, g);
 		io = new InputOutput();
-		hsc = io.leseHighscore();
+		
 		int y = 80;
 		
+		Highscore mm = new Highscore("Simon", 12, 4, 22);
+		io.addHighscore(mm);
+		mm = new Highscore("Salim", 123, 44, 200);
+		io.addHighscore(mm);
+		
+		hsc = io.leseHighscore();
 		g.setColor(org.newdawn.slick.Color.white);
 		
-		for(int i = 0; i <10;i++)
-			g.drawString("Platz :" + i +"\t"+  hsc[i].getName() + "\t" + hsc[i].getAnzahlRunden() +
-					"\t" + hsc[i].getAnzahlGewonnen() + (hsc[i].getAnzahlRunden()/hsc[i].getAnzahlGewonnen())*100 +"%" +
-					"\t" + (hsc[i].getAnzahlGewonnen()/hsc[i].getAnzahlBananen()) +"Miese Treffer", 100, y+=20);
-		
+		for(int i = 0;i<io.anzahlHighscore();i++){
+			g.drawString("Platz :" + i +"    "+  hsc[i].getName() + "   " + hsc[i].getAnzahlRunden() +
+					"    " + hsc[i].getAnzahlGewonnen() +"      "+ (hsc[i].getAnzahlGewonnen()/hsc[i].getAnzahlRunden())*100 +"%" +
+					"        Trefferquote:" + (hsc[i].getAnzahlGewonnen()/hsc[i].getAnzahlBananen()) , 100, y+=20);
+		}
 		g.drawString("Zurueck", 85, 66);
 	}
 }
