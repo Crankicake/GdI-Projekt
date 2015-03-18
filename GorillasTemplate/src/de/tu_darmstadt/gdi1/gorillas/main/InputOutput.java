@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 /**
- * Diese Klasse ist fuer alle Input- und Outputbelange gedacht.
+ * Diese Klasse ist für alle Input- und Outputbelange gedacht.
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  *
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class InputOutput {
 	/**
 	 * Diese Methode speichert in der Datei "Namen.bin" den eingegebenen
-	 * Spielernamen, der als Parameter uebergeben wird
+	 * Spielernamen, der als Parameter übergeben wird
 	 * 
 	 * @param name
 	 */
@@ -98,43 +98,44 @@ public class InputOutput {
 	 * 
 	 * @return Array of Highscores
 	 */
-	public Highscore[] leseHighscore() {
-		File datei = new File("Highscore.hcs");
-		InputStream fis = null;
-		LinkedList<Highscore> tmp1 = new LinkedList<Highscore>();
-		Highscore[] array;
-		Highscore tmp2;
+	 public Highscore[] leseHighscore() {
+		  File datei = new File("Highscore.hcs");
+		  InputStream fis = null;
+		  LinkedList<Highscore> tmp1 = new LinkedList<Highscore>();
+		  Highscore[] array;
+		  Highscore tmp2;
 
-		try {
-			fis = new FileInputStream(datei);
-			ObjectInputStream ois = new ObjectInputStream(fis);
+		  try {
+		   fis = new FileInputStream(datei);
+		   ObjectInputStream ois = new ObjectInputStream(fis);
 
-			while (ois.readObject() != null) {
-				tmp1.add((Highscore) ois.readObject());
-			}
-			fis.close();
-			ois.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		   while (ois.readObject() != null) {
+		    tmp1.add((Highscore) ois.readObject());
+		   }
+		   fis.close();
+		   ois.close();
+		  } catch (IOException e) {
+		   e.printStackTrace();
+		  } catch (ClassNotFoundException e) {
+		   e.printStackTrace();
+		  }
 
-		array = tmp1.toArray(new Highscore[0]);
-		
-		for(int n = array.length; n > 1; n--) {
-			for(int i = 0; i < n - 1; i++) {
-				if (array[n].getGenauigkeit() > array[i].getGenauigkeit())
-				{
-					tmp2 = array[n];
-					array[n] = array[i];
-					array[i] = tmp2;
-				}
-			}
-		}
+		  array = new Highscore[tmp1.size()];
 
-		return array;
-	}
+		  // Sortierung
+		  for (int k = 0; k < array.length; k++) {
+		   for (int j = 0; j < array.length; j++) {
+		    if ((array[j - 1].getAnzahlRunden()
+		      / array[j - 1].getAnzahlGewonnen() > (array[j]
+		      .getAnzahlRunden() / array[j].getAnzahlGewonnen()))) {
+		     tmp2 = array[j];
+		     array[j] = array[j - 1];
+		     array[j - 1] = tmp2;
+		    }
+		   }
+		  }
+		  return array;
+		 }
 
 	/**
 	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hcs"
@@ -149,52 +150,52 @@ public class InputOutput {
 
 		boolean flag = false;
 
-		if (datei.exists()) {
+		if(datei.exists()){
 			tmp = leseHighscore();
-			try {
-				fos = new FileOutputStream(datei);
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
+		try {
+			fos = new FileOutputStream(datei);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-				for (int i = 0; i < tmp.length; i++) {
-					if (tmp[i].getName().equals(hsc.getName())) {
-						tmp[i].setAnzahlRunden(tmp[i].getAnzahlRunden()
-								+ hsc.getAnzahlRunden());
-						tmp[i].setAnzahlGewonnen(tmp[i].getAnzahlGewonnen()
-								+ hsc.getAnzahlGewonnen());
-						tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
-								+ hsc.getAnzahlBananen());
-						oos.writeObject(tmp[i]);
-						flag = true;
+			for (int i = 0; i < tmp.length; i++) {
+				if (tmp[i].getName().equals(hsc.getName())) {
+					tmp[i].setAnzahlRunden(tmp[i].getAnzahlRunden()
+							+ hsc.getAnzahlRunden());
+					tmp[i].setAnzahlGewonnen(tmp[i].getAnzahlGewonnen()
+							+ hsc.getAnzahlGewonnen());
+					tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
+							+ hsc.getAnzahlBananen());
+					oos.writeObject(tmp[i]);
+					flag = true;
 
-					} else {
-						oos.writeObject(tmp[i]);
-					}
-
+				} else {
+					oos.writeObject(tmp[i]);
 				}
-				if (!flag)
-					oos.writeObject(hsc);
 
-				oos.flush();
-				oos.close();
-				fos.close();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-		} else {
-			try {
-				fos = new FileOutputStream(datei);
-
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
+			if (!flag)
 				oos.writeObject(hsc);
-				oos.flush();
-				oos.close();
-				fos.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 
+			oos.flush();
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}else
+	{
+		try {
+			fos = new FileOutputStream(datei);
+		
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(hsc);
+		oos.close();
+		fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+		
 	}
 
 	/**
