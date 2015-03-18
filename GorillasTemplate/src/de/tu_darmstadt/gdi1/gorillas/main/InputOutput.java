@@ -102,15 +102,16 @@ public class InputOutput {
 		File datei = new File("Highscore.hcs");
 		InputStream fis = null;
 		Highscore tmp1[] = null;
+		Highscore tmp2; 
 		int i = 0;
 
-		if (datei.exists()) {
+		
 			try {
 				fis = new FileInputStream(datei);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 
-				while (ois.readObject() != null) {
-					tmp1[i] = (Highscore) ois.readObject();
+				while (ois.readObject() != null){
+					tmp1[i]= (Highscore) ois.readObject();
 					i++;
 				}
 				fis.close();
@@ -120,10 +121,19 @@ public class InputOutput {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		}
-
-		return tmp1;
+		
+		// Sortierung
+		for(int k = 0; k<tmp1.length;k++){
+			for(int j=0;j<tmp1.length;j++){
+				if((tmp1[j-1].getAnzahlRunden()/tmp1[j-1].getAnzahlGewonnen()>
+				(tmp1[j].getAnzahlRunden()/tmp1[j].getAnzahlGewonnen()))){
+					tmp2 = tmp1[j];
+					tmp1[j] = tmp1[j-1];
+					tmp1[j-1] = tmp2;
+				}
+			}
 	}
+		return tmp1;}
 
 	/**
 	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hcs"
@@ -134,10 +144,12 @@ public class InputOutput {
 	public void addHighscore(Highscore hsc) {
 		File datei = new File("Highscore.hcs");
 		OutputStream fos = null;
-		Highscore tmp[] = leseHighscore();
+		Highscore[] tmp = new Highscore[10000];
 
 		boolean flag = false;
 
+		if(datei.exists()){
+			tmp = leseHighscore();
 		try {
 			fos = new FileOutputStream(datei);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -167,6 +179,22 @@ public class InputOutput {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}else
+	{
+		try {
+			fos = new FileOutputStream(datei);
+		
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(hsc);
+		oos.flush();
+		oos.close();
+		fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+		
 	}
 
 	/**
