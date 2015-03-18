@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
+import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -30,40 +31,7 @@ public class InstructionState extends OwnState {
 		// Entitaet zum Zurueckkehren zum Menuebildschirm
 		Entity zurueckE = createMenuEntity(names[0], new Vector2f(120, 80));
 
-		/*
-		 * // Entitaet des 1. Screenshots String screen1 = ""; Entity screen1E =
-		 * new Entity(screen1);
-		 * 
-		 * // Setzen der Komponenten screen1E.setPosition(new Vector2f(370,
-		 * 200)); screen1E.setScale(1f); screen1E.addComponent(new
-		 * ImageRenderComponent( new org.newdawn.slick.Image(
-		 * "assets/gorillas/background/screen1.png")));
-		 * 
-		 * // Entitaet des 2. Screenshots String screen2 = ""; Entity screen2E =
-		 * new Entity(screen2);
-		 * 
-		 * // Setzen der Komponenten screen2E.setPosition(new Vector2f(370,
-		 * 200)); screen2E.setScale(1f); screen2E.addComponent(new
-		 * ImageRenderComponent( new org.newdawn.slick.Image(
-		 * "assets/gorillas/background/screen2.png")));
-		 * 
-		 * // Entitaet des 3. Screenshots String screen3 = ""; Entity screen3E =
-		 * new Entity(screen3);
-		 * 
-		 * // Setzen der Komponenten screen3E.setPosition(new Vector2f(370,
-		 * 200)); screen3E.setScale(1f); screen3E.addComponent(new
-		 * ImageRenderComponent( new org.newdawn.slick.Image(
-		 * "assets/gorillas/background/screen3.png")));
-		 * 
-		 * // Entitaet des 4. Screenshots String screen4 = ""; Entity screen4E =
-		 * new Entity(screen4);
-		 * 
-		 * // Setzen der Komponenten screen4E.setPosition(new Vector2f(370,
-		 * 200)); screen4E.setScale(1f); screen4E.addComponent(new
-		 * ImageRenderComponent( new org.newdawn.slick.Image(
-		 * "assets/gorillas/background/screen4.png")));
-		 */
-
+		
 		// Events und Actions
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
@@ -72,18 +40,54 @@ public class InstructionState extends OwnState {
 		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(
 				Gorillas.MAINMENUSTATE);
 
+	
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
 
+		
+		
+		// Entitaet für Weitergehen zu Seite2
+				Entity weiterE = createMenuEntity(names[0], new Vector2f(670, 80));
+
+				
+				// Events und Actions
+				Event weiterEvent = new ANDEvent(new MouseEnteredEvent(),
+						new MouseClickedEvent());
+
+				// Zurueck Action
+				OwnChangeStateAction weiterAction = new OwnChangeStateAction(
+						Gorillas.INSTRUCTIONSSTATE2);
+
+			
+				weiterEvent.addAction(weiterAction);
+				weiterE.addComponent(weiterEvent);
+
+		
+		// Entitaet der Step_Bilder
+				Entity step1 = new Entity(names[0]);
+				Entity step2 = new Entity(names[0]);
+
+		// Setzen der Komponenten
+				step1.setPosition(new Vector2f(windowWidth / 2 - 220, windowHeight / 2 - 80));
+				step1.setScale(0.35f);
+				step1.addComponent(new ImageRenderComponent(
+						new org.newdawn.slick.Image(
+								"assets/gorillas/instructions/step1.png")));
+				step2.setPosition(new Vector2f(windowWidth / 2 - 220, windowHeight / 2 - -150));
+				step2.setScale(0.35f);
+				step2.addComponent(new ImageRenderComponent(
+						new org.newdawn.slick.Image(
+								"assets/gorillas/instructions/step2.png")));
+	
+				
 		// Hinzufuegen der Entity zum Entitymanager
 		entityManager.addEntity(getID(), zurueckE);
-
-		/*
-		 * entityManager.addEntity(getID(), screen1E);
-		 * entityManager.addEntity(getID(), screen2E);
-		 * entityManager.addEntity(getID(), screen3E);
-		 * entityManager.addEntity(getID(), screen4E);
-		 */
+		entityManager.addEntity(getID(), weiterE);
+	    entityManager.addEntity(getID(), step1);
+	    entityManager.addEntity(getID(), step2);
+	    
+	    
+		 
 	}
 
 	@Override
@@ -92,19 +96,24 @@ public class InstructionState extends OwnState {
 		super.render(container, game, g);
 
 		g.setColor(org.newdawn.slick.Color.white);
+		
 		// Schreiben der Texte
-		g.drawString("Zurueck", 85, 66);
-		g.drawString("Willkommen bei Gorillas!", 250, 130);
-		g.drawString("In der folgenden Anleitung werden sie Schritt fuer", 50,
-				160);
-		g.drawString("Schritt in die Welt von Gorillas eingefuehrt!", 50, 190);
-		g.drawString("1. Schritt: Waehlen der Spielernamen", 30, 250);
-		// g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 365);
-		g.drawString("2. Schritt: Starten des Spiels", 30, 410);
-		// g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 390);
-		g.drawString("3. Schritt: Waehlen der Flugbahn", 450, 250);
-		// g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 405);
-		g.drawString("4. Schritt: Viel Erfolg!", 450, 410);
-		// g.drawString("1. Schritt: Waehlen der Spielernamen", 325, 420);
+		g.drawString("Zurück", 85, 66);
+		g.drawString("Weiter", 635, 66);
+		
+		//Schreiben der Texte für Pic1
+		g.drawString("1. Neues Spiel beginnen ", 350, 130);
+		g.drawString("2. Rangliste der besten Spieler ", 350, 170);
+		g.drawString("3. Spielanleitung ", 350, 210);
+		g.drawString("4. Infos über Version und Namen der Entwickler ", 350, 250);
+		g.drawString("5. Spiel beenden ", 350, 290);
+		
+		//Schreiben der Texte für Pic2
+		g.drawString("6. Zum Hauptmenue zurrückkehren ", 350, 400);
+		g.drawString("7. Auswahl der Spielernamen ", 350, 440);
+		g.drawString("8. Spiel starten ", 350, 480);
+
+		
+		 
 	}
 }

@@ -11,6 +11,7 @@ import de.tu_darmstadt.gdi1.gorillas.ui.states.HighScoreState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.InstructionState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.OptionState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.SecondInstructionState;
 import eea.engine.entity.StateBasedEntityManager;
 
 /**
@@ -32,6 +33,7 @@ public class TestGorillas extends TWLTestStateBasedGame {
 	public static final int HIGHSCORESTATE = 3;
 	public static final int OPTIONSTATE = 4;
 	public static final int INSTRUCTIONSSTATE = 5;
+	public static final int INSTRUCTIONSSTATE2 = 6;
 
 	public static boolean debug = false;
 
@@ -54,8 +56,9 @@ public class TestGorillas extends TWLTestStateBasedGame {
 		this.addState(new GamePlayState(GAMEPLAYSTATE));
 		this.addState(new HighScoreState(HIGHSCORESTATE));
 		this.addState(new OptionState(OPTIONSTATE));
-		this.addState(new InstructionState(INSTRUCTIONSSTATE));
-
+		this.addState(new InstructionState(INSTRUCTIONSSTATE));	
+		this.addState(new SecondInstructionState(INSTRUCTIONSSTATE2));
+		
 		// Add states to the StateBasedEntityManager
 		StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
 		StateBasedEntityManager.getInstance().addState(GAMESETUPSTATE);
@@ -63,6 +66,7 @@ public class TestGorillas extends TWLTestStateBasedGame {
 		StateBasedEntityManager.getInstance().addState(HIGHSCORESTATE);
 		StateBasedEntityManager.getInstance().addState(OPTIONSTATE);
 		StateBasedEntityManager.getInstance().addState(INSTRUCTIONSSTATE);
+		StateBasedEntityManager.getInstance().addState(INSTRUCTIONSSTATE2);
 	}
 
 	@Override
