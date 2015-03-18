@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  *
  */
-public class InputOutput{
+public class InputOutput {
 	/**
 	 * Diese Methode speichert in der Datei "Namen.bin" den eingegebenen
 	 * Spielernamen, der als Parameter übergeben wird
@@ -102,60 +102,64 @@ public class InputOutput{
 		File datei = new File("Highscore.hcs");
 		InputStream fis = null;
 		Highscore tmp1[] = new Highscore[10000];
-		Highscore tmp2; 
+		Highscore tmp2;
 		int i = 0;
 
-			if(datei.exists()){
+		if (datei.exists()) {
 			try {
 				fis = new FileInputStream(datei);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 
-					while(i<=anzahlHighscore()){
-					tmp1[i]= (Highscore) ois.readObject();
-					i++;}
-				
+				while (i <= anzahlHighscore()) {
+					tmp1[i] = (Highscore) ois.readObject();
+					i++;
+				}
+
 				fis.close();
 				ois.close();
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		
-		// Sortierung
-		for(int k = 0; k<anzahlHighscore();k++){
-			for(int j=1;j<anzahlHighscore();j++){
-				if((tmp1[j-1].getAnzahlRunden()/tmp1[j-1].getAnzahlGewonnen()>
-				(tmp1[j].getAnzahlRunden()/tmp1[j].getAnzahlGewonnen()))){
-					tmp2 = tmp1[j];
-					tmp1[j] = tmp1[j-1];
-					tmp1[j-1] = tmp2;
+
+			// Sortierung
+			for (int k = 0; k < anzahlHighscore(); k++) {
+				for (int j = 1; j < anzahlHighscore(); j++) {
+					if ((tmp1[j - 1].getAnzahlRunden()
+							/ tmp1[j - 1].getAnzahlGewonnen() > (tmp1[j]
+							.getAnzahlRunden() / tmp1[j].getAnzahlGewonnen()))) {
+						tmp2 = tmp1[j];
+						tmp1[j] = tmp1[j - 1];
+						tmp1[j - 1] = tmp2;
+					}
 				}
 			}
-			}
 		}
-			return tmp1;}
+		return tmp1;
+	}
 
-	public int anzahlHighscore(){
+	public int anzahlHighscore() {
 		File datei = new File("Highscore.hcs");
 		InputStream fis = null;
 		Highscore tmp1[] = new Highscore[10000];
-		
+
 		int i = 0;
 
-			if(datei.exists()){
+		if (datei.exists()) {
 			try {
 				fis = new FileInputStream(datei);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 
-					while(true){
-					tmp1[i]= (Highscore) ois.readObject();
-					i++;}
-				
-				//fis.close();
-				//ois.close();
-				
+				while (true) {
+					tmp1[i] = (Highscore) ois.readObject();
+					i++;
+				}
+
+				// fis.close();
+				// ois.close();
+
 			} catch (EOFException e) {
 				return i;
 			} catch (ClassNotFoundException e) {
@@ -163,15 +167,17 @@ public class InputOutput{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}}else
-				return 0;
-			return i;
-			
+			}
+		} else
+			return 0;
+		return i;
+
 	}
-	
-	public void resetHighscore(){
+
+	public void resetHighscore() {
 		// Muss noch gemacht
 	}
+
 	/**
 	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hcs"
 	 * hinzu bzw. updated sie mit dem übergebenen Parameter
@@ -185,51 +191,51 @@ public class InputOutput{
 
 		boolean flag = false;
 
-		if(datei.exists()){
+		if (datei.exists()) {
 			tmp = leseHighscore();
-		try {
-			fos = new FileOutputStream(datei, true );
-			AppendingObjectOutputStream aoos = new AppendingObjectOutputStream(fos);
-			
-			for (int i = 0; i < anzahlHighscore(); i++) {
-				if (tmp[i].getName().equals(hsc.getName())) {
-					tmp[i].setAnzahlRunden(tmp[i].getAnzahlRunden()
-							+ hsc.getAnzahlRunden());
-					tmp[i].setAnzahlGewonnen(tmp[i].getAnzahlGewonnen()
-							+ hsc.getAnzahlGewonnen());
-					tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
-							+ hsc.getAnzahlBananen());
-					aoos.writeObject(tmp[i]);
-					flag = true;
+			try {
+				fos = new FileOutputStream(datei, true);
+				AppendingObjectOutputStream aoos = new AppendingObjectOutputStream(
+						fos);
 
-				}else
-					aoos.writeObject(tmp[i]);
+				for (int i = 0; i < anzahlHighscore(); i++) {
+					if (tmp[i].getName().equals(hsc.getName())) {
+						tmp[i].setAnzahlRunden(tmp[i].getAnzahlRunden()
+								+ hsc.getAnzahlRunden());
+						tmp[i].setAnzahlGewonnen(tmp[i].getAnzahlGewonnen()
+								+ hsc.getAnzahlGewonnen());
+						tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
+								+ hsc.getAnzahlBananen());
+						aoos.writeObject(tmp[i]);
+						flag = true;
 
+					} else
+						aoos.writeObject(tmp[i]);
+
+				}
+				if (!flag)
+					aoos.writeObject(hsc);
+
+				aoos.flush();
+				aoos.close();
+				fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			if (!flag)
-				aoos.writeObject(hsc);
-			
-			aoos.flush();
-			aoos.close();
-			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} else {
+			try {
+				fos = new FileOutputStream(datei);
+
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(hsc);
+				oos.close();
+				fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-	}else
-	{
-		try {
-			fos = new FileOutputStream(datei);
-		
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(hsc);
-		oos.close();
-		fos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-		
+
 	}
 
 	/**

@@ -124,11 +124,6 @@ public class GameSetupState extends OwnState {
 				}
 			}
 		});
-<<<<<<< HEAD
-		
-		
-=======
->>>>>>> 29b6fd10b2958577aa93728ed7a1f1a37ca19923
 
 		playername1Label = new Label();
 		playername1Label.setText("Name von Spieler 1:");
@@ -301,11 +296,8 @@ public class GameSetupState extends OwnState {
 	public void StartButtonClick(GameContainer gc, StateBasedGame sbg)
 	throws SlickException
 	{
-
-<<<<<<< HEAD
 		String name1 = playername1Textbox.getText();
 		String name2 = playername2Textbox.getText();
-=======
 				if (name1 == null || name1.isEmpty()) {
 					errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
 					errormessage = errorMessageP1;
@@ -317,7 +309,6 @@ public class GameSetupState extends OwnState {
 					errormessage = errorMessageP2;
 					return;
 				}
->>>>>>> 29b6fd10b2958577aa93728ed7a1f1a37ca19923
 
 		if (name1 == null || name1.isEmpty()) {
 			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
@@ -413,14 +404,9 @@ public class GameSetupState extends OwnState {
 	{
 		return errorMessageP2;
 	}
-<<<<<<< HEAD
 	
 	public String getErrorMessage()
 	{
 		return errormessage;
 	}
-	
-	
-=======
->>>>>>> 29b6fd10b2958577aa93728ed7a1f1a37ca19923
 }
