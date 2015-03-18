@@ -160,6 +160,7 @@ public class GameSetupState extends OwnState {
 		if (!MasterGame.isAGameRunning()) {
 			setPlayername1TextboxText("Player 1");
 			setPlayername2TextboxText("Player 2");
+			setGravitationTextboxText("9.81");
 		} else {
 			setPlayername1TextboxText(MasterGame.getPlayerOne().getName());
 			setPlayername2TextboxText(MasterGame.getPlayerTwo().getName());
@@ -167,8 +168,6 @@ public class GameSetupState extends OwnState {
 
 		return rp;
 	}
-
-	
 
 	@Override
 	protected void layoutRootPane() {
@@ -300,6 +299,10 @@ public class GameSetupState extends OwnState {
 		playername2Textbox.setText(text);
 	}
 
+	private void setGravitationTextboxText(String text) {
+		gravitationTextbox.setText(text);
+	}
+	
 	public void setPlayerOneName(String name) {
 		if (name == null || name.isEmpty()
 				|| name.equals(MasterGame.getPlayerTwo().getName()))

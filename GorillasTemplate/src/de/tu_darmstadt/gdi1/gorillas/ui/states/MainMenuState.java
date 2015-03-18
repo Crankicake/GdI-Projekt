@@ -1,12 +1,5 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.WindowListener;
-
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -15,7 +8,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.Jukeboxibox;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.action.basicactions.ChangeStateAction;
@@ -28,20 +20,17 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 
 public class MainMenuState extends OwnState {
 
-	@SuppressWarnings("rawtypes")
-	private JComboBox liedbox;
-	private JFrame frame;
-
-	private Jukeboxibox jukebox = Jukeboxibox.getInstanz();
+	private Jukeboxibox jukebox;
 
 	public MainMenuState(int sid) {
 		super(sid);
 
 		names = new String[] { "Neues Spiel", "Highscore", "Anleitung",
 				"About", "Beenden" };
+
+		jukebox = Jukeboxibox.getInstanz();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -119,71 +108,14 @@ public class MainMenuState extends OwnState {
 
 		// Jukeboxpart
 		if (!MasterGame.isJukeboxRunning()) {
+			
+			jukebox = Jukeboxibox.getInstanz();
+			try {
+				jukebox.start(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-			liedbox = new JComboBox(InputOutput.findeLieder());
-			frame = new JFrame("Jukebox 600 XS LIMITED EDITION");
-			frame.setSize(370, 300);
-			frame.setBounds(150, 450, 370, 100);
-			liedbox.setBounds(150, 200, 200, 100);
-			liedbox.setVisible(true);
-			liedbox.setEditable(false);
-			liedbox.setSelectedIndex(0);
-			liedbox.addItemListener(new ItemListener() {
-
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					if (e.getStateChange() == ItemEvent.SELECTED)
-						jukebox.spiele(liedbox.getSelectedItem().toString());
-
-				}
-			});
-
-			frame.addWindowListener(new WindowListener() {
-
-				@Override
-				public void windowOpened(java.awt.event.WindowEvent e) {
-
-				}
-
-				@Override
-				public void windowIconified(java.awt.event.WindowEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void windowDeiconified(java.awt.event.WindowEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void windowDeactivated(java.awt.event.WindowEvent e) {
-
-				}
-
-				@Override
-				public void windowClosing(java.awt.event.WindowEvent e) {
-					jukebox.stoppe();
-					MasterGame.setIsJukeboxRunning(false);
-
-				}
-
-				@Override
-				public void windowClosed(java.awt.event.WindowEvent e) {
-
-				}
-
-				@Override
-				public void windowActivated(java.awt.event.WindowEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-
-			frame.add(liedbox);
-			frame.setVisible(true);
-			frame.setAlwaysOnTop(false);
 			MasterGame.setIsJukeboxRunning(true);
 		}
 

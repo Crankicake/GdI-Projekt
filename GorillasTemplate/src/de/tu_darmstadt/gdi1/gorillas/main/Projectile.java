@@ -16,7 +16,7 @@ public class Projectile extends Entity {
 
 	private PriorityQueue<Vector2f> nextPositions;
 	private Vector2f position;
-	private float rotation = 5f;
+	private float rotation;
 	private Image picture;
 
 	private boolean flying;

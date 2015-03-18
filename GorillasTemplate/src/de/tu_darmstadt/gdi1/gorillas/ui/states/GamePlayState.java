@@ -56,7 +56,6 @@ public class GamePlayState extends OwnState {
 
 	private String oldVelocity;
 	private String oldAngle;
-	private String message;
 
 	private Vector2f arrowPosition;
 
@@ -118,7 +117,7 @@ public class GamePlayState extends OwnState {
 				.append(playerOne.getScore()).append("          ")
 				.append(playerTwo.getName()).append(": ")
 				.append(playerTwo.getScore());
-		
+
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
 	}
 
@@ -226,7 +225,6 @@ public class GamePlayState extends OwnState {
 
 		oldVelocity = "";
 		oldAngle = "";
-		message = "";
 
 		readyForHit = false;
 		rundeEnde = false;
@@ -451,7 +449,7 @@ public class GamePlayState extends OwnState {
 	private void updateProjectile(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		if (projectile.isFlying()) {
-			if (flyingTimer < 1000) {
+			if (flyingTimer < 500) {
 				flyingTimer += i;
 			} else {
 				readyForHit = true;
@@ -529,8 +527,14 @@ public class GamePlayState extends OwnState {
 	private void updateMessageBoxes(GameContainer gc, StateBasedGame sbg, int i) {
 
 		if (messageTimer >= 350 && rundeEnde) {
-			JOptionPane.showMessageDialog(null, message, "Achtung!",
-					JOptionPane.PLAIN_MESSAGE);
+
+			if (playerOne.getScore() == 3) {
+				JOptionPane.showMessageDialog(null, playerOne.getName()
+						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+			} else if (playerTwo.getScore() == 3) {
+				JOptionPane.showMessageDialog(null, playerTwo.getName()
+						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+			}
 
 			restart();
 		} else if (messageTimer < 350 && rundeEnde) {
@@ -607,10 +611,8 @@ public class GamePlayState extends OwnState {
 		projectile.explode();
 
 		victum.setVisible(false);
-		message = "Punkt für: " + other.getName();
-
 		other.increaseScore();
-		
+
 		hitTimer = 0;
 		messageTimer = 0;
 		explosionTimer = 0;
