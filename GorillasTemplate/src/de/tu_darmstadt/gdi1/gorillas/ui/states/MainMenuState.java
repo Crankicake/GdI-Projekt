@@ -29,6 +29,8 @@ public class MainMenuState extends OwnState {
 				"About", "Beenden" };
 
 		jukebox = Jukeboxibox.getInstanz();
+		
+		MasterGame.createPlayer();
 	}
 
 	@Override

@@ -22,6 +22,8 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Building;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
+import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
@@ -46,7 +48,7 @@ public class GamePlayState extends OwnState {
 	private Entity apeHit;
 	private Image arrow;
 	private Sun sun;
-
+	
 	private Button throwButton;
 	private EditField velocityTextField;
 	private EditField angleTextField;
@@ -322,12 +324,10 @@ public class GamePlayState extends OwnState {
 		projectile.createEntity();
 
 		if (whichPlayersDraw == 1) {
-			System.out.println("Banane zu 1 gesetzt");
 			projectile.setPosition(playerOne.getPosition());
 			playerOne.setImageState(PlayerImageState.LeftHandRised);
 			playerTwo.setImageState(PlayerImageState.NoHandsForYou);
 		} else {
-			System.out.println("Banane zu 2 gesetzt");
 			projectile.setPosition(playerTwo.getPosition());
 			playerOne.setImageState(PlayerImageState.NoHandsForYou);
 			playerTwo.setImageState(PlayerImageState.LeftHandRised);
@@ -342,17 +342,31 @@ public class GamePlayState extends OwnState {
 				Entity entity = collider.getCollidedEntity();
 
 				if (!(entity instanceof IDestructible)) {
-					return;
+					// return;
 				}
-
-				IDestructible destructible = (IDestructible) entity;
 
 				explosionTimer = 0;
 
-				destructible.impactAt(event.getOwnerEntity().getPosition());
+				if (entity instanceof IDestructible) {
+					IDestructible destructible = (IDestructible) entity;
+					destructible.impactAt(event.getOwnerEntity().getPosition());
+
+					destructible.impactAt(event.getOwnerEntity().getPosition());
+				}
 
 				try {
 					initExplosion(event.getOwnerEntity().getPosition());
+
+					for (Entity e : entityManager.getEntitiesByState(getID())) {
+						if (!(e instanceof IDestructible)) {
+							continue;
+						}
+
+						if (explosion.collides(e))
+							((IDestructible) e).impactAt(event.getOwnerEntity()
+									.getPosition());
+					}
+
 					initProjectile();
 					setVisibility(true);
 				} catch (SlickException setExpl) {
@@ -466,25 +480,24 @@ public class GamePlayState extends OwnState {
 
 				readyForHit = false;
 
-				sun.setSunMode(SunMode.normal);
-
 				if (whichPlayersDraw == 1) {
-					System.out.println("Banane zu 1 geupdatet");
 					projectile.setPosition(playerOne.getPosition());
 					projectile.setRotation(0);
 					playerOne.setImageState(PlayerImageState.LeftHandRised);
 					playerTwo.setImageState(PlayerImageState.NoHandsForYou);
 				} else {
-					System.out.println("Banane zu 2 geupdatet");
 					projectile.setPosition(playerTwo.getPosition());
 					projectile.setRotation(0);
 					playerOne.setImageState(PlayerImageState.NoHandsForYou);
 					playerTwo.setImageState(PlayerImageState.LeftHandRised);
 				}
 			}
+		} else {
 
-			if (sun.getShape().intersects(projectile.getShape()))
-				sun.setSunMode(SunMode.astonished);
+			if (sun.getSunMode() != SunMode.normal) {
+				sun.setSunMode(SunMode.normal);
+				System.out.println("Normal");
+			}
 		}
 	}
 
@@ -501,32 +514,59 @@ public class GamePlayState extends OwnState {
 	private void updateHitboxes(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
-		if (hitTimer >= 1000) {
-			apeHit.setVisible(false);
-		} else {
-			hitTimer += i;
-			// apeHit.setVisible(true);
+		/*Vector2f posPro = projectile.getPosition();
+
+		if (Arrays.asList(sun.getHitbox()).contains(posPro)) {
+			if (sun.getSunMode() != SunMode.astonished) {
+				sun.setSunMode(SunMode.astonished);
+				System.out.println("Astonished");
+			}
+		}
+
+		if (readyForHit) {
+			if (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
+				explode(playerOne, playerTwo, posPro);
+				return;
+			}
+
+			if (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
+				explode(playerTwo, playerOne, posPro);
+				return;
+			}
+
+		}*/
+
+		for (Vector2f v : sun.getHitbox()) {
+			if (compareVectors(v, projectile.getPosition())) {
+				if (sun.getSunMode() != SunMode.astonished) {
+					sun.setSunMode(SunMode.astonished);
+					System.out.println("Astonished");
+				}
+				break;
+			}
 		}
 
 		if (readyForHit) {
 			for (Vector2f v : playerOne.getHitbox()) {
-
 				if (compareVectors(v, projectile.getPosition())) {
-					System.out.println("PlayerOne getroffen");
 					explode(playerOne, playerTwo, v);
 					return;
 				}
-
 			}
 
 			for (Vector2f v : playerTwo.getHitbox()) {
-
 				if (compareVectors(v, projectile.getPosition())) {
-					System.out.println("PlayerTwo getroffen");
 					explode(playerTwo, playerOne, v);
 					return;
 				}
 			}
+		}
+
+		if (hitTimer >= 350) {
+			apeHit.setVisible(false);
+		} else {
+			hitTimer += i;
+			// apeHit.setVisible(true);
 		}
 	}
 
@@ -537,9 +577,32 @@ public class GamePlayState extends OwnState {
 			if (playerOne.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerOne.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+				
+				MasterGame.setIsAGameRunning(false);
+
+				InputOutput io = new InputOutput();
+				
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds() , playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds() , playerTwo.getScore(), playerTwo.getTries());
+				
+				io.addHighscore(h1);
+				io.addHighscore(h2);
+				
+				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			} else if (playerTwo.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerTwo.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+				
+				InputOutput io = new InputOutput();
+				
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds() , playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds() , playerTwo.getScore(), playerTwo.getTries());
+				
+				io.addHighscore(h1);
+				io.addHighscore(h2);
+				
+				MasterGame.setIsAGameRunning(false);
+				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			}
 
 			restart();
@@ -684,6 +747,10 @@ public class GamePlayState extends OwnState {
 		return projectile;
 	}
 
+	public int getRounds() {
+		return playerOne.getScore() + playerTwo.getScore();
+	}
+	
 	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 
