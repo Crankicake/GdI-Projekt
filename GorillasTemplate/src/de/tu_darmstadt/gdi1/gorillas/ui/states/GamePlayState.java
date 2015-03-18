@@ -124,7 +124,7 @@ public class GamePlayState extends OwnState {
 		
 		/*render(sun.getHitbox(), g);
 		render(playerOne.getHitbox(), g);
-		render(playerTwo.getHitbox(), g);	*/	
+		render(playerTwo.getHitbox(), g);*/
 	}
 
 	@Override
