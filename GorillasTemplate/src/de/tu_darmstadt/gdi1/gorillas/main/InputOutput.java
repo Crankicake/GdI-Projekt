@@ -198,7 +198,9 @@ public class InputOutput {
 				AppendingObjectOutputStream aoos = new AppendingObjectOutputStream(
 						fos);
 
-				for (int i = 0; i < anzahlHighscore(); i++) {
+				int counter = anzahlHighscore();
+				
+				for (int i = 0; i < counter; i++) {
 					if (tmp[i].getName().equals(hsc.getName())) {
 						tmp[i].setAnzahlRunden(tmp[i].getAnzahlRunden()
 								+ hsc.getAnzahlRunden());
@@ -208,7 +210,6 @@ public class InputOutput {
 								+ hsc.getAnzahlBananen());
 						aoos.writeObject(tmp[i]);
 						flag = true;
-
 					} 
 				}
 				if (!flag)

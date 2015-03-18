@@ -21,14 +21,20 @@ public class HighScoreState extends OwnState {
 
 	private InputOutput io;
 	private Highscore[] hsc;
-	
+
 	public HighScoreState(int sid) {
 		super(sid);
-		
-		names = new String[] {
-				"Zurueck",
-				"GorillaLogo"
-		};
+
+		names = new String[] { "Zurueck", "GorillaLogo" };
+
+		io = new InputOutput();
+
+		Highscore mm = new Highscore("Simon", 12, 4, 22);
+		io.addHighscore(mm);
+		mm = new Highscore("Salim", 123, 44, 200);
+		io.addHighscore(mm);
+
+		hsc = io.leseHighscore();
 	}
 
 	@Override
@@ -43,8 +49,9 @@ public class HighScoreState extends OwnState {
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
-		//Zurueck Action
-		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(Gorillas.MAINMENUSTATE);
+		// Zurueck Action
+		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(
+				Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
@@ -53,7 +60,8 @@ public class HighScoreState extends OwnState {
 		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
-		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30, windowHeight / 2 - 100));
+		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30,
+				windowHeight / 2 - 100));
 		gorilla_logoE.setScale(1f);
 		gorilla_logoE.addComponent(new ImageRenderComponent(
 				new org.newdawn.slick.Image(
@@ -68,22 +76,29 @@ public class HighScoreState extends OwnState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		super.render(container, game, g);
-		io = new InputOutput();
-		
-		int y = 80;
-		
-		Highscore mm = new Highscore("Simon", 12, 4, 22);
-		io.addHighscore(mm);
-		mm = new Highscore("Salim", 123, 44, 200);
-		io.addHighscore(mm);
-		
-		hsc = io.leseHighscore();
+
 		g.setColor(org.newdawn.slick.Color.white);
-		
-		for(int i = 0;i<io.anzahlHighscore();i++){
-			g.drawString("Platz :" + i +"    "+  hsc[i].getName() + "   " + hsc[i].getAnzahlRunden() +
-					"    " + hsc[i].getAnzahlGewonnen() +"      "+ (hsc[i].getAnzahlGewonnen()/hsc[i].getAnzahlRunden())*100 +"%" +
-					"        Trefferquote:" + (hsc[i].getAnzahlGewonnen()/hsc[i].getAnzahlBananen()) , 100, y+=20);
+
+		int y = 80;
+
+		for (int i = 0; i < io.anzahlHighscore(); i++) {
+			g.drawString(
+					"Platz :"
+							+ i
+							+ "    "
+							+ hsc[i].getName()
+							+ "   "
+							+ hsc[i].getAnzahlRunden()
+							+ "    "
+							+ hsc[i].getAnzahlGewonnen()
+							+ "      "
+							+ (hsc[i].getAnzahlGewonnen() / hsc[i]
+									.getAnzahlRunden())
+							* 100
+							+ "%"
+							+ "        Trefferquote:"
+							+ (hsc[i].getAnzahlGewonnen() / hsc[i]
+									.getAnzahlBananen()), 100, y += 20);
 		}
 		g.drawString("Zurueck", 85, 66);
 	}
