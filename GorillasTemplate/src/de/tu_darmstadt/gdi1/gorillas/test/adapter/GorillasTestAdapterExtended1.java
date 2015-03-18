@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
+import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
+import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
+
 public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 
 	public GorillasTestAdapterExtended1() {
@@ -179,7 +184,10 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 */
 	public void addHighscore(String name, int numberOfRounds, int roundsWon,
 			int bananasThrown) {
-		// TODO: Implement
+		Highscore h = new Highscore(name, numberOfRounds, roundsWon, bananasThrown);
+		
+		InputOutput io = new InputOutput();
+		io.addHighscore(h);
 	}
 
 	/**
@@ -196,8 +204,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * @return number of highscore entries
 	 */
 	public int getHighscoreCount() {
-		// TODO: Implement
-		return -1;
+		InputOutput io = new InputOutput();
+		
+		return io.leseHighscore().length;
 	}
 
 	/**
@@ -212,8 +221,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         if position is invalid
 	 */
 	public String getNameAtHighscorePosition(int position) {
-		// TODO: Implement
-		return null;
+		InputOutput io = new InputOutput();
+		
+		return io.leseHighscore()[position].getName();
 	}
 
 	/**
@@ -228,8 +238,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         passed position or -1 if position is invalid
 	 */
 	public int getRoundsPlayedAtHighscorePosition(int position) {
-		// TODO: Implement
-		return -1;
+		InputOutput io = new InputOutput();
+		
+		return io.leseHighscore()[position].getAnzahlRunden();
 	}
 
 	/**
@@ -244,8 +255,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         position or -1 if position is invalid
 	 */
 	public int getRoundsWonAtHighscorePosition(int position) {
-		// TODO: Implement
-		return -1;
+		InputOutput io = new InputOutput();
+		
+		return io.leseHighscore()[position].getAnzahlGewonnen();
 	}
 
 	/**
@@ -260,8 +272,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         position or -1 if position is invalid
 	 */
 	public int getPercentageWonAtHighscorePosition(int position) {
-		// TODO: Implement
-		return -1;
+		InputOutput io = new InputOutput();
+		
+		return (int)(io.leseHighscore()[position].getGenauigkeit() * 100);
 	}
 
 	/**
@@ -276,8 +289,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         if position is invalid
 	 */
 	public double getMeanAccuracyAtHighscorePosition(int position) {
-		// TODO: Implement
-		return -1;
+		InputOutput io = new InputOutput();
+		
+		return io.leseHighscore()[position].getGenauigkeit();
 	}
 
 	/**
@@ -288,7 +302,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         GamePlayState
 	 */
 	public int getPlayer1Score() {
-		// TODO: Implement
+		if(gorillas.getCurrentState() instanceof GamePlayState) {
+			return MasterGame.getPlayerOne().getScore();
+		}
 		return -1;
 	}
 
@@ -300,7 +316,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         GamePlayState
 	 */
 	public int getPlayer2Score() {
-		// TODO: Implement
+		if(gorillas.getCurrentState() instanceof GamePlayState) {
+			return MasterGame.getPlayerTwo().getScore();
+		}
 		return -1;
 	}
 
@@ -316,8 +334,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         turn of anyone
 	 */
 	public boolean isPlayer1Turn() {
-		// TODO: Implement
-		return false;
+		return !isPlayer2Turn();
 	}
 
 	/**

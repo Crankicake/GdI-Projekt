@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -16,6 +17,7 @@ public class Sun extends Entity {
 	protected LinkedList<Image> images;
 	protected SunMode sm;
 	protected Vector2f[] hitbox;
+	protected String[] remarks;
 
 	public Sun(String entityID,
 			DestructionRenderComponent destructionRenderComponent) {
@@ -24,6 +26,8 @@ public class Sun extends Entity {
 		images = new LinkedList<Image>();
 		sm = SunMode.normal;
 		hitbox = new Vector2f[100 * 100];
+		
+		remarks = MasterGame.getRemarks();	
 	}
 
 	public void addImage(Image image) {
@@ -59,22 +63,30 @@ public class Sun extends Entity {
 	public void setPosition(Vector2f pos) {
 		super.setPosition(pos);
 
-		int x = 0;
-		int y = 0;
+		int x = -1;
+		int y = -1;
 
 		for (int count = 0; count < hitbox.length; count++, x++, y++) {
 			
 			hitbox[count] = new Vector2f(pos.x + x, pos.y + y);
 			
-			if (x == 57)
-				x = 0;
+			if (x == 56)
+				x = -1;
 
-			if (y == 56)
-				y = 0;
+			if (y == 55)
+				y = -1;
 		}
 	}
 
 	public Vector2f[] getHitbox() {
 		return hitbox;
+	}
+
+	public String getComment(int mode) {
+		int r = new Random().nextInt(2);
+
+		int index = mode * 2 + r;
+		
+		return remarks[index];
 	}
 }
