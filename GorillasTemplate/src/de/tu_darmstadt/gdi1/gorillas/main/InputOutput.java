@@ -86,7 +86,7 @@ public class InputOutput {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 		return n; // Falls der eingegebene Name nicht gefunden wird
 	}
@@ -119,9 +119,9 @@ public class InputOutput {
 				ois.close();
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				
 			}
 
 			// Sortierung
@@ -163,10 +163,8 @@ public class InputOutput {
 			} catch (EOFException e) {
 				return i;
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		} else
 			return 0;
@@ -219,7 +217,6 @@ public class InputOutput {
 				aoos.close();
 				fos.close();
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		} else {
 			try {
@@ -231,7 +228,6 @@ public class InputOutput {
 				fos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 

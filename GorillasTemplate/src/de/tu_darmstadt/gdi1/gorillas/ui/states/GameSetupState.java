@@ -22,7 +22,6 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
-import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -114,9 +113,9 @@ public class GameSetupState extends OwnState {
 			public void callback(int arg0) {
 				try {
 					double d = Double.valueOf(gravitationTextbox.getText());
-					
+
 					fillGravitationTextbox(d);
-					
+
 				} catch (NumberFormatException nfe) {
 					errormessage = "Gravitation muss eine Zahl sein";
 				} catch (NullPointerException npe) {
@@ -173,20 +172,16 @@ public class GameSetupState extends OwnState {
 			setPlayername2TextboxText(MasterGame.getPlayerTwo().getName());
 		}
 
-		setGravitationTextboxText(String.valueOf(MasterGame
-				.getGravitation()));
-		
+		setGravitationTextboxText(String.valueOf(MasterGame.getGravitation()));
+
 		return rp;
 	}
-	
-	public void fillGravitationTextbox(double d)
-	{
-		
+
+	public void fillGravitationTextbox(double d) {
+
 		MasterGame.setGravitation(d);
-		
+
 	}
-	
-	
 
 	@Override
 	protected void layoutRootPane() {
@@ -267,8 +262,7 @@ public class GameSetupState extends OwnState {
 				if (!name1.equals(name2)) {
 					setPlayerOneName(name1);
 					setPlayerTwoName(name2);
-					
-					
+
 				}
 			}
 		}
@@ -291,11 +285,9 @@ public class GameSetupState extends OwnState {
 			}
 		}
 	}
-	
-	
+
 	public void StartButtonClick(GameContainer gc, StateBasedGame sbg)
-	throws SlickException
-	{
+			throws SlickException {
 		String name1 = playername1Textbox.getText();
 		String name2 = playername2Textbox.getText();
 
@@ -321,7 +313,7 @@ public class GameSetupState extends OwnState {
 		changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
 		io.speichereName(name1);
 		io.speichereName(name2);
-		
+
 		String firstName = playername1Textbox.getText();
 		String secondName = playername2Textbox.getText();
 
@@ -348,8 +340,7 @@ public class GameSetupState extends OwnState {
 		io.speichereName(firstName);
 		io.speichereName(secondName);
 	}
-	
-	
+
 	public void setPlayername1TextboxText(String text) {
 		playername1Textbox.setText(text);
 	}
@@ -377,25 +368,21 @@ public class GameSetupState extends OwnState {
 
 		MasterGame.getPlayerTwo().setName(name);
 	}
-	
-	public void equalError()
-	{
+
+	public void equalError() {
 		errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
-		
+
 	}
 
-	public String getErrorMessageP1()
-	{
+	public String getErrorMessageP1() {
 		return errorMessageP1;
 	}
-	
-	public String getErrorMessageP2()
-	{
+
+	public String getErrorMessageP2() {
 		return errorMessageP2;
 	}
-	
-	public String getErrorMessage()
-	{
+
+	public String getErrorMessage() {
 		return errormessage;
 	}
 }

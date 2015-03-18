@@ -7,6 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -19,11 +20,8 @@ public class OptionState extends OwnState {
 
 	public OptionState(int sid) {
 		super(sid);
-		
-		names = new String[] {
-			"Zurueck",
-			"GorillaLogo"
-		};
+
+		names = new String[] { "Zurueck", "GorillaLogo" };
 	}
 
 	@Override
@@ -39,7 +37,8 @@ public class OptionState extends OwnState {
 				new MouseClickedEvent());
 
 		// Neues Spiel Action
-		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(Gorillas.MAINMENUSTATE);
+		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(
+				Gorillas.MAINMENUSTATE);
 
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
@@ -48,12 +47,14 @@ public class OptionState extends OwnState {
 		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
-		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30, windowHeight / 2 - 100));
+		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30,
+				windowHeight / 2 - 100));
 		gorilla_logoE.setScale(1f);
-		gorilla_logoE.addComponent(new ImageRenderComponent(
-				new org.newdawn.slick.Image(
-						"assets/gorillas/background/Banner.png")));
-
+		if (!MasterGame.getDebug()) {
+			gorilla_logoE.addComponent(new ImageRenderComponent(
+					new org.newdawn.slick.Image(
+							"assets/gorillas/background/Banner.png")));
+		}
 		// Hinzufuegen der Entity zum Entitymanager
 		entityManager.addEntity(getID(), zurueckE);
 		entityManager.addEntity(getID(), gorilla_logoE);
@@ -68,12 +69,18 @@ public class OptionState extends OwnState {
 		// Schreiben der Texte
 		g.setColor(org.newdawn.slick.Color.white);
 		g.drawString("Zurueck", 85, 66);
-		
-		g.drawString("Version: 1.0", windowWidth / 2 - 80, windowHeight / 2 - 40);
-		g.drawString("Gorillas wird entwickelt von:",  windowWidth / 2 - 140, windowHeight / 2 + 20);
-		g.drawString("Fabian Czappa", windowWidth / 2 - 80, windowHeight / 2 + 60);
-		g.drawString("Christoph Gombert", windowWidth / 2 - 80, windowHeight / 2 + 80);
-		g.drawString("Salim Karacaoglan", windowWidth / 2 - 80, windowHeight / 2 + 100);
-		g.drawString("Simon Foitzik", windowWidth / 2 - 80, windowHeight / 2 + 120);
+
+		g.drawString("Version: 1.0", windowWidth / 2 - 80,
+				windowHeight / 2 - 40);
+		g.drawString("Gorillas wird entwickelt von:", windowWidth / 2 - 140,
+				windowHeight / 2 + 20);
+		g.drawString("Fabian Czappa", windowWidth / 2 - 80,
+				windowHeight / 2 + 60);
+		g.drawString("Christoph Gombert", windowWidth / 2 - 80,
+				windowHeight / 2 + 80);
+		g.drawString("Salim Karacaoglan", windowWidth / 2 - 80,
+				windowHeight / 2 + 100);
+		g.drawString("Simon Foitzik", windowWidth / 2 - 80,
+				windowHeight / 2 + 120);
 	}
 }

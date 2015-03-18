@@ -290,20 +290,18 @@ public class GamePlayState extends OwnState {
 
 		for (int i = 0; i < 8; ++i) {
 
-			if (!MasterGame.getDebug()) {
-				try {
-					buildings[i] = new DestructibleImageEntity(names[3] + i,
-							Building.generateBuilding(),
-							"dropofwater/destruction.png", false);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			try {
+				buildings[i] = new DestructibleImageEntity(names[3] + i,
+						Building.generateBuilding(),
+						"dropofwater/destruction.png", MasterGame.getDebug());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
 			buildingX = (50f + 100f * i) * windowWidth / 800;
 			buildingY = windowHeight + (r.nextInt(7) - 3) * windowHeight / 20;
 
-			[i].setPosition(new Vector2f(buildingX, buildingY));
+			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
 
 			if (indexFirstApe == i) {
 
@@ -391,8 +389,10 @@ public class GamePlayState extends OwnState {
 
 	private void initSun() throws SlickException {
 		sun = new Sun(names[1], null);
-		sun.addImage(new Image("/assets/gorillas/sun/sun_smiling.png"));
-		sun.addImage(new Image("/assets/gorillas/sun/sun_astonished.png"));
+		if (!MasterGame.getDebug()) {
+			sun.addImage(new Image("/assets/gorillas/sun/sun_smiling.png"));
+			sun.addImage(new Image("/assets/gorillas/sun/sun_astonished.png"));
+		}
 		sun.setPosition(new Vector2f(windowWidth / 2, windowHeight / 8));
 		sun.setScale(scale);
 		sun.setPassable(true);
@@ -404,21 +404,24 @@ public class GamePlayState extends OwnState {
 	private void initWindIndicator() throws SlickException {
 		if (MasterGame.getWind() < 0) {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
-
-			arrow = new Image("/assets/gorillas/arrow.png");
-
+			if (!MasterGame.getDebug()) {
+				arrow = new Image("/assets/gorillas/arrow.png");
+			}
 			arrow.rotate(180);
 		} else if (MasterGame.getWind() > 0) {
 			arrowPosition = new Vector2f(30, windowHeight - 20);
-
-			arrow = new Image("/assets/gorillas/arrow.png");
+			if (!MasterGame.getDebug()) {
+				arrow = new Image("/assets/gorillas/arrow.png");
+			}
 		}
 	}
 
 	private void initExplosion(Vector2f pos) throws SlickException {
 		explosion = new Entity("Explo");
-		explosion.addComponent(new ImageRenderComponent(new Image(
-				"/assets/gorillas/explosions/explosion_1.png")));
+		if (!MasterGame.getDebug()) {
+			explosion.addComponent(new ImageRenderComponent(new Image(
+					"/assets/gorillas/explosions/explosion_1.png")));
+		}
 
 		explosion.setPosition(pos);
 
@@ -429,8 +432,12 @@ public class GamePlayState extends OwnState {
 
 	private void initHit() throws SlickException {
 		apeHit = new Entity("Apehit");
-		apeHit.addComponent(new ImageRenderComponent(new Image(
-				"gorillas/gorillaHit.png")));
+
+		if (!MasterGame.getDebug()) {
+			apeHit.addComponent(new ImageRenderComponent(new Image(
+					"gorillas/gorillaHit.png")));
+		}
+		
 		apeHit.setVisible(false);
 
 		entityManager.addEntity(getID(), apeHit);

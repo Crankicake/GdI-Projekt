@@ -29,7 +29,7 @@ public class MainMenuState extends OwnState {
 				"About", "Beenden" };
 
 		jukebox = Jukeboxibox.getInstanz();
-		
+
 		MasterGame.createPlayer();
 	}
 
@@ -110,7 +110,7 @@ public class MainMenuState extends OwnState {
 
 		// Jukeboxpart
 		if (!MasterGame.isJukeboxRunning()) {
-			
+
 			jukebox = Jukeboxibox.getInstanz();
 			try {
 				jukebox.start(null);

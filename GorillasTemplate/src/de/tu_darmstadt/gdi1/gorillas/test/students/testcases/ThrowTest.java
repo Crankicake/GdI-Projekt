@@ -66,37 +66,37 @@ public class ThrowTest {
 	public void testThrow1() {
 		testSingleThrow(60, 300, 60, 40, true, 13, 320, 694.6668f);
 	}
-	
+
 	@Test
 	public void testThrow2() {
 		testSingleThrow(750, 400, 70, 65, false, 15, 416.5304f, 608.7997f);
 	}
-	
+
 	@Test
 	public void testThrow3() {
 		testSingleThrow(100, 450, 45, 180, true, 25, 3281.9805f, 393.0195f);
 	}
-	
+
 	@Test
 	public void testThrow4() {
 		testSingleThrow(800, 250, 45, 170, false, 26, -2325.4120f, 504.5880f);
 	}
-	
+
 	@Test
 	public void testThrow5() {
 		testSingleThrow(50, 350, 89, 200, true, 10, 84.9048f, -1149.6954f);
 	}
-	
+
 	@Test
 	public void testThrow6() {
 		testSingleThrow(950, 200, 92, 180, false, 11, 1019.1010f, -1173.7938f);
 	}
-	
+
 	@Test
 	public void testThrow7() {
 		testSingleThrow(950, 280, 360, 50, true, 10, 1450, 780);
 	}
-	
+
 	@Test
 	public void testThrow8() {
 		testSingleThrow(60, 250, 360, 45, false, 10, -390, 750);
@@ -108,11 +108,12 @@ public class ThrowTest {
 
 	private void testSingleThrow(float x0, float y0, int angle, int speed,
 			boolean fromLeftToRight, int time, float expectedX, float expectedY) {
-		
+
 		float deltaX = 0.001f;
 		float deltaY = 0.001f;
-		Vector2f nextPosition = adapter.getNextShotPosition(new Vector2f(x0,
-				y0), angle, speed, fromLeftToRight, scaleTime(time));
+		Vector2f nextPosition = adapter.getNextShotPosition(
+				new Vector2f(x0, y0), angle, speed, fromLeftToRight,
+				scaleTime(time));
 		assertEquals("A shot, which is thrown from (" + x0 + ", " + y0
 				+ ") with an angle of " + angle + " degree and a speed of "
 				+ speed + ", has to be at (" + expectedX + ", " + expectedY

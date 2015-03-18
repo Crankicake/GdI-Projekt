@@ -55,16 +55,18 @@ public abstract class OwnState extends BasicTWLGameState {
 		scale = Launcher.SCALE;
 
 		try {
-			if(!MasterGame.getDebug()) {
-			menuEntry = new Image("assets/gorillas/background/entry.png");
-			background = new Image(
-					"/assets/gorillas/background/MenuBackground.jpg");
+			if (!MasterGame.getDebug()) {
+				menuEntry = new Image("assets/gorillas/background/entry.png");
+				background = new Image(
+						"/assets/gorillas/background/MenuBackground.jpg");
 			}
 		} catch (SlickException e) {
 			e.printStackTrace();
 			try {
-				menuEntry = new Image(0, 0);
-				background = new Image(0, 0);
+				if (!MasterGame.getDebug()) {
+					menuEntry = new Image(0, 0);
+					background = new Image(0, 0);
+				}
 			} catch (SlickException e1) {
 			}
 		}
@@ -147,21 +149,22 @@ public abstract class OwnState extends BasicTWLGameState {
 		return stateID;
 	}
 
-	protected void changeInitState(GameContainer gc, StateBasedGame sb, int state) {
-	    sb.enterState(state);
+	protected void changeInitState(GameContainer gc, StateBasedGame sb,
+			int state) {
+		sb.enterState(state);
 
-	    StateBasedEntityManager.getInstance().clearEntitiesFromState(state);
+		StateBasedEntityManager.getInstance().clearEntitiesFromState(state);
 
-	    try {
-	      gc.getInput().clearKeyPressedRecord();
-	      gc.getInput().clearControlPressedRecord();
-	      gc.getInput().clearMousePressedRecord();
-	      sb.init(gc);
-	    } catch (SlickException e) {
-	      e.printStackTrace();
-	    }
-	    if (gc.isPaused())
-	      gc.resume();
+		try {
+			gc.getInput().clearKeyPressedRecord();
+			gc.getInput().clearControlPressedRecord();
+			gc.getInput().clearMousePressedRecord();
+			sb.init(gc);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		if (gc.isPaused())
+			gc.resume();
 	}
 
 	/**
@@ -179,7 +182,7 @@ public abstract class OwnState extends BasicTWLGameState {
 		// kein Event von Noeten sind.
 
 		game.enterState(state);
-		
+
 		container.getInput().clearKeyPressedRecord();
 		container.getInput().clearControlPressedRecord();
 		container.getInput().clearMousePressedRecord();
