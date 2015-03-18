@@ -21,8 +21,8 @@ public class Projectile extends Entity {
 
 	private boolean flying;
 	private ThrowAttempt throwAttempt;
-	float r = 0;
-
+	private boolean exploded;
+	
 	public Projectile(String entityID) {
 		super(entityID);
 		nextPositions = new PriorityQueue<Vector2f>();
@@ -67,6 +67,9 @@ public class Projectile extends Entity {
 	public void updateOwn(GameContainer gc, StateBasedGame sbg, int i)
 			throws GorillasException {
 
+		if(exploded)
+			throw new GorillasException(null, "Boooom", 0);
+		
 		if (!flying)
 			return;
 
@@ -141,5 +144,9 @@ public class Projectile extends Entity {
 
 	public float getRotation() {
 		return rotation;
+	}
+
+	public void explode() {
+		exploded = true;
 	}
 }

@@ -13,9 +13,9 @@ public class Player extends Entity {
 
 	private String name;
 	private int score;
-	private int counter = 0;
-
-	private Vector2f position;
+	private int tries;
+	
+	private int counter;
 
 	private Image links, normal, rechts;
 
@@ -23,54 +23,65 @@ public class Player extends Entity {
 
 	private int formerVelocity;
 	private int formerAngle;
-	
+
+	protected Vector2f[] hitbox;
+
 	public Player(String entityID) {
 		super(entityID);
 
 		imageState = PlayerImageState.NoHandsForYou;
-		
-		System.out.println("Spieler erzeugt");
+
+		hitbox = new Vector2f[37 * 42];
 	}
 
 	public void setName(String value) {
 		name = value;
 	}
 
-	public void createEntity(Vector2f pos) throws SlickException {
-
-		pos.x -= 18;
-		pos.y -= 21;
-
-		this.position = pos;
-
+	public void createEntity() throws SlickException {
 		normal = new Image("/assets/gorillas/gorillas/gorilla.png");
 		links = new Image("/assets/gorillas/gorillas/gorilla_left_up.png");
 		rechts = new Image("/assets/gorillas/gorillas/gorilla_right_up.png");
 
-		setPosition(pos);
+		setPosition(new Vector2f());
 		setScale(Launcher.SCALE);
 		setPassable(true);
 		setRotation(0.0f);
+	}
+
+	public void setPosition(Vector2f pos) {
+		super.setPosition(pos);
+
+		pos.x -= 18;
+		pos.y -= 21;
+
+		int x = 0;
+		int y = 0;
+
+		for (int count = 0; count < hitbox.length; count++, x++, y++) {
+
+			hitbox[count] = new Vector2f(pos.x + x, pos.y + y);
+
+			if (x == 37)
+				x = 0;
+
+			if (x == 42)
+				x = 0;
+		}
 	}
 
 	public void increaseScore() {
 		++score;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setImageState(PlayerImageState state) {
-		imageState = state;
+	public void increaseTries() {
+		tries ++;
 	}
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
+
+		Vector2f position = super.getPosition();
 
 		switch (imageState) {
 		case NoHandsForYou:
@@ -118,12 +129,32 @@ public class Player extends Entity {
 	public void setFormerVelocity(int velocity) {
 		formerVelocity = velocity;
 	}
+
+	public void setImageState(PlayerImageState state) {
+		imageState = state;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public int getTries() {
+		return tries;
+	}
 	
 	public int getFormerAngle() {
 		return formerAngle;
 	}
-	
+
 	public int getFormerVelocity() {
 		return formerVelocity;
+	}
+
+	public Vector2f[] getHitbox() {
+		return hitbox;
 	}
 }

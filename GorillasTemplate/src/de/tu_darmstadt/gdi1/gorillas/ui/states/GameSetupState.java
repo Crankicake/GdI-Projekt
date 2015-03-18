@@ -9,6 +9,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+
 import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditFieldAutoCompletionWindow;
 import de.matthiasmann.twl.Label;
@@ -20,7 +21,7 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import eea.engine.action.basicactions.ChangeStateAction;
+import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -208,7 +209,7 @@ public class GameSetupState extends OwnState {
 		Event zurueckEvent = new ANDEvent(new MouseEnteredEvent(),
 				new MouseClickedEvent());
 
-		ChangeStateAction zurueckAction = new ChangeStateAction(
+		OwnChangeStateAction zurueckAction = new OwnChangeStateAction(
 				Gorillas.MAINMENUSTATE);
 		zurueckEvent.addAction(zurueckAction);
 		zurueckEntity.addComponent(zurueckEvent);

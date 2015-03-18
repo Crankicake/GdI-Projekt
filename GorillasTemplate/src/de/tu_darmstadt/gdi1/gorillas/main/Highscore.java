@@ -109,5 +109,4 @@ public class Highscore implements Serializable{
 	public void setAnzahlBananen(int anzahlBananen) {
 		this.anzahlBananen = anzahlBananen;
 	}
-
 }

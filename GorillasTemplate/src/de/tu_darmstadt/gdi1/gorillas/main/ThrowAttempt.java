@@ -4,8 +4,6 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
-
 public class ThrowAttempt {
 
 	private double velocityX, velocityY;
@@ -17,14 +15,14 @@ public class ThrowAttempt {
 	private int angle;
 
 	private int playerID;
-	
+
 	/*
 	 * Einen neuen Wurf starten mit: Dem Winkel Der Kraft Der Position, von der
 	 * aus geworfen wird Der Gravitation
 	 * 
-	 * Hier wird viel geprueft und viele Exceptions geschmissen. Gemacht habe ich
-	 * das, weil das robuster ist, als wenn ich annehme, dass die Werte immer
-	 * richtig reinkommen.
+	 * Hier wird viel geprueft und viele Exceptions geschmissen. Gemacht habe
+	 * ich das, weil das robuster ist, als wenn ich annehme, dass die Werte
+	 * immer richtig reinkommen.
 	 */
 	public ThrowAttempt(int angle, int velocity, Vector2f position,
 			double gravity, int playerID) throws GorillasException {
@@ -33,7 +31,8 @@ public class ThrowAttempt {
 			throw new GorillasException(new ArithmeticException(), "angle: "
 					+ angle, ExceptionReason.ThrowAttemptAngelWrong);
 		}
-		// Der Winkel soll ja zwischen 0 und 360° sein und eine natuerliche Zahl.
+		// Der Winkel soll ja zwischen 0 und 360° sein und eine natuerliche
+		// Zahl.
 
 		if (velocity < 0 || velocity > 200) {
 			throw new GorillasException(new ArithmeticException(), "velocity: "
@@ -41,7 +40,7 @@ public class ThrowAttempt {
 		}
 		// Die Kraft ist zwischen 0 und 200 und aus N.
 
-		if (gravity <= 0) {
+		if (gravity < 0) {
 			throw new GorillasException(new ArithmeticException(), "gravity: "
 					+ gravity, ExceptionReason.ThrowAttemptGravityNegative);
 		}
@@ -81,7 +80,7 @@ public class ThrowAttempt {
 
 		this.velocity = velocity;
 		this.angle = angle;
-		
+
 		this.playerID = playerID;
 	}
 
@@ -112,7 +111,8 @@ public class ThrowAttempt {
 		while (true) {
 
 			x = (int) (x0 + (velocityX * timePassed) + (0.5
-					* GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));
+					* MasterGame.getWindScale() * MasterGame.getWind()
+					* timePassed * timePassed));
 
 			y = (int) (y0 - (velocityY * timePassed) + (0.5 * gravity
 					* timePassed * timePassed));
@@ -125,13 +125,15 @@ public class ThrowAttempt {
 	}
 
 	public Vector2f getNextPoint(double time) throws GorillasException {
-		
-		time *= GamePlayState.timeScale;
-		
+
+		time *= MasterGame.getTimeScale();
+
 		timePassed += time;
 
-		int x = (int) (x0 + (playerID == 1? (velocityX * timePassed): -(velocityX * timePassed)));
-		x = (int) (x + (0.5 * GamePlayState.windScale * GamePlayState.wind * timePassed * timePassed));
+		int x = (int) (x0 + (playerID == 1 ? (velocityX * timePassed)
+				: -(velocityX * timePassed)));
+		x = (int) (x + (0.5 * MasterGame.getWindScale() * MasterGame.getWind()
+				* timePassed * timePassed));
 
 		int y = (int) (y0 - (velocityY * timePassed) + (0.5 * gravity
 				* timePassed * timePassed));

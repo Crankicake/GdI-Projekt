@@ -48,7 +48,7 @@ public abstract class OwnState extends BasicTWLGameState {
 		// Zusaetzlich werden noch die Hoehe, die Breite des Fensters und die
 		// Skalierung gespeichert,
 		// um dadurch einen einfacheren Zugriff zu erlauben
-		
+
 		windowWidth = Launcher.FRAME_WIDTH;
 		windowHeight = Launcher.FRAME_HEIGHT;
 		scale = Launcher.SCALE;
@@ -144,6 +144,23 @@ public abstract class OwnState extends BasicTWLGameState {
 		return stateID;
 	}
 
+	protected void changeInitState(GameContainer gc, StateBasedGame sb, int state) {
+	    sb.enterState(state);
+
+	    StateBasedEntityManager.getInstance().clearEntitiesFromState(state);
+
+	    try {
+	      gc.getInput().clearKeyPressedRecord();
+	      gc.getInput().clearControlPressedRecord();
+	      gc.getInput().clearMousePressedRecord();
+	      sb.init(gc);
+	    } catch (SlickException e) {
+	      e.printStackTrace();
+	    }
+	    if (gc.isPaused())
+	      gc.resume();
+	}
+
 	/**
 	 * @param container
 	 *            : Der Container, in dem dieses Spiel ausgefuehrt wird
@@ -152,24 +169,17 @@ public abstract class OwnState extends BasicTWLGameState {
 	 * @param state
 	 *            : Die interne StateID, in die gewechselt werden soll
 	 */
-	public void changeState(GameContainer container, StateBasedGame game,
+	protected void changeState(GameContainer container, StateBasedGame game,
 			int state) {
-		// CODE GENOMMEN AUS StateChangeAction !!!!!!!!
+		// CODE GENOMMEN AUS ChangeStateAction/ ChangeStateInitAction !!!!!!!!
 		// Erleichert das wechseln zwischen States, da hier keine Action und
 		// kein Event von Noeten sind.
 
 		game.enterState(state);
-
-		// entityManager.clearEntitiesFromState(state);
-
-		// try {
+		
 		container.getInput().clearKeyPressedRecord();
 		container.getInput().clearControlPressedRecord();
 		container.getInput().clearMousePressedRecord();
-		// game.init(container);
-		// } catch (SlickException e) {
-		// e.printStackTrace();
-		// }
 
 		if (container.isPaused())
 			container.resume();

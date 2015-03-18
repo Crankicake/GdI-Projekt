@@ -1,5 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
+import org.newdawn.slick.SlickException;
+
 public class MasterGame {
 
 	private static Player playerOne;
@@ -12,13 +14,29 @@ public class MasterGame {
 
 	private static double grav;
 
+	private static double windScale = 0.2;
+	private static double timeScale = 0.005;
+	private static double wind;
+	
 	static {
 		playerOne = new Player("One");
 		playerTwo = new Player("Two");
+
+		try {
+			playerOne.createEntity();
+			playerTwo.createEntity();
+		} catch (SlickException s) {
+
+		}
+		
 		applyPlayerNames = false;
 		running = false;
 		laeuftJukebox = false;
 		grav = 9.81;
+		
+		windScale = 0.02;
+		timeScale = 0.005;
+		wind = 0;
 	}
 
 	public static Player getPlayerOne() {
@@ -59,5 +77,21 @@ public class MasterGame {
 
 	public static double getGravitation() {
 		return grav;
+	}
+
+	public static double getWindScale() {
+		return windScale;
+	}
+	
+	public static double getTimeScale() {
+		return timeScale;
+	}
+	
+	public static double getWind() {
+		return wind;
+	}
+	
+	public static void setWind(double d) {
+		wind = d;
 	}
 }
