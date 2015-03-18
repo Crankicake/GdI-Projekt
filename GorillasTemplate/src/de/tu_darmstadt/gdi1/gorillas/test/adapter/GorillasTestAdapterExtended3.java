@@ -2,6 +2,8 @@ package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
+
 public class GorillasTestAdapterExtended3 extends GorillasTestAdapterExtended2 {
 
 	protected int gravity;
@@ -56,7 +58,8 @@ public class GorillasTestAdapterExtended3 extends GorillasTestAdapterExtended2 {
 	public Vector2f getNextShotPosition(Vector2f startPosition, int angle,
 			int speed, int wind, int gravity, boolean fromLeftToRight,
 			int deltaTime) {
-		// TODO: Implement
-		return null;
+		MasterGame.setGravitation(gravity);
+		
+		return super.getNextShotPosition(startPosition, angle, speed, wind, fromLeftToRight, deltaTime);
 	}
 }
