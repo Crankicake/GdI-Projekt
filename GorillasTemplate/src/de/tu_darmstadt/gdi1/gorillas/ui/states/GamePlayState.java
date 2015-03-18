@@ -322,10 +322,12 @@ public class GamePlayState extends OwnState {
 		projectile.createEntity();
 
 		if (whichPlayersDraw == 1) {
+			System.out.println("Banane zu 1 gesetzt");
 			projectile.setPosition(playerOne.getPosition());
 			playerOne.setImageState(PlayerImageState.LeftHandRised);
 			playerTwo.setImageState(PlayerImageState.NoHandsForYou);
 		} else {
+			System.out.println("Banane zu 2 gesetzt");
 			projectile.setPosition(playerTwo.getPosition());
 			playerOne.setImageState(PlayerImageState.NoHandsForYou);
 			playerTwo.setImageState(PlayerImageState.LeftHandRised);
@@ -467,11 +469,13 @@ public class GamePlayState extends OwnState {
 				sun.setSunMode(SunMode.normal);
 
 				if (whichPlayersDraw == 1) {
+					System.out.println("Banane zu 1 geupdatet");
 					projectile.setPosition(playerOne.getPosition());
 					projectile.setRotation(0);
 					playerOne.setImageState(PlayerImageState.LeftHandRised);
 					playerTwo.setImageState(PlayerImageState.NoHandsForYou);
 				} else {
+					System.out.println("Banane zu 2 geupdatet");
 					projectile.setPosition(playerTwo.getPosition());
 					projectile.setRotation(0);
 					playerOne.setImageState(PlayerImageState.NoHandsForYou);
@@ -508,6 +512,7 @@ public class GamePlayState extends OwnState {
 			for (Vector2f v : playerOne.getHitbox()) {
 
 				if (compareVectors(v, projectile.getPosition())) {
+					System.out.println("PlayerOne getroffen");
 					explode(playerOne, playerTwo, v);
 					return;
 				}
@@ -517,6 +522,7 @@ public class GamePlayState extends OwnState {
 			for (Vector2f v : playerTwo.getHitbox()) {
 
 				if (compareVectors(v, projectile.getPosition())) {
+					System.out.println("PlayerTwo getroffen");
 					explode(playerTwo, playerOne, v);
 					return;
 				}
@@ -702,9 +708,6 @@ public class GamePlayState extends OwnState {
 	}
 
 	private boolean compareVectors(Vector2f one, Vector2f two) {
-		float x = one.x - two.x;
-		float y = one.y - two.y;
-
-		return x < 0.5 && y < 0.5;
+		return one.equals(two);
 	}
 }
