@@ -70,7 +70,6 @@ public class GamePlayState extends OwnState {
 	private int messageTimer;
 	private int flyingTimer;
 	private int hitTimer;
-	
 
 	public GamePlayState(int sid) {
 		super(sid);
@@ -122,10 +121,11 @@ public class GamePlayState extends OwnState {
 				.append(playerTwo.getScore());
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
-		
-		/*render(sun.getHitbox(), g);
-		render(playerOne.getHitbox(), g);
-		render(playerTwo.getHitbox(), g);*/
+
+		/*
+		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
+		 * render(playerTwo.getHitbox(), g);
+		 */
 	}
 
 	@Override
@@ -713,7 +713,6 @@ public class GamePlayState extends OwnState {
 
 		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
 
-		
 		setVisibility(false);
 
 		saveInput();
@@ -747,7 +746,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void setVisibility(boolean b) {
-		
+
 		throwButton.setVisible(b);
 		playerLabel.setVisible(b);
 		angleLabel.setVisible(b);
@@ -799,24 +798,21 @@ public class GamePlayState extends OwnState {
 			g.flush();
 		}
 	}
-	
-	public static void setVelocity(String value)
-	{
-		velocityTextField.setText(value);
+
+	public void setVelocity(String value) {
+		velocityTextField.setText(velocityTextField.getText() + value);
 	}
-	
-	public static void setAngle(String value)
-	{
-		angleTextField.setText(value);
+
+	public void setAngle(String value) {
+		angleTextField.setText(angleTextField.getText() + value);
 	}
-	
-	public static void clearFields()
-	{
-		velocityTextField.setText("");
-		angleTextField.setText("");
+
+	public void clearFields() {
+		velocityTextField.setText("-1");
+		angleTextField.setText("-1");
 	}
-	public Vector2f getNextBananaPosition()
-	{
+
+	public Vector2f getNextBananaPosition() {
 		return projectile.nextPosition();
 	}
 }

@@ -298,17 +298,6 @@ public class GameSetupState extends OwnState {
 	{
 		String name1 = playername1Textbox.getText();
 		String name2 = playername2Textbox.getText();
-				if (name1 == null || name1.isEmpty()) {
-					errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
-					errormessage = errorMessageP1;
-					return;
-				}
-
-				if (name2 == null || name2.isEmpty()) {
-					errorMessageP2 = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
-					errormessage = errorMessageP2;
-					return;
-				}
 
 		if (name1 == null || name1.isEmpty()) {
 			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";

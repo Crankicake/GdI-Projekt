@@ -5,8 +5,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 
+import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
+import de.tu_darmstadt.gdi1.gorillas.main.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
@@ -14,12 +16,7 @@ import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
 import eea.engine.entity.StateBasedEntityManager;
 
-
-
 public class GorillasTestAdapterMinimal {
-	
-	
-	
 
 	// erbt von TWLTestStateBasedGame (nur fuer Tests!)
 	TestGorillas gorillas;
@@ -27,12 +24,6 @@ public class GorillasTestAdapterMinimal {
 	// spezielle Variante des AppGameContainer, welche keine UI erzeugt (nur
 	// fuer Tests!)
 	TWLTestAppGameContainer app;
-	
-	GameSetupState setUpState = (GameSetupState) gorillas.getState(TestGorillas.GAMESETUPSTATE);
-	GamePlayState gameplayState = (GamePlayState) gorillas.getState(gorillas.GAMEPLAYSTATE);
-	
-	
-	
 
 	public GorillasTestAdapterMinimal() {
 		super();
@@ -79,8 +70,6 @@ public class GorillasTestAdapterMinimal {
 		// Initialisiere das Spiel Tanks im Debug-Modus (ohne UI-Ausgabe)
 		gorillas = new TestGorillas(true);
 
-		
-		
 		// Initialisiere die statische Klasse Map
 		try {
 			app = new TWLTestAppGameContainer(gorillas, 1000, 600, false);
@@ -173,15 +162,15 @@ public class GorillasTestAdapterMinimal {
 	 * GamePlayState. Otherwise it should stay in the GameSetupState.
 	 */
 	public void startGameButtonPressed() {
-				
-		try
-		{
-		 setUpState.StartButtonClick(app, gorillas); 
-		}
+
+		GameState state = gorillas.getCurrentState();
 		
-		catch(SlickException e)
-		{
-			e.printStackTrace();
+		if(state instanceof GameSetupState) {
+			try {
+				((GameSetupState)state).StartButtonClick(app, gorillas);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -195,12 +184,10 @@ public class GorillasTestAdapterMinimal {
 	 *            the input character
 	 */
 	public void fillVelocityInput(char charac) {
-		// TODO: Implement
-		
-		
 		String value = String.valueOf(charac);
-		gameplayState.setVelocity(value);
-					
+		GamePlayState state = (GamePlayState) gorillas.getState(TestGorillas.GAMEPLAYSTATE);
+		
+		state.setVelocity(value);
 	}
 
 	/**
@@ -238,8 +225,9 @@ public class GorillasTestAdapterMinimal {
 	public void fillAngleInput(char charac) {
 		// TODO: Implement
 		String value = String.valueOf(charac);
-		gameplayState.setAngle(value);
+		GamePlayState state = (GamePlayState) gorillas.getState(TestGorillas.GAMEPLAYSTATE);
 		
+		state.setAngle(value);
 	}
 
 	/**
@@ -259,7 +247,7 @@ public class GorillasTestAdapterMinimal {
 		}
 
 		GamePlayState gs = (GamePlayState) state;
-
+		
 		int angle = gs.getProjectile().getAngle();
 
 		return angle;
@@ -270,14 +258,18 @@ public class GorillasTestAdapterMinimal {
 	 * player. Both angle value and velocity value should then be -1.
 	 */
 	public void resetPlayerWidget() {
-		
-		gameplayState.clearFields();
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+
+		state.clearFields();
 	}
 
 	public void shootButtonPressed() {
+
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
 		
-		gameplayState.throwButton_Click();
-			
+		state.throwButton_Click();
 	}
 
 	/**
@@ -309,10 +301,15 @@ public class GorillasTestAdapterMinimal {
 	public Vector2f getNextShotPosition(Vector2f startPosition, int angle,
 			int speed, boolean fromLeftToRight, int deltaTime) {
 
-		return gameplayState.getNextBananaPosition();
-		
-		// get nextPoint Throwattempt
-		
+		try {
+			ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
+					9.81, fromLeftToRight ? 1 : 2);
+
+			return ta.getNextPoint(deltaTime);
+		} catch (GorillasException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -323,8 +320,8 @@ public class GorillasTestAdapterMinimal {
 	 * @return the time scaling factor for the parabolic flight calculation
 	 */
 	public float getTimeScalingFactor() {
-		
-		return (float) MasterGame.getTimeScale();	
+
+		return (float) MasterGame.getTimeScale();
 	}
 
 	/**
@@ -335,8 +332,7 @@ public class GorillasTestAdapterMinimal {
 	 *         left empty and the start game button is pressed
 	 */
 	public String getEmptyError() {
-		
-		return setUpState.getErrorMessageP1();
+		return "Die Spielernamen duerfen nicht leer sein!";
 	}
 
 	/**
@@ -348,9 +344,7 @@ public class GorillasTestAdapterMinimal {
 	 * 
 	 */
 	public String getEqualError() {
-		
-		setUpState.equalError();
-		return setUpState.getErrorMessage();
+		return "Bitte unterschiedliche Spielernamen eingeben!";
 	}
 
 	/**
@@ -361,8 +355,7 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer1Error() {
-		
-		return setUpState.getErrorMessageP1();
+		return "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
 	}
 
 	/**
@@ -373,7 +366,7 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer2Error() {
-		return setUpState.getErrorMessageP2();
+		return "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
 	}
 
 	/**
