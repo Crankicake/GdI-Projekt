@@ -665,7 +665,8 @@ public class GamePlayState extends OwnState {
 
 	private void restart() {
 		setAttributes();
-
+		clearInput();
+		
 		try {
 			entityManager.clearEntitiesFromState(getID());
 
@@ -734,6 +735,11 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	private void clearInput() {
+		angleTextField.setText("0");
+		velocityTextField.setText("0");
+	}
+	
 	private void setVisibility(boolean b) {
 		throwButton.setVisible(b);
 		playerLabel.setVisible(b);

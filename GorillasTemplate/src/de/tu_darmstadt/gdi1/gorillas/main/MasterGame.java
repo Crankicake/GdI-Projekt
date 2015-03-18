@@ -95,5 +95,8 @@ public class MasterGame {
 		} catch (SlickException s) {
 
 		}		
+		
+		playerOne.setName("Payer 1");
+		playerTwo.setName("Player 2");
 	}
 }
