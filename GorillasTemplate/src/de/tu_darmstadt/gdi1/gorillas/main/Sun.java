@@ -9,7 +9,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.component.render.DestructionRenderComponent;
-import eea.engine.entity.DestructibleImageEntity;
 import eea.engine.entity.Entity;
 
 public class Sun extends Entity {

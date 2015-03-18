@@ -1,7 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -513,9 +512,9 @@ public class GamePlayState extends OwnState {
 	private void updateHitboxes(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
-		Vector2f posPro = projectile.getPosition();
+		/*Vector2f posPro = projectile.getPosition();
 
-		/*if (Arrays.asList(sun.getHitbox()).contains(posPro)) {
+		if (Arrays.asList(sun.getHitbox()).contains(posPro)) {
 			if (sun.getSunMode() != SunMode.astonished) {
 				sun.setSunMode(SunMode.astonished);
 				System.out.println("Astonished");
