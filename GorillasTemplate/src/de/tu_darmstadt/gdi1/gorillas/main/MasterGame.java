@@ -18,17 +18,7 @@ public class MasterGame {
 	private static double timeScale = 0.005;
 	private static double wind;
 	
-	static {
-		playerOne = new Player("One");
-		playerTwo = new Player("Two");
-
-		try {
-			playerOne.createEntity();
-			playerTwo.createEntity();
-		} catch (SlickException s) {
-
-		}
-		
+	static {		
 		applyPlayerNames = false;
 		running = false;
 		laeuftJukebox = false;
@@ -93,5 +83,17 @@ public class MasterGame {
 	
 	public static void setWind(double d) {
 		wind = d;
+	}
+
+	public static void createPlayer() {
+		playerOne = new Player("One");
+		playerTwo = new Player("Two");
+
+		try {
+			playerOne.createEntity();
+			playerTwo.createEntity();
+		} catch (SlickException s) {
+
+		}		
 	}
 }

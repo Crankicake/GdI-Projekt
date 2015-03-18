@@ -22,6 +22,8 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Building;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
+import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
@@ -46,7 +48,7 @@ public class GamePlayState extends OwnState {
 	private Entity apeHit;
 	private Image arrow;
 	private Sun sun;
-
+	
 	private Button throwButton;
 	private EditField velocityTextField;
 	private EditField angleTextField;
@@ -575,9 +577,32 @@ public class GamePlayState extends OwnState {
 			if (playerOne.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerOne.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+				
+				MasterGame.setIsAGameRunning(false);
+
+				InputOutput io = new InputOutput();
+				
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds() , playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds() , playerTwo.getScore(), playerTwo.getTries());
+				
+				io.addHighscore(h1);
+				io.addHighscore(h2);
+				
+				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			} else if (playerTwo.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerTwo.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+				
+				InputOutput io = new InputOutput();
+				
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds() , playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds() , playerTwo.getScore(), playerTwo.getTries());
+				
+				io.addHighscore(h1);
+				io.addHighscore(h2);
+				
+				MasterGame.setIsAGameRunning(false);
+				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			}
 
 			restart();
@@ -722,6 +747,10 @@ public class GamePlayState extends OwnState {
 		return projectile;
 	}
 
+	public int getRounds() {
+		return playerOne.getScore() + playerTwo.getScore();
+	}
+	
 	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 

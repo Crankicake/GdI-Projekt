@@ -165,13 +165,14 @@ public class GameSetupState extends OwnState {
 		if (!MasterGame.isAGameRunning()) {
 			setPlayername1TextboxText("Player 1");
 			setPlayername2TextboxText("Player 2");
-			setGravitationTextboxText(String.valueOf(MasterGame
-					.getGravitation()));
 		} else {
 			setPlayername1TextboxText(MasterGame.getPlayerOne().getName());
 			setPlayername2TextboxText(MasterGame.getPlayerTwo().getName());
 		}
 
+		setGravitationTextboxText(String.valueOf(MasterGame
+				.getGravitation()));
+		
 		return rp;
 	}
 
