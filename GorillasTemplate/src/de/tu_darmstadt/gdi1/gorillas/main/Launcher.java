@@ -41,7 +41,8 @@ public class Launcher {
 
 		// Insert this StateBasedGame into an AppContainer (a window)
 		AppGameContainer app = new AppGameContainer(new Gorillas(false));
-
+		MasterGame.setDebug(false);
+		
 		// Set window properties and start it
 		app.setAlwaysRender(true);
 		app.setShowFPS(false);

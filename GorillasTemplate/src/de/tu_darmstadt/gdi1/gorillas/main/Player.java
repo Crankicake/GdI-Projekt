@@ -39,10 +39,11 @@ public class Player extends Entity {
 	}
 
 	public void createEntity() throws SlickException {
+		if(!MasterGame.getDebug()) {
 		normal = new Image("/assets/gorillas/gorillas/gorilla.png");
 		links = new Image("/assets/gorillas/gorillas/gorilla_left_up.png");
 		rechts = new Image("/assets/gorillas/gorillas/gorilla_right_up.png");
-
+		}
 		setPosition(new Vector2f());
 		setScale(Launcher.SCALE);
 		setPassable(true);

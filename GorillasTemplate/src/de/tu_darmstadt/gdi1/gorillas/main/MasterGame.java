@@ -9,7 +9,7 @@ public class MasterGame {
 
 	private static boolean applyPlayerNames;
 	private static boolean running;
-
+	private static boolean debug;
 	private static boolean laeuftJukebox;
 
 	private static double grav;
@@ -24,6 +24,7 @@ public class MasterGame {
 		applyPlayerNames = false;
 		running = false;
 		laeuftJukebox = false;
+		debug = false;
 		grav = 9.81;
 
 		windScale = 0.02;
@@ -108,5 +109,13 @@ public class MasterGame {
 
 	public static String[] getRemarks() {
 		return remarks;
+	}
+
+	public static boolean getDebug() {
+		return debug;
+	}
+	
+	public static void setDebug(boolean b) {
+		debug = b;
 	}
 }

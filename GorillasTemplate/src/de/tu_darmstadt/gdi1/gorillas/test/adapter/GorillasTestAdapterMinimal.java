@@ -70,6 +70,8 @@ public class GorillasTestAdapterMinimal {
 		// Initialisiere das Spiel Tanks im Debug-Modus (ohne UI-Ausgabe)
 		gorillas = new TestGorillas(true);
 
+		MasterGame.setDebug(true);
+		
 		// Initialisiere die statische Klasse Map
 		try {
 			app = new TWLTestAppGameContainer(gorillas, 1000, 600, false);

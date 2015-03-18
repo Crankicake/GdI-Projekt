@@ -253,21 +253,22 @@ public class GamePlayState extends OwnState {
 	protected void initBackground() throws SlickException {
 		Entity background = new Entity(names[0]);
 
-		switch (new Random().nextInt(3)) {
-		case 0:
-			background.addComponent(new ImageRenderComponent(new Image(
-					"/assets/gorillas/background/Skyline_Frankfurt.png")));
-			break;
-		case 1:
-			background.addComponent(new ImageRenderComponent(new Image(
-					"/assets/gorillas/background/Skyline_Sydney.png")));
-			break;
-		case 2:
-			background.addComponent(new ImageRenderComponent(new Image(
-					"/assets/gorillas/background/Skyline_New_York.png")));
-			break;
+		if (!MasterGame.getDebug()) {
+			switch (new Random().nextInt(3)) {
+			case 0:
+				background.addComponent(new ImageRenderComponent(new Image(
+						"/assets/gorillas/background/Skyline_Frankfurt.png")));
+				break;
+			case 1:
+				background.addComponent(new ImageRenderComponent(new Image(
+						"/assets/gorillas/background/Skyline_Sydney.png")));
+				break;
+			case 2:
+				background.addComponent(new ImageRenderComponent(new Image(
+						"/assets/gorillas/background/Skyline_New_York.png")));
+				break;
+			}
 		}
-
 		background.setPosition(new Vector2f(windowWidth / 2, windowHeight / 2));
 		background.setScale(scale);
 		background.setPassable(true);
@@ -289,18 +290,20 @@ public class GamePlayState extends OwnState {
 
 		for (int i = 0; i < 8; ++i) {
 
-			try {
-				buildings[i] = new DestructibleImageEntity(names[3] + i,
-						Building.generateBuilding(),
-						"dropofwater/destruction.png", false);
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (!MasterGame.getDebug()) {
+				try {
+					buildings[i] = new DestructibleImageEntity(names[3] + i,
+							Building.generateBuilding(),
+							"dropofwater/destruction.png", false);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 
 			buildingX = (50f + 100f * i) * windowWidth / 800;
 			buildingY = windowHeight + (r.nextInt(7) - 3) * windowHeight / 20;
 
-			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
+			[i].setPosition(new Vector2f(buildingX, buildingY));
 
 			if (indexFirstApe == i) {
 

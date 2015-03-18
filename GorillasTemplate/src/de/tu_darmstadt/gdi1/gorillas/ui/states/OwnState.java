@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import de.matthiasmann.twl.slick.BasicTWLGameState;
 import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
+import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
@@ -54,9 +55,11 @@ public abstract class OwnState extends BasicTWLGameState {
 		scale = Launcher.SCALE;
 
 		try {
+			if(!MasterGame.getDebug()) {
 			menuEntry = new Image("assets/gorillas/background/entry.png");
 			background = new Image(
 					"/assets/gorillas/background/MenuBackground.jpg");
+			}
 		} catch (SlickException e) {
 			e.printStackTrace();
 			try {
