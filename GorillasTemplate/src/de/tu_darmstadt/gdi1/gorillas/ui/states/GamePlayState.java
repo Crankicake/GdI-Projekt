@@ -48,7 +48,7 @@ public class GamePlayState extends OwnState {
 	private Entity apeHit;
 	private Image arrow;
 	private Sun sun;
-	
+
 	private Button throwButton;
 	private EditField velocityTextField;
 	private EditField angleTextField;
@@ -121,6 +121,10 @@ public class GamePlayState extends OwnState {
 				.append(playerTwo.getScore());
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
+		
+		/*render(sun.getHitbox(), g);
+		render(playerOne.getHitbox(), g);
+		render(playerTwo.getHitbox(), g);	*/	
 	}
 
 	@Override
@@ -514,27 +518,23 @@ public class GamePlayState extends OwnState {
 	private void updateHitboxes(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
-		/*Vector2f posPro = projectile.getPosition();
-
-		if (Arrays.asList(sun.getHitbox()).contains(posPro)) {
-			if (sun.getSunMode() != SunMode.astonished) {
-				sun.setSunMode(SunMode.astonished);
-				System.out.println("Astonished");
-			}
-		}
-
-		if (readyForHit) {
-			if (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
-				explode(playerOne, playerTwo, posPro);
-				return;
-			}
-
-			if (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
-				explode(playerTwo, playerOne, posPro);
-				return;
-			}
-
-		}*/
+		/*
+		 * Vector2f posPro = projectile.getPosition();
+		 * 
+		 * if (Arrays.asList(sun.getHitbox()).contains(posPro)) { if
+		 * (sun.getSunMode() != SunMode.astonished) {
+		 * sun.setSunMode(SunMode.astonished); System.out.println("Astonished");
+		 * } }
+		 * 
+		 * if (readyForHit) { if
+		 * (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
+		 * explode(playerOne, playerTwo, posPro); return; }
+		 * 
+		 * if (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
+		 * explode(playerTwo, playerOne, posPro); return; }
+		 * 
+		 * }
+		 */
 
 		for (Vector2f v : sun.getHitbox()) {
 			if (compareVectors(v, projectile.getPosition())) {
@@ -577,30 +577,34 @@ public class GamePlayState extends OwnState {
 			if (playerOne.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerOne.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
-				
+
 				MasterGame.setIsAGameRunning(false);
 
 				InputOutput io = new InputOutput();
-				
-				Highscore h1 = new Highscore(playerOne.getName(), getRounds() , playerOne.getScore(), playerOne.getTries());
-				Highscore h2 = new Highscore(playerTwo.getName(), getRounds() , playerTwo.getScore(), playerTwo.getTries());
-				
+
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds(),
+						playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds(),
+						playerTwo.getScore(), playerTwo.getTries());
+
 				io.addHighscore(h1);
 				io.addHighscore(h2);
-				
+
 				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			} else if (playerTwo.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerTwo.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
-				
+
 				InputOutput io = new InputOutput();
-				
-				Highscore h1 = new Highscore(playerOne.getName(), getRounds() , playerOne.getScore(), playerOne.getTries());
-				Highscore h2 = new Highscore(playerTwo.getName(), getRounds() , playerTwo.getScore(), playerTwo.getTries());
-				
+
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds(),
+						playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds(),
+						playerTwo.getScore(), playerTwo.getTries());
+
 				io.addHighscore(h1);
 				io.addHighscore(h2);
-				
+
 				MasterGame.setIsAGameRunning(false);
 				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			}
@@ -666,7 +670,7 @@ public class GamePlayState extends OwnState {
 	private void restart() {
 		setAttributes();
 		clearInput();
-		
+
 		try {
 			entityManager.clearEntitiesFromState(getID());
 
@@ -739,7 +743,7 @@ public class GamePlayState extends OwnState {
 		angleTextField.setText("0");
 		velocityTextField.setText("0");
 	}
-	
+
 	private void setVisibility(boolean b) {
 		throwButton.setVisible(b);
 		playerLabel.setVisible(b);
@@ -756,7 +760,7 @@ public class GamePlayState extends OwnState {
 	public int getRounds() {
 		return playerOne.getScore() + playerTwo.getScore();
 	}
-	
+
 	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 
@@ -782,5 +786,14 @@ public class GamePlayState extends OwnState {
 
 	private boolean compareVectors(Vector2f one, Vector2f two) {
 		return one.equals(two);
+	}
+
+	@SuppressWarnings("unused")
+	private void render(Vector2f[] vectoren, Graphics g) {
+		g.setColor(Color.red);
+		for (Vector2f v : vectoren) {
+			g.fillRect(v.x, v.y, 1, 1);
+			g.flush();
+		}
 	}
 }

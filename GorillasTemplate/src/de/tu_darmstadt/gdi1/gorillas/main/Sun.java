@@ -63,13 +63,13 @@ public class Sun extends Entity {
 		int y = 0;
 
 		for (int count = 0; count < hitbox.length; count++, x++, y++) {
-
+			
 			hitbox[count] = new Vector2f(pos.x + x, pos.y + y);
-
-			if (x == 100)
+			
+			if (x == 57)
 				x = 0;
 
-			if (y == 100)
+			if (y == 56)
 				y = 0;
 		}
 	}
