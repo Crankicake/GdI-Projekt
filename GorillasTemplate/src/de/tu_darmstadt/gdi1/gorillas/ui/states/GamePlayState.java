@@ -22,6 +22,8 @@ import de.matthiasmann.twl.slick.RootPane;
 import de.tu_darmstadt.gdi1.gorillas.main.Building;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
+import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.Player;
 import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
@@ -48,8 +50,8 @@ public class GamePlayState extends OwnState {
 	private Sun sun;
 
 	private Button throwButton;
-	private EditField velocityTextField;
-	private EditField angleTextField;
+	private static EditField velocityTextField;
+	private static EditField angleTextField;
 	private Label velocityLabel;
 	private Label angleLabel;
 	private Label playerLabel;
@@ -68,6 +70,7 @@ public class GamePlayState extends OwnState {
 	private int messageTimer;
 	private int flyingTimer;
 	private int hitTimer;
+	
 
 	public GamePlayState(int sid) {
 		super(sid);
@@ -119,6 +122,10 @@ public class GamePlayState extends OwnState {
 				.append(playerTwo.getScore());
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
+		
+		/*render(sun.getHitbox(), g);
+		render(playerOne.getHitbox(), g);
+		render(playerTwo.getHitbox(), g);*/
 	}
 
 	@Override
@@ -340,17 +347,31 @@ public class GamePlayState extends OwnState {
 				Entity entity = collider.getCollidedEntity();
 
 				if (!(entity instanceof IDestructible)) {
-					return;
+					// return;
 				}
-
-				IDestructible destructible = (IDestructible) entity;
 
 				explosionTimer = 0;
 
-				destructible.impactAt(event.getOwnerEntity().getPosition());
+				if (entity instanceof IDestructible) {
+					IDestructible destructible = (IDestructible) entity;
+					destructible.impactAt(event.getOwnerEntity().getPosition());
+
+					destructible.impactAt(event.getOwnerEntity().getPosition());
+				}
 
 				try {
 					initExplosion(event.getOwnerEntity().getPosition());
+
+					for (Entity e : entityManager.getEntitiesByState(getID())) {
+						if (!(e instanceof IDestructible)) {
+							continue;
+						}
+
+						if (explosion.collides(e))
+							((IDestructible) e).impactAt(event.getOwnerEntity()
+									.getPosition());
+					}
+
 					initProjectile();
 					setVisibility(true);
 				} catch (SlickException setExpl) {
@@ -464,8 +485,6 @@ public class GamePlayState extends OwnState {
 
 				readyForHit = false;
 
-				sun.setSunMode(SunMode.normal);
-
 				if (whichPlayersDraw == 1) {
 					projectile.setPosition(playerOne.getPosition());
 					projectile.setRotation(0);
@@ -478,9 +497,12 @@ public class GamePlayState extends OwnState {
 					playerTwo.setImageState(PlayerImageState.LeftHandRised);
 				}
 			}
+		} else {
 
-			if (sun.getShape().intersects(projectile.getShape()))
-				sun.setSunMode(SunMode.astonished);
+			if (sun.getSunMode() != SunMode.normal) {
+				sun.setSunMode(SunMode.normal);
+				System.out.println("Normal");
+			}
 		}
 	}
 
@@ -497,30 +519,55 @@ public class GamePlayState extends OwnState {
 	private void updateHitboxes(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
-		if (hitTimer >= 1000) {
-			apeHit.setVisible(false);
-		} else {
-			hitTimer += i;
-			// apeHit.setVisible(true);
+		/*
+		 * Vector2f posPro = projectile.getPosition();
+		 * 
+		 * if (Arrays.asList(sun.getHitbox()).contains(posPro)) { if
+		 * (sun.getSunMode() != SunMode.astonished) {
+		 * sun.setSunMode(SunMode.astonished); System.out.println("Astonished");
+		 * } }
+		 * 
+		 * if (readyForHit) { if
+		 * (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
+		 * explode(playerOne, playerTwo, posPro); return; }
+		 * 
+		 * if (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
+		 * explode(playerTwo, playerOne, posPro); return; }
+		 * 
+		 * }
+		 */
+
+		for (Vector2f v : sun.getHitbox()) {
+			if (compareVectors(v, projectile.getPosition())) {
+				if (sun.getSunMode() != SunMode.astonished) {
+					sun.setSunMode(SunMode.astonished);
+					System.out.println("Astonished");
+				}
+				break;
+			}
 		}
 
 		if (readyForHit) {
 			for (Vector2f v : playerOne.getHitbox()) {
-
 				if (compareVectors(v, projectile.getPosition())) {
 					explode(playerOne, playerTwo, v);
 					return;
 				}
-
 			}
 
 			for (Vector2f v : playerTwo.getHitbox()) {
-
 				if (compareVectors(v, projectile.getPosition())) {
 					explode(playerTwo, playerOne, v);
 					return;
 				}
 			}
+		}
+
+		if (hitTimer >= 350) {
+			apeHit.setVisible(false);
+		} else {
+			hitTimer += i;
+			// apeHit.setVisible(true);
 		}
 	}
 
@@ -531,9 +578,36 @@ public class GamePlayState extends OwnState {
 			if (playerOne.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerOne.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+
+				MasterGame.setIsAGameRunning(false);
+
+				InputOutput io = new InputOutput();
+
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds(),
+						playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds(),
+						playerTwo.getScore(), playerTwo.getTries());
+
+				io.addHighscore(h1);
+				io.addHighscore(h2);
+
+				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			} else if (playerTwo.getScore() == 3) {
 				JOptionPane.showMessageDialog(null, playerTwo.getName()
 						+ " gewinnt!", "Achtung!", JOptionPane.PLAIN_MESSAGE);
+
+				InputOutput io = new InputOutput();
+
+				Highscore h1 = new Highscore(playerOne.getName(), getRounds(),
+						playerOne.getScore(), playerOne.getTries());
+				Highscore h2 = new Highscore(playerTwo.getName(), getRounds(),
+						playerTwo.getScore(), playerTwo.getTries());
+
+				io.addHighscore(h1);
+				io.addHighscore(h2);
+
+				MasterGame.setIsAGameRunning(false);
+				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			}
 
 			restart();
@@ -596,6 +670,7 @@ public class GamePlayState extends OwnState {
 
 	private void restart() {
 		setAttributes();
+		clearInput();
 
 		try {
 			entityManager.clearEntitiesFromState(getID());
@@ -638,6 +713,7 @@ public class GamePlayState extends OwnState {
 
 		whichPlayersDraw = whichPlayersDraw == 1 ? 2 : 1;
 
+		
 		setVisibility(false);
 
 		saveInput();
@@ -665,7 +741,13 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	private void clearInput() {
+		angleTextField.setText("0");
+		velocityTextField.setText("0");
+	}
+
 	private void setVisibility(boolean b) {
+		
 		throwButton.setVisible(b);
 		playerLabel.setVisible(b);
 		angleLabel.setVisible(b);
@@ -676,6 +758,10 @@ public class GamePlayState extends OwnState {
 
 	public Projectile getProjectile() {
 		return projectile;
+	}
+
+	public int getRounds() {
+		return playerOne.getScore() + playerTwo.getScore();
 	}
 
 	private String trimString(String s) {
@@ -702,9 +788,42 @@ public class GamePlayState extends OwnState {
 	}
 
 	private boolean compareVectors(Vector2f one, Vector2f two) {
-		float x = one.x - two.x;
-		float y = one.y - two.y;
-
-		return x < 0.5 && y < 0.5;
+		return one.equals(two);
 	}
+
+	@SuppressWarnings("unused")
+	private void render(Vector2f[] vectoren, Graphics g) {
+		g.setColor(Color.red);
+		for (Vector2f v : vectoren) {
+			g.fillRect(v.x, v.y, 1, 1);
+			g.flush();
+		}
+	}
+	
+	public static void setVelocity(String value)
+	{
+		velocityTextField.setText(value);
+	}
+	
+	public static void setAngle(String value)
+	{
+		angleTextField.setText(value);
+	}
+	
+	public static void clearFields()
+	{
+		velocityTextField.setText("");
+		angleTextField.setText("");
+	}
+	public Vector2f getNextBananaPosition()
+	{
+		return projectile.nextPosition();
+	}
+	
+	public double getTimeScale()
+	{
+		Double.valueOf(MasterGame.getTimeScale());
+		 
+	}
+	
 }

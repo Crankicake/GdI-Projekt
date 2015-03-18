@@ -22,6 +22,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
+import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
@@ -32,7 +33,7 @@ public class GameSetupState extends OwnState {
 
 	private EditField playername1Textbox;
 	private EditField playername2Textbox;
-	private EditField gravitationTextbox;
+	public static EditField gravitationTextbox;
 	private Label playername1Label;
 	private Label playername2Label;
 	private Label gravitationLabel;
@@ -40,11 +41,17 @@ public class GameSetupState extends OwnState {
 
 	private String errormessage;
 
+	private String errorMessageP1;
+	private String errorMessageP2;
+
 	public GameSetupState(int sid) {
 		super(sid);
 
 		io = new InputOutput();
 		errormessage = "";
+		errorMessageP1 = "";
+		errorMessageP2 = "";
+
 		names = new String[] { "Zurueck", "Spiel starten" };
 	}
 
@@ -107,15 +114,19 @@ public class GameSetupState extends OwnState {
 			public void callback(int arg0) {
 				try {
 					double d = Double.valueOf(gravitationTextbox.getText());
-					MasterGame.setGravitation(d);
+					
+					fillGravitationTextbox(d);
+					
 				} catch (NumberFormatException nfe) {
 					errormessage = "Gravitation muss eine Zahl sein";
-				} catch(NullPointerException npe) {
+				} catch (NullPointerException npe) {
 					errormessage = "null";
 				}
 			}
 		});
 		
+		
+
 		playername1Label = new Label();
 		playername1Label.setText("Name von Spieler 1:");
 
@@ -124,7 +135,7 @@ public class GameSetupState extends OwnState {
 
 		gravitationLabel = new Label();
 		gravitationLabel.setText("Gravitation:");
-		
+
 		AutoCompletionDataSource acds = new AutoCompletionDataSource() {
 			public AutoCompletionResult collectSuggestions(String text,
 					int cursorPos, AutoCompletionResult prev) {
@@ -140,11 +151,10 @@ public class GameSetupState extends OwnState {
 
 		EditFieldAutoCompletionWindow efacw1 = new EditFieldAutoCompletionWindow(
 				playername1Textbox, acds);
-		
+
 		EditFieldAutoCompletionWindow efacw2 = new EditFieldAutoCompletionWindow(
 				playername2Textbox, acds);
 
-				
 		playername1Textbox.setAutoCompletion(acds);
 		playername1Textbox.setAutoCompletionWindow(efacw1);
 		playername2Textbox.setAutoCompletion(acds);
@@ -156,18 +166,29 @@ public class GameSetupState extends OwnState {
 		rp.add(playername1Label);
 		rp.add(playername2Label);
 		rp.add(gravitationLabel);
-		
+
 		if (!MasterGame.isAGameRunning()) {
 			setPlayername1TextboxText("Player 1");
 			setPlayername2TextboxText("Player 2");
-			setGravitationTextboxText("9.81");
 		} else {
 			setPlayername1TextboxText(MasterGame.getPlayerOne().getName());
 			setPlayername2TextboxText(MasterGame.getPlayerTwo().getName());
 		}
 
+		setGravitationTextboxText(String.valueOf(MasterGame
+				.getGravitation()));
+		
 		return rp;
 	}
+	
+	public void fillGravitationTextbox(double d)
+	{
+		
+		MasterGame.setGravitation(d);
+		
+	}
+	
+	
 
 	@Override
 	protected void layoutRootPane() {
@@ -185,11 +206,11 @@ public class GameSetupState extends OwnState {
 
 		gravitationLabel.adjustSize();
 		gravitationLabel.setPosition(width - 150, height - 20);
-		
+
 		gravitationTextbox.adjustSize();
 		gravitationTextbox.setSize(130, 20);
 		gravitationTextbox.setPosition(width, height - 20);
-		
+
 		playername2Label.adjustSize();
 		playername2Label.setPosition(width - 150, height - 60);
 
@@ -242,13 +263,14 @@ public class GameSetupState extends OwnState {
 		name1 = playername1Textbox.getText();
 		name2 = playername2Textbox.getText();
 
-	
 		if (name1 != null && name2 != null) {
 			if (!name1.isEmpty() && !name2.isEmpty()) {
 
 				if (!name1.equals(name2)) {
 					setPlayerOneName(name1);
 					setPlayerTwoName(name2);
+					
+					
 				}
 			}
 		}
@@ -267,30 +289,70 @@ public class GameSetupState extends OwnState {
 		if (x >= ix && x <= ix + width) {
 			if (y >= iy && y <= iy + height) {
 
-				String name1 = playername1Textbox.getText();
-				String name2 = playername2Textbox.getText();
-
-				if (name1 == null || name2 == null || name1.isEmpty()
-						|| name2.isEmpty()) {
-					errormessage = "Die Spielernamen duerfen nicht leer sein!";
-					return;
-				}
-
-				if (name1.equals(name2)) {
-					errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
-					return;
-				}
-
-				errormessage = "";
-
-				changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
-				io.speichereName(name1);
-				io.speichereName(name2);
-
+				StartButtonClick(gc, sbg);
 			}
 		}
 	}
+	
+	
+	public void StartButtonClick(GameContainer gc, StateBasedGame sbg)
+	throws SlickException
+	{
 
+		String name1 = playername1Textbox.getText();
+		String name2 = playername2Textbox.getText();
+
+		if (name1 == null || name1.isEmpty()) {
+			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
+			errormessage = errorMessageP1;
+			return;
+		}
+
+		if (name2 == null || name2.isEmpty()) {
+			errorMessageP2 = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
+			errormessage = errorMessageP2;
+			return;
+		}
+
+		if (name1.equals(name2)) {
+			errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
+			return;
+		}
+
+		errormessage = "";
+
+		changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
+		io.speichereName(name1);
+		io.speichereName(name2);
+		
+		String firstName = playername1Textbox.getText();
+		String secondName = playername2Textbox.getText();
+
+		if (firstName == null || firstName.isEmpty()) {
+			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
+			errormessage = errorMessageP1;
+			return;
+		}
+
+		if (secondName == null || secondName.isEmpty()) {
+			errorMessageP2 = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
+			errormessage = errorMessageP2;
+			return;
+		}
+
+		if (firstName.equals(secondName)) {
+			equalError();
+			return;
+		}
+
+		errormessage = "";
+
+		changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
+		io.speichereName(firstName);
+		io.speichereName(secondName);
+	}
+	
+	
 	public void setPlayername1TextboxText(String text) {
 		playername1Textbox.setText(text);
 	}
@@ -302,7 +364,7 @@ public class GameSetupState extends OwnState {
 	private void setGravitationTextboxText(String text) {
 		gravitationTextbox.setText(text);
 	}
-	
+
 	public void setPlayerOneName(String name) {
 		if (name == null || name.isEmpty()
 				|| name.equals(MasterGame.getPlayerTwo().getName()))
@@ -318,5 +380,27 @@ public class GameSetupState extends OwnState {
 
 		MasterGame.getPlayerTwo().setName(name);
 	}
+	
+	public void equalError()
+	{
+		errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
+		
+	}
 
+	public String getErrorMessageP1()
+	{
+		return errorMessageP1;
+	}
+	
+	public String getErrorMessageP2()
+	{
+		return errorMessageP2;
+	}
+	
+	public String getErrorMessage()
+	{
+		return errormessage;
+	}
+	
+	
 }

@@ -65,8 +65,8 @@ public class Player extends Entity {
 			if (x == 37)
 				x = 0;
 
-			if (x == 42)
-				x = 0;
+			if (y == 42)
+				y = 0;
 		}
 	}
 
@@ -135,6 +135,8 @@ public class Player extends Entity {
 	}
 	
 	public String getName() {
+		if(name == null)
+			return "";
 		return name;
 	}
 

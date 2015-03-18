@@ -7,6 +7,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
+import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
+import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -17,6 +19,9 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 
 public class HighScoreState extends OwnState {
 
+	private InputOutput io;
+	private Highscore[] hsc;
+	
 	public HighScoreState(int sid) {
 		super(sid);
 		
@@ -63,9 +68,17 @@ public class HighScoreState extends OwnState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		super.render(container, game, g);
+		io = new InputOutput();
+		hsc = io.leseHighscore();
+		int y = 80;
 		
 		g.setColor(org.newdawn.slick.Color.white);
-		// Schreiben der Texte
+		
+		for(int i = 0; i <10;i++)
+			g.drawString("Platz :" + i +"\t"+  hsc[i].getName() + "\t" + hsc[i].getAnzahlRunden() +
+					"\t" + hsc[i].getAnzahlGewonnen() + (hsc[i].getAnzahlRunden()/hsc[i].getAnzahlGewonnen())*100 +"%" +
+					"\t" + (hsc[i].getAnzahlGewonnen()/hsc[i].getAnzahlBananen()) +"Miese Treffer", 100, y+=20);
+		
 		g.drawString("Zurueck", 85, 66);
 	}
 }

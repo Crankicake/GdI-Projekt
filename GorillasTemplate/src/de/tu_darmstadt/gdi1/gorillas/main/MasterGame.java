@@ -17,26 +17,22 @@ public class MasterGame {
 	private static double windScale = 0.2;
 	private static double timeScale = 0.005;
 	private static double wind;
-	
+
+	private static String[] remarks;
+
 	static {
-		playerOne = new Player("One");
-		playerTwo = new Player("Two");
-
-		try {
-			playerOne.createEntity();
-			playerTwo.createEntity();
-		} catch (SlickException s) {
-
-		}
-		
 		applyPlayerNames = false;
 		running = false;
 		laeuftJukebox = false;
 		grav = 9.81;
-		
+
 		windScale = 0.02;
 		timeScale = 0.005;
 		wind = 0;
+
+		remarks = new String[] {
+				"Geh doch lieber AngryBirds spielen!"
+		};
 	}
 
 	public static Player getPlayerOne() {
@@ -82,16 +78,35 @@ public class MasterGame {
 	public static double getWindScale() {
 		return windScale;
 	}
-	
+
 	public static double getTimeScale() {
 		return timeScale;
 	}
-	
+
 	public static double getWind() {
 		return wind;
 	}
-	
+
 	public static void setWind(double d) {
 		wind = d;
+	}
+
+	public static void createPlayer() {
+		playerOne = new Player("One");
+		playerTwo = new Player("Two");
+
+		try {
+			playerOne.createEntity();
+			playerTwo.createEntity();
+		} catch (SlickException s) {
+
+		}
+
+		playerOne.setName("Payer 1");
+		playerTwo.setName("Player 2");
+	}
+
+	public static String[] getRemarks() {
+		return remarks;
 	}
 }

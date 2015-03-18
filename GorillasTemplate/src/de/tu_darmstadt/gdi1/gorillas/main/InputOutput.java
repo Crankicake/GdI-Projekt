@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 /**
@@ -97,33 +98,44 @@ public class InputOutput {
 	 * 
 	 * @return Array of Highscores
 	 */
-	@SuppressWarnings("null")
-	public Highscore[] leseHighscore() {
-		File datei = new File("Highscore.hcs");
-		InputStream fis = null;
-		Highscore tmp1[] = null;
-		int i = 0;
+	 public Highscore[] leseHighscore() {
+		  File datei = new File("Highscore.hcs");
+		  InputStream fis = null;
+		  LinkedList<Highscore> tmp1 = new LinkedList<Highscore>();
+		  Highscore[] array;
+		  Highscore tmp2;
 
-		if (datei.exists()) {
-			try {
-				fis = new FileInputStream(datei);
-				ObjectInputStream ois = new ObjectInputStream(fis);
+		  try {
+		   fis = new FileInputStream(datei);
+		   ObjectInputStream ois = new ObjectInputStream(fis);
 
-				while (ois.readObject() != null) {
-					tmp1[i] = (Highscore) ois.readObject();
-					i++;
-				}
-				fis.close();
-				ois.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
+		   while (ois.readObject() != null) {
+		    tmp1.add((Highscore) ois.readObject());
+		   }
+		   fis.close();
+		   ois.close();
+		  } catch (IOException e) {
+		   e.printStackTrace();
+		  } catch (ClassNotFoundException e) {
+		   e.printStackTrace();
+		  }
 
-		return tmp1;
-	}
+		  array = new Highscore[tmp1.size()];
+
+		  // Sortierung
+		  for (int k = 0; k < array.length; k++) {
+		   for (int j = 0; j < array.length; j++) {
+		    if ((array[j - 1].getAnzahlRunden()
+		      / array[j - 1].getAnzahlGewonnen() > (array[j]
+		      .getAnzahlRunden() / array[j].getAnzahlGewonnen()))) {
+		     tmp2 = array[j];
+		     array[j] = array[j - 1];
+		     array[j - 1] = tmp2;
+		    }
+		   }
+		  }
+		  return array;
+		 }
 
 	/**
 	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hcs"
@@ -134,10 +146,12 @@ public class InputOutput {
 	public void addHighscore(Highscore hsc) {
 		File datei = new File("Highscore.hcs");
 		OutputStream fos = null;
-		Highscore tmp[] = leseHighscore();
+		Highscore[] tmp = new Highscore[10000];
 
 		boolean flag = false;
 
+		if(datei.exists()){
+			tmp = leseHighscore();
 		try {
 			fos = new FileOutputStream(datei);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -167,6 +181,21 @@ public class InputOutput {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}else
+	{
+		try {
+			fos = new FileOutputStream(datei);
+		
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(hsc);
+		oos.close();
+		fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+		
 	}
 
 	/**

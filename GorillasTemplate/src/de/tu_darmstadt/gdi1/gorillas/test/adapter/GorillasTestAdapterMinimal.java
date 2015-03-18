@@ -5,6 +5,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 
+import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
+import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
@@ -12,7 +14,12 @@ import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GameSetupState;
 import eea.engine.entity.StateBasedEntityManager;
 
+
+
 public class GorillasTestAdapterMinimal {
+	
+	
+	
 
 	// erbt von TWLTestStateBasedGame (nur fuer Tests!)
 	TestGorillas gorillas;
@@ -20,6 +27,12 @@ public class GorillasTestAdapterMinimal {
 	// spezielle Variante des AppGameContainer, welche keine UI erzeugt (nur
 	// fuer Tests!)
 	TWLTestAppGameContainer app;
+	
+	GameSetupState setUpState = (GameSetupState) gorillas.getState(TestGorillas.GAMESETUPSTATE);
+	GamePlayState gameplayState = (GamePlayState) gorillas.getState(gorillas.GAMEPLAYSTATE);
+	
+	
+	
 
 	public GorillasTestAdapterMinimal() {
 		super();
@@ -66,6 +79,8 @@ public class GorillasTestAdapterMinimal {
 		// Initialisiere das Spiel Tanks im Debug-Modus (ohne UI-Ausgabe)
 		gorillas = new TestGorillas(true);
 
+		
+		
 		// Initialisiere die statische Klasse Map
 		try {
 			app = new TWLTestAppGameContainer(gorillas, 1000, 600, false);
@@ -158,7 +173,16 @@ public class GorillasTestAdapterMinimal {
 	 * GamePlayState. Otherwise it should stay in the GameSetupState.
 	 */
 	public void startGameButtonPressed() {
-		// TODO: Implement
+				
+		try
+		{
+		 setUpState.StartButtonClick(app, gorillas); 
+		}
+		
+		catch(SlickException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -172,6 +196,11 @@ public class GorillasTestAdapterMinimal {
 	 */
 	public void fillVelocityInput(char charac) {
 		// TODO: Implement
+		
+		
+		String value = String.valueOf(charac);
+		gameplayState.setVelocity(value);
+					
 	}
 
 	/**
@@ -208,6 +237,9 @@ public class GorillasTestAdapterMinimal {
 	 */
 	public void fillAngleInput(char charac) {
 		// TODO: Implement
+		String value = String.valueOf(charac);
+		gameplayState.setAngle(value);
+		
 	}
 
 	/**
@@ -238,11 +270,14 @@ public class GorillasTestAdapterMinimal {
 	 * player. Both angle value and velocity value should then be -1.
 	 */
 	public void resetPlayerWidget() {
-		// TODO: Implement
+		
+		gameplayState.clearFields();
 	}
 
 	public void shootButtonPressed() {
-		// TODO: Implement
+		
+		gameplayState.throwButton_Click();
+			
 	}
 
 	/**
@@ -274,8 +309,10 @@ public class GorillasTestAdapterMinimal {
 	public Vector2f getNextShotPosition(Vector2f startPosition, int angle,
 			int speed, boolean fromLeftToRight, int deltaTime) {
 
-		// TODO: Implement
-		return null;
+		return gameplayState.getNextBananaPosition();
+		
+		// get nextPoint Throwattempt
+		
 	}
 
 	/**
@@ -286,8 +323,8 @@ public class GorillasTestAdapterMinimal {
 	 * @return the time scaling factor for the parabolic flight calculation
 	 */
 	public float getTimeScalingFactor() {
-		// TODO: Implement
-		return -1;
+		
+		return (float) MasterGame.getTimeScale();	
 	}
 
 	/**
@@ -298,8 +335,8 @@ public class GorillasTestAdapterMinimal {
 	 *         left empty and the start game button is pressed
 	 */
 	public String getEmptyError() {
-		// TODO: Implement
-		return null;
+		
+		return setUpState.getErrorMessageP1();
 	}
 
 	/**
@@ -311,8 +348,9 @@ public class GorillasTestAdapterMinimal {
 	 * 
 	 */
 	public String getEqualError() {
-		// TODO: Implement
-		return null;
+		
+		setUpState.equalError();
+		return setUpState.getErrorMessage();
 	}
 
 	/**
@@ -323,8 +361,8 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer1Error() {
-		// TODO: Implement
-		return null;
+		
+		return setUpState.getErrorMessageP1();
 	}
 
 	/**
@@ -335,8 +373,7 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer2Error() {
-		// TODO: Implement
-		return null;
+		return setUpState.getErrorMessageP2();
 	}
 
 	/**
