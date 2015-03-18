@@ -209,9 +209,7 @@ public class InputOutput {
 						aoos.writeObject(tmp[i]);
 						flag = true;
 
-					} else
-						aoos.writeObject(tmp[i]);
-
+					} 
 				}
 				if (!flag)
 					aoos.writeObject(hsc);
