@@ -109,4 +109,8 @@ public class Highscore implements Serializable{
 	public void setAnzahlBananen(int anzahlBananen) {
 		this.anzahlBananen = anzahlBananen;
 	}
+	
+	public double getGenauigkeit() {
+		return anzahlRunden / anzahlGewonnen;
+	}
 }
