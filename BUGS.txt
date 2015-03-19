@@ -1,3 +1,5 @@
 Banane fliegt an Spitzen und so vorbei ohne mit ihnen zu kollidieren.
 
+Messagebox-Bug
+
 Wenn die Banane am Rand eines Hochhauses explodiert, bekommen nicht alle perfekt die Treffer
