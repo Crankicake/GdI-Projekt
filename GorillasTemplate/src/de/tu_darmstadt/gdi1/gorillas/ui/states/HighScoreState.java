@@ -57,8 +57,8 @@ public class HighScoreState extends OwnState {
 		Entity gorilla_logoE = new Entity(names[1]);
 
 		// Setzen der Komponenten
-		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30,
-				windowHeight / 2 - 100));
+		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 0,
+				windowHeight / 2 - 220));
 		gorilla_logoE.setScale(0.5f);
 		if (!MasterGame.getDebug()) {
 			gorilla_logoE.addComponent(new ImageRenderComponent(new Image(
@@ -74,7 +74,8 @@ public class HighScoreState extends OwnState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		super.render(container, game, g);
-
+		
+        //Initialisierung der Spaltennamen
 		g.setColor(org.newdawn.slick.Color.blue);
 		g.drawString("Platzierung", windowWidth/2-370, windowHeight/2-160);
 		g.drawString("Name",windowWidth/2-250, windowHeight/2-160);
@@ -84,6 +85,7 @@ public class HighScoreState extends OwnState {
 
 		int y = windowHeight / 2 -130;
 		g.setColor(org.newdawn.slick.Color.white);
+		//Zeichnen der Highscoreeinträge
 		for (int i = 0; i < hsc.length; i++) {
 			g.drawString((i+1)+"",windowWidth/2-350,y);
 			g.drawString(hsc[i].getName(),windowWidth/2-250,y);
