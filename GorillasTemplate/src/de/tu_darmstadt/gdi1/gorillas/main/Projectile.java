@@ -46,7 +46,6 @@ public class Projectile extends Entity {
 			throwAttempt = new ThrowAttempt(angle, velocity, position, playerID);
 			flying = true;
 		} catch (GorillasException e) {
-			flying = false;
 			e.printStackTrace();
 		}
 	}
@@ -80,6 +79,7 @@ public class Projectile extends Entity {
 			setPosition(pos);
 
 		} else {
+			flying = false;
 			throw new GorillasException(new Exception(),
 					"Banane ist ausserhalb vom Bild, " + pos.x + " " + pos.y,
 					ExceptionReason.ThrowAttemptNoNextPosition);
@@ -91,7 +91,7 @@ public class Projectile extends Entity {
 		if (flying) {
 			picture.setRotation(rotation);
 
-			rotation += 15;
+			rotation += 5;
 			rotation %= 360;
 		} else {
 			picture.setRotation(0);

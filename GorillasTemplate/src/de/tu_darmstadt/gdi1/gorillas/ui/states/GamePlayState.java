@@ -127,10 +127,10 @@ public class GamePlayState extends OwnState {
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
 
-		/*
-		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
-		 * render(playerTwo.getHitbox(), g);
-		 */
+		
+		 /*render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
+		 render(playerTwo.getHitbox(), g);*/
+		
 	}
 
 	@Override
@@ -555,7 +555,14 @@ public class GamePlayState extends OwnState {
 		 * }
 		 */
 
-		for (Vector2f v : sun.getHitbox()) {
+		Vector2f[] hitbox = sun.getHitbox();
+
+		// System.out.println(hitbox.length + " hb sun");
+
+		if (!projectile.isFlying())
+			return;
+
+		for (Vector2f v : hitbox) {
 			if (compareVectors(v, projectile.getPosition())) {
 				if (sun.getSunMode() != SunMode.astonished) {
 					sun.setSunMode(SunMode.astonished);
@@ -566,16 +573,26 @@ public class GamePlayState extends OwnState {
 		}
 
 		if (readyForHit) {
-			for (Vector2f v : playerOne.getHitbox()) {
+			hitbox = playerOne.getHitbox();
+
+			// System.out.println(hitbox.length + " hb 1");
+
+			for (Vector2f v : hitbox) {
 				if (compareVectors(v, projectile.getPosition())) {
 					explode(playerOne, playerTwo, v);
+					System.out.println("Hit Player One");
 					return;
 				}
 			}
 
-			for (Vector2f v : playerTwo.getHitbox()) {
+			hitbox = playerTwo.getHitbox();
+
+			// System.out.println(hitbox.length + " hb 2");
+
+			for (Vector2f v : hitbox) {
 				if (compareVectors(v, projectile.getPosition())) {
 					explode(playerTwo, playerOne, v);
+					System.out.println("Hit Player Two");
 					return;
 				}
 			}
@@ -697,11 +714,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void explode(Player victum, Player other, Vector2f pos) {
-
 		projectile.explode();
-
-		victum.setVisible(false);
-		other.increaseScore();
 
 		hitTimer = 0;
 		messageTimer = 0;
@@ -709,6 +722,10 @@ public class GamePlayState extends OwnState {
 
 		rundeEnde = true;
 		readyForHit = false;
+
+		victum.setVisible(false);
+		other.increaseScore();
+
 		explosion.setPosition(pos);
 	}
 
@@ -809,7 +826,18 @@ public class GamePlayState extends OwnState {
 	}
 
 	private boolean compareVectors(Vector2f one, Vector2f two) {
-		return one.equals(two);
+
+		// float x = one.x - two.x;
+		// float y = one.y - two.y;
+
+		Vector2f t1 = new Vector2f((int)one.x, (int)one.y);
+		Vector2f t2 = new Vector2f((int) two.x, (int) two.y);
+		
+		return t1.equals(t2);
+
+		// System.out.println(x + "  " + y);
+
+		// return x < 0.1 && y < 0.1;
 	}
 
 	@SuppressWarnings("unused")
