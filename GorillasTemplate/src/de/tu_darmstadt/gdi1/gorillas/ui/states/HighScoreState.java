@@ -76,11 +76,11 @@ public class HighScoreState extends OwnState {
 		super.render(container, game, g);
 
 		g.setColor(org.newdawn.slick.Color.blue);
-		g.drawString("Platzierung", windowWidth/2-300, windowHeight/2-200);
-		g.drawString("Name",windowWidth/2-180, windowHeight/2-200);
-		g.drawString("Gespielte Runden",windowWidth/2-120, windowHeight/2-200);
-		g.drawString("Gewonnene Runden", windowWidth/2+50, windowHeight/2-200);
-		g.drawString("Trefferquote", windowWidth/2+250,windowHeight/2-200);
+		g.drawString("Platzierung", windowWidth/2-300, windowHeight/2-160);
+		g.drawString("Name",windowWidth/2-180, windowHeight/2-160);
+		g.drawString("Gespielte Runden",windowWidth/2-120, windowHeight/2-160);
+		g.drawString("Gewonnene Runden", windowWidth/2+50, windowHeight/2-160);
+		g.drawString("Trefferquote", windowWidth/2+250,windowHeight/2-160);
 
 		int y = 120;
 		g.setColor(org.newdawn.slick.Color.white);
@@ -98,6 +98,9 @@ public class HighScoreState extends OwnState {
 			g.drawString("--("+Math.round(ergebnis1 * 100)/100+")%",windowWidth/2+100,y);
 			g.drawString(""+ Math.round(ergebnis2*100.00)/100.00, windowWidth/2+250, y);
 			y+=20;
+			
+			if(i==9)
+				i= io.anzahlHighscore()+1;
 		}
 		g.drawString("Zurueck", 85, 66);
 	}
