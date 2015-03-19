@@ -142,20 +142,20 @@ public class GamePlayState extends OwnState {
 
 		g.drawString(sb.toString(), windowWidth / 2 - 180, 10);
 
-		/*
-		 * if(displayOutOfWindowComment) {
-		 * g.drawString(outOfWindowComment,sun.getPosition().x + 60 ,
-		 * sun.getPosition().y); }
-		 */
+		
+		if(displayOutOfWindowComment) {
+			g.drawString(outOfWindowComment,sun.getPosition().x + 60 ,
+					sun.getPosition().y); }
+		
 
 		if (displayBuildingHitComment) {
-			g.drawString(buildingHitComment, sun.getPosition().x + 60,
-					sun.getPosition().y);
+			g.drawString(buildingHitComment, sun.getPosition().x + 100,
+					sun.getPosition().y + 50);
 		}
 
 		if (displayApeHitComment) {
-			g.drawString(apeHitComment, sun.getPosition().x + 60,
-					sun.getPosition().y);
+			g.drawString(apeHitComment, sun.getPosition().x + 100,
+					sun.getPosition().y + 50);
 
 		}
 		/*

@@ -32,7 +32,14 @@ public class MasterGame {
 		wind = 0;
 
 		remarks = new String[] {
-				"Geh doch lieber AngryBirds spielen!"
+				"Geh doch lieber AngryBirds spielen!",
+				"Du stellst dich hier genauso gut an, \n wie ich in der Kühlkammer",
+				"BOOOM!",
+				"Die Russen sind da!!!",
+				"Klappe zu Affe tot!",
+				"Na Du Nudel"
+								
+				
 		};
 	}
 
