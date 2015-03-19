@@ -160,19 +160,28 @@ public class InputOutput {
 
 		for (int k = 0; k < anzahl; k++) {
 			for (int j = 1; j < anzahl; j++) {
-				if ((temp[j - 1].getAnzahlGewonnen() / temp[j - 1]
-						.getAnzahlRunden()) > (temp[j].getAnzahlGewonnen() / temp[j]
-						.getAnzahlRunden())) {
+				if (temp[j - 1].getProzentGewonnen() > temp[j].getProzentGewonnen()) {
 					tempItem = temp[j];
 					temp[j] = temp[j - 1];
 					temp[j - 1] = tempItem;
+				}
+				if(temp[j-1].getProzentGewonnen() == temp[j].getProzentGewonnen()){
+					if(temp[j-1].getTrefferquote() > temp[j].getTrefferquote()){
+						tempItem = temp[j];
+						temp[j] = temp[j-1];
+						temp[j-1] = tempItem;
+					}
 				}
 			}
 		}
 
 		return temp;
 	}
-
+	
+	/**
+	 * Diese Methode liefert die Anzahl der Highscoreeintraege in der Highscoredatei zurueck
+	 * @return Amount of highscore entries
+	 */
 	public int anzahlHighscore() {
 		InputStream fis = null;
 		ObjectInputStream ois = null;
@@ -264,6 +273,8 @@ public class InputOutput {
 								+ hsc.getAnzahlGewonnen());
 						tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
 								+ hsc.getAnzahlBananen());
+						// hier abgedrehter shit tmp[i].setProzentGewonnen(); 
+						// hier abgedrehter shit 2 tmp[i].setTrefferquote();
 						flag = true;
 					}
 
