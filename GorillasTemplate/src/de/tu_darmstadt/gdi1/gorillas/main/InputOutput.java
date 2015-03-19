@@ -2,6 +2,7 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
@@ -156,25 +157,6 @@ public class InputOutput {
 			temp[x] = tmp1[x];
 		}
 
-		Highscore tempItem;
-
-		for (int k = 0; k < anzahl; k++) {
-			for (int j = 1; j < anzahl; j++) {
-				if (temp[j - 1].getProzentGewonnen() > temp[j].getProzentGewonnen()) {
-					tempItem = temp[j];
-					temp[j] = temp[j - 1];
-					temp[j - 1] = tempItem;
-				}
-				if(temp[j-1].getProzentGewonnen() == temp[j].getProzentGewonnen()){
-					if(temp[j-1].getTrefferquote() > temp[j].getTrefferquote()){
-						tempItem = temp[j];
-						temp[j] = temp[j-1];
-						temp[j-1] = tempItem;
-					}
-				}
-			}
-		}
-
 		return temp;
 	}
 	
@@ -203,7 +185,6 @@ public class InputOutput {
 			} catch (IOException e) {
 			} catch (OutOfMemoryError e) {
 				System.out.println("No more memory");
-				e.printStackTrace();
 			}
 
 			finally {
@@ -273,8 +254,7 @@ public class InputOutput {
 								+ hsc.getAnzahlGewonnen());
 						tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
 								+ hsc.getAnzahlBananen());
-						// hier abgedrehter shit tmp[i].setProzentGewonnen(); 
-						// hier abgedrehter shit 2 tmp[i].setTrefferquote();
+						tmp[i].calculateValues();
 						flag = true;
 					}
 
@@ -284,6 +264,32 @@ public class InputOutput {
 				if (!flag)
 					liste.add(hsc);
 
+				Highscore tempItem;
+
+				int anzahl = liste.size();
+				
+				Highscore[] temp = liste.toArray(new Highscore[anzahl]);
+				
+				for (int k = 0; k < anzahl; k++) {
+					for (int j = 1; j < anzahl; j++) {
+						if (temp[j - 1].getProzentGewonnen() < temp[j].getProzentGewonnen()) {
+							tempItem = temp[j];
+							temp[j] = temp[j - 1];
+							temp[j - 1] = tempItem;
+						}
+						if(temp[j-1].getProzentGewonnen() == temp[j].getProzentGewonnen()){
+							if(temp[j-1].getTrefferquote() < temp[j].getTrefferquote()){
+								tempItem = temp[j];
+								temp[j] = temp[j-1];
+								temp[j-1] = tempItem;
+							}
+						}
+					}
+				}
+				
+				
+				liste = new LinkedList<Highscore>(Arrays.asList(temp));
+			
 				FileOutputStream fos = new FileOutputStream(dateiHighscore,
 						false);
 

@@ -14,6 +14,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 
 	public GorillasTestAdapterExtended1() {
 		super();
+		
+		initializeGame();
 	}
 
 	@Override
@@ -299,7 +301,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	public int getPercentageWonAtHighscorePosition(int position) {
 		InputOutput io = new InputOutput();
 		try {
-			return (int) (io.leseHighscore()[position].getProzentGewonnen() * 100);
+			return (int) Math.round(io.leseHighscore()[position].getProzentGewonnen() * 100);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return -1;
 		}

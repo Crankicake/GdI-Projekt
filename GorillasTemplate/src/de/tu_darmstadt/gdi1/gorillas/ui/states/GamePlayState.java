@@ -76,6 +76,14 @@ public class GamePlayState extends OwnState {
 	public Vector2f getApeHeight;
 	private ArrayList<Vector2f> buildingCoordinates = new ArrayList<Vector2f>();
 
+	private boolean displayOutOfWindowComment = false;
+	private boolean displayBuildingHitComment = false;
+	private boolean displayApeHitComment = false;
+
+	private String buildingHitComment = "";
+	private String apeHitComment = "";
+	private String outOfWindowComment = "";
+
 	public GamePlayState(int sid) {
 		super(sid);
 
@@ -92,6 +100,13 @@ public class GamePlayState extends OwnState {
 		initWindIndicator();
 		initExplosion(new Vector2f());
 		initHit();
+
+		// PlayerHitKommentar
+		if (playerOne.getScore() != 0 || playerTwo.getScore() != 0) {
+			displayOutOfWindowComment = true;
+			outOfWindowComment = sun.getComment(0);
+		}
+
 	}
 
 	@Override
@@ -127,10 +142,27 @@ public class GamePlayState extends OwnState {
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
 
-		
-		 /*render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
-		 render(playerTwo.getHitbox(), g);*/
-		
+		/*
+		 * if(displayOutOfWindowComment) {
+		 * g.drawString(outOfWindowComment,sun.getPosition().x + 60 ,
+		 * sun.getPosition().y); }
+		 */
+
+		if (displayBuildingHitComment) {
+			g.drawString(buildingHitComment, sun.getPosition().x + 60,
+					sun.getPosition().y);
+		}
+
+		if (displayApeHitComment) {
+			g.drawString(apeHitComment, sun.getPosition().x + 60,
+					sun.getPosition().y);
+
+		}
+		/*
+		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
+		 * render(playerTwo.getHitbox(), g);
+		 */
+
 	}
 
 	@Override
@@ -371,6 +403,9 @@ public class GamePlayState extends OwnState {
 				try {
 					initExplosion(event.getOwnerEntity().getPosition());
 
+					displayBuildingHitComment = true;
+					buildingHitComment = sun.getComment(1);
+
 					for (Entity e : entityManager.getEntitiesByState(getID())) {
 						if (!(e instanceof IDestructible)) {
 							continue;
@@ -449,6 +484,7 @@ public class GamePlayState extends OwnState {
 		apeHit.setVisible(false);
 
 		entityManager.addEntity(getID(), apeHit);
+
 	}
 
 	private void updateInput(GameContainer gc, StateBasedGame sbg, int i)
@@ -471,14 +507,12 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
-	private void updateWind(GameContainer gc, StateBasedGame sbg, int  i)
+	private void updateWind(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		if (arrowPosition == null)
 			arrowPosition = new Vector2f(0, 0);
 
-		float wind = MasterGame.getWind() * i * MasterGame.getTimeScale();
-		
-		arrowPosition.x += wind;
+		arrowPosition.x += MasterGame.getWind();
 
 		if (arrowPosition.x > windowWidth + 30) {
 			arrowPosition.x = 0;
@@ -516,6 +550,7 @@ public class GamePlayState extends OwnState {
 					playerOne.setImageState(PlayerImageState.NoHandsForYou);
 					playerTwo.setImageState(PlayerImageState.LeftHandRised);
 				}
+
 			}
 		} else {
 
@@ -654,6 +689,10 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void throwButton_Click() {
+		displayBuildingHitComment = false;
+		displayOutOfWindowComment = false;
+		displayApeHitComment = false;
+
 		throwBanana();
 	}
 
@@ -703,6 +742,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void restart() {
+
 		setAttributes();
 		clearInput();
 
@@ -713,9 +753,16 @@ public class GamePlayState extends OwnState {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+
+		displayApeHitComment = true;
+		apeHitComment = sun.getComment(2);
+		displayBuildingHitComment = false;
+		displayOutOfWindowComment = false;
+
 	}
 
 	private void explode(Player victum, Player other, Vector2f pos) {
+
 		projectile.explode();
 
 		hitTimer = 0;
@@ -832,9 +879,9 @@ public class GamePlayState extends OwnState {
 		// float x = one.x - two.x;
 		// float y = one.y - two.y;
 
-		Vector2f t1 = new Vector2f((int)one.x, (int)one.y);
+		Vector2f t1 = new Vector2f((int) one.x, (int) one.y);
 		Vector2f t2 = new Vector2f((int) two.x, (int) two.y);
-		
+
 		return t1.equals(t2);
 
 		// System.out.println(x + "  " + y);
