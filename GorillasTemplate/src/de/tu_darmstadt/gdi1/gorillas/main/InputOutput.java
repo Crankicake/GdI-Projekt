@@ -129,9 +129,8 @@ public class InputOutput {
 			// Sortierung
 			for (int k = 0; k < anzahlHighscore(); k++) {
 				for (int j = 1; j < anzahlHighscore(); j++) {
-					if ((tmp1[j - 1].getAnzahlRunden()
-							/ tmp1[j - 1].getAnzahlGewonnen() > (tmp1[j]
-							.getAnzahlRunden() / tmp1[j].getAnzahlGewonnen()))) {
+					if ( (tmp1[j - 1].getAnzahlGewonnen()
+							/ tmp1[j - 1].getAnzahlRunden()) > (tmp1[j].getAnzahlGewonnen() / tmp1[j].getAnzahlRunden())) {
 						tmp2 = tmp1[j];
 						tmp1[j] = tmp1[j - 1];
 						tmp1[j - 1] = tmp2;
