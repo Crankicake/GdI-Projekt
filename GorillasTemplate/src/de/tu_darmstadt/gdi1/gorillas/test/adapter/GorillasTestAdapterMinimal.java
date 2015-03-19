@@ -70,7 +70,7 @@ public class GorillasTestAdapterMinimal {
 		gorillas = new TestGorillas(true);
 
 		MasterGame.setDebug(true);
-		
+
 		// Initialisiere die statische Klasse Map
 		try {
 			app = new TWLTestAppGameContainer(gorillas, 1000, 600, false);
@@ -165,10 +165,10 @@ public class GorillasTestAdapterMinimal {
 	public void startGameButtonPressed() {
 
 		GameState state = gorillas.getCurrentState();
-		
-		if(state instanceof GameSetupState) {
+
+		if (state instanceof GameSetupState) {
 			try {
-				((GameSetupState)state).StartButtonClick(app, gorillas);
+				((GameSetupState) state).StartButtonClick(app, gorillas);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -186,8 +186,9 @@ public class GorillasTestAdapterMinimal {
 	 */
 	public void fillVelocityInput(char charac) {
 		String value = String.valueOf(charac);
-		GamePlayState state = (GamePlayState) gorillas.getState(TestGorillas.GAMEPLAYSTATE);
-		
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+
 		state.setVelocity(value);
 	}
 
@@ -196,18 +197,8 @@ public class GorillasTestAdapterMinimal {
 	 *         nothing was put in the method should return -1.
 	 */
 	public int getVelocityInput() {
-		int stateID = gorillas.getCurrentStateID();
-
-		if (stateID != TestGorillas.GAMEPLAYSTATE)
-			return -1;
-
-		GameState state = gorillas.getCurrentState();
-
-		if (!(state instanceof GamePlayState)) {
-			return -1;
-		}
-
-		GamePlayState gs = (GamePlayState) state;
+		GamePlayState gs = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
 
 		int velocity = gs.getProjectile().getVelocity();
 
@@ -226,8 +217,9 @@ public class GorillasTestAdapterMinimal {
 	public void fillAngleInput(char charac) {
 		// TODO: Implement
 		String value = String.valueOf(charac);
-		GamePlayState state = (GamePlayState) gorillas.getState(TestGorillas.GAMEPLAYSTATE);
-		
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+
 		state.setAngle(value);
 	}
 
@@ -236,19 +228,9 @@ public class GorillasTestAdapterMinimal {
 	 *         was put in the method should return -1.
 	 */
 	public int getAngleInput() {
-		int stateID = gorillas.getCurrentStateID();
+		GamePlayState gs = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
 
-		if (stateID != TestGorillas.GAMEPLAYSTATE)
-			return -1;
-
-		GameState state = gorillas.getCurrentState();
-
-		if (!(state instanceof GamePlayState)) {
-			return -1;
-		}
-
-		GamePlayState gs = (GamePlayState) state;
-		
 		int angle = gs.getProjectile().getAngle();
 
 		return angle;
@@ -269,7 +251,7 @@ public class GorillasTestAdapterMinimal {
 
 		GamePlayState state = (GamePlayState) gorillas
 				.getState(TestGorillas.GAMEPLAYSTATE);
-		
+
 		state.throwButton_Click();
 	}
 
@@ -301,13 +283,13 @@ public class GorillasTestAdapterMinimal {
 	 */
 	public Vector2f getNextShotPosition(Vector2f startPosition, int angle,
 			int speed, boolean fromLeftToRight, int deltaTime) {
-		
+
 		MasterGame.setGravitation(10);
-		
+
 		try {
 			ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
 					fromLeftToRight ? 1 : 2);
-			
+
 			return ta.getNextPoint(deltaTime);
 		} catch (GorillasException e) {
 			e.printStackTrace();

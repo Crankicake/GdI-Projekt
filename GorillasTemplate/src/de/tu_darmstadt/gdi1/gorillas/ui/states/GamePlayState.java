@@ -122,10 +122,10 @@ public class GamePlayState extends OwnState {
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
 
-		/*
-		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
-		 * render(playerTwo.getHitbox(), g);
-		 */
+		render(sun.getHitbox(), g);
+		render(playerOne.getHitbox(), g);
+		render(playerTwo.getHitbox(), g);
+
 	}
 
 	@Override
@@ -642,7 +642,7 @@ public class GamePlayState extends OwnState {
 			if (number < 0) {
 				number = 0;
 			} else if (number > 200) {
-				number = 200;
+				velocityTextField.setText(oldVelocity);
 			}
 
 			oldText = number.toString();
@@ -661,12 +661,12 @@ public class GamePlayState extends OwnState {
 			return;
 
 		try {
-			Integer number = Integer.parseInt(trimString(oldText));
+			Integer number = Integer.parseInt(trimString(oldAngle));
 
 			if (number < 0) {
 				number = 0;
 			} else if (number > 360) {
-				number = 360;
+				angleTextField.setText(oldText);
 			}
 
 			oldText = number.toString();

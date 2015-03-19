@@ -92,7 +92,7 @@ public class Projectile extends Entity {
 		if (flying) {
 			picture.setRotation(rotation);
 
-			rotation += 5;
+			rotation += 15;
 			rotation %= 360;
 		} else {
 			picture.setRotation(0);
