@@ -82,7 +82,7 @@ public class GamePlayTest {
 
 		// let the shot fly, it should definitely hit the right gorilla
 		for (int i = 0; i < 500; i += 1) {
-			adapter.runGame(i);
+			adapter.runGame(2);
 		}
 
 		assertEquals(

@@ -19,7 +19,7 @@ public class InputOutput {
 
 	public InputOutput() {
 		dateiNamen = new File("Namen.bin");
-		dateiHighscore = new File("Highscore.hcs");
+		dateiHighscore = new File("Highscore.hsc");
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * Diese Methode liest alle Higscore Einträge aus der "Highscore.hcs" Datei
+	 * Diese Methode liest alle Higscore Einträge aus der "Highscore.hsc" Datei
 	 * und liefert ein Array aus Highscores zurück
 	 * 
 	 * @return Array of Highscores
@@ -229,7 +229,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hcs"
+	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hsc"
 	 * hinzu bzw. updated sie mit dem übergebenen Parameter
 	 * 
 	 * @param hsc
