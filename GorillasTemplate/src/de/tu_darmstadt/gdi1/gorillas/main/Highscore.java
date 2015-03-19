@@ -20,6 +20,8 @@ public class Highscore implements Serializable{
 	private int anzahlRunden;
 	private int anzahlGewonnen;
 	private int anzahlBananen;
+	private double prozentGewonnen;
+	private double trefferquote;
 	
 	/**
 	 * Konstruktor zur Initialisierung der Attribute
@@ -29,6 +31,8 @@ public class Highscore implements Serializable{
 		anzahlRunden = 0;
 		anzahlGewonnen = 0;
 		anzahlBananen = 0;
+		prozentGewonnen = 0;
+		setTrefferquote(0);
 	}
 	
 	/**
@@ -44,6 +48,8 @@ public class Highscore implements Serializable{
 		anzahlRunden = AnzRunden;
 		anzahlGewonnen = AnzGewonnen;
 		anzahlBananen = AnzBananen;
+		setProzentGewonnen(AnzGewonnen/AnzRunden);
+		setTrefferquote(AnzGewonnen/AnzBananen);
 	}
 
 	/**
@@ -110,7 +116,34 @@ public class Highscore implements Serializable{
 		this.anzahlBananen = anzahlBananen;
 	}
 	
-	public double getGenauigkeit() {
+	/*public double getGenauigkeit() {
 		return anzahlRunden / anzahlGewonnen;
+	}*/
+	/**
+	 * Getter fuer Prozentzahl der gewonnenen Runden
+	 * @return The percentage of won rounds
+	 */
+	public double getProzentGewonnen() {
+		return prozentGewonnen;
+	}
+	
+	public void setProzentGewonnen(double prozentGewonnen) {
+		this.prozentGewonnen = prozentGewonnen;
+	}
+
+	/**
+	 * Getter fuer die Trefferquote
+	 * @return the trefferquote
+	 */
+	public double getTrefferquote() {
+		return trefferquote;
+	}
+
+	/**
+	 * Setter fuer die Trefferquote
+	 * @param trefferquote the trefferquote to set
+	 */
+	public void setTrefferquote(double trefferquote) {
+		this.trefferquote = trefferquote;
 	}
 }

@@ -85,18 +85,12 @@ public class HighScoreState extends OwnState {
 		int y = windowHeight / 2;
 		g.setColor(org.newdawn.slick.Color.white);
 		for (int i = 0; i < hsc.length; i++) {
-			double anzahlR =0,anzahlG=0,anzahlB=0,ergebnis1=0,ergebnis2=0;
-			anzahlR = hsc[i].getAnzahlRunden();
-			anzahlG = hsc[i].getAnzahlGewonnen();
-			anzahlB = hsc[i].getAnzahlBananen();
-			ergebnis1 = (anzahlG/anzahlR)*100;
-			ergebnis2 = anzahlG/anzahlB;
 			g.drawString((i+1)+"",windowWidth/2-300,y);
 			g.drawString(hsc[i].getName(),windowWidth/2-180,y);
 			g.drawString(""+hsc[i].getAnzahlRunden(),windowWidth/2-100,y);
 			g.drawString(""+hsc[i].getAnzahlGewonnen(),windowWidth/2+50,y);
-			g.drawString("--("+Math.round(ergebnis1 * 100)/100+")%",windowWidth/2+100,y);
-			g.drawString(""+ Math.round(ergebnis2*100.00)/100.00, windowWidth/2+250, y);
+			g.drawString("--("+Math.round(hsc[i].getProzentGewonnen() * 100)/100+")%",windowWidth/2+100,y);
+			g.drawString(""+ Math.round(hsc[i].getTrefferquote()*100.00)/100.00, windowWidth/2+250, y);
 			y+=20;
 			
 			if(i==9)

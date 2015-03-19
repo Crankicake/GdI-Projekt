@@ -299,7 +299,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	public int getPercentageWonAtHighscorePosition(int position) {
 		InputOutput io = new InputOutput();
 		try {
-			return (int) (io.leseHighscore()[position].getGenauigkeit() * 100);
+			return (int) (io.leseHighscore()[position].getProzentGewonnen() * 100);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return -1;
 		}
@@ -319,7 +319,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	public double getMeanAccuracyAtHighscorePosition(int position) {
 		InputOutput io = new InputOutput();
 		try {
-			return io.leseHighscore()[position].getGenauigkeit();
+			return io.leseHighscore()[position].getTrefferquote();
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return -1;
 		}
