@@ -288,57 +288,32 @@ public class GameSetupState extends OwnState {
 
 	public void StartButtonClick(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		String name1 = playername1Textbox.getText();
-		String name2 = playername2Textbox.getText();
+		String name1 = MasterGame.getPlayerOne().getName();
+		String name2 = MasterGame.getPlayerTwo().getName();
 
 		if (name1 == null || name1.isEmpty()) {
-			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
+			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein";
 			errormessage = errorMessageP1;
-			return;
 		}
 
 		if (name2 == null || name2.isEmpty()) {
-			errorMessageP2 = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
+			errorMessageP2 = "Die Spielernamen duerfen nicht leer sein";
 			errormessage = errorMessageP2;
-			return;
 		}
 
 		if (name1.equals(name2)) {
-			errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
-			return;
+			errormessage = "Bitte unterschiedliche Spielernamen eingeben";
 		}
 
-		errormessage = "";
+		if(errorMessageP1 == null || errorMessageP2 == null || errormessage == null)
+			return;
+		
+		if(!errorMessageP1.isEmpty() || !errorMessageP2.isEmpty() || !errormessage.isEmpty())
+			return;
 
 		changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
 		io.speichereName(name1);
 		io.speichereName(name2);
-
-		String firstName = playername1Textbox.getText();
-		String secondName = playername2Textbox.getText();
-
-		if (firstName == null || firstName.isEmpty()) {
-			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
-			errormessage = errorMessageP1;
-			return;
-		}
-
-		if (secondName == null || secondName.isEmpty()) {
-			errorMessageP2 = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
-			errormessage = errorMessageP2;
-			return;
-		}
-
-		if (firstName.equals(secondName)) {
-			equalError();
-			return;
-		}
-
-		errormessage = "";
-
-		changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
-		io.speichereName(firstName);
-		io.speichereName(secondName);
 	}
 
 	public void setPlayername1TextboxText(String text) {
@@ -354,23 +329,43 @@ public class GameSetupState extends OwnState {
 	}
 
 	public void setPlayerOneName(String name) {
-		if (name == null || name.isEmpty()
-				|| name.equals(MasterGame.getPlayerTwo().getName()))
+		if (name == null || name.isEmpty()) {
+			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein";
 			return;
+		}
 
+		if(name.equals(MasterGame.getPlayerTwo().getName()))
+		{
+			errorMessageP1 = "Bitte unterschiedliche Spielernamen eingeben";
+			errorMessageP2 = "Bitte unterschiedliche Spielernamen eingeben";
+			return;
+		}
+		
+		errorMessageP1 = "";
+		
 		MasterGame.getPlayerOne().setName(name);
 	}
 
 	public void setPlayerTwoName(String name) {
-		if (name == null || name.isEmpty()
-				|| name.equals(MasterGame.getPlayerOne().getName()))
+		if (name == null || name.isEmpty()) {
+			errorMessageP2 = "Die Spielernamen duerfen nicht leer sein";
 			return;
+		}
 
+		if(name.equals(MasterGame.getPlayerOne().getName()))
+		{
+			errorMessageP1 = "Bitte unterschiedliche Spielernamen eingeben";
+			errorMessageP2 = "Bitte unterschiedliche Spielernamen eingeben";
+			return;
+		}
+		
+		errorMessageP2 = "";
+		
 		MasterGame.getPlayerTwo().setName(name);
 	}
 
 	public void equalError() {
-		errormessage = "Bitte unterschiedliche Spielernamen eingeben!";
+		errormessage = "Bitte unterschiedliche Spielernamen eingeben";
 
 	}
 

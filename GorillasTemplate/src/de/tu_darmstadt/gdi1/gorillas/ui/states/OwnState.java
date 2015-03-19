@@ -99,8 +99,9 @@ public abstract class OwnState extends BasicTWLGameState {
 			throws SlickException {
 		// Die Standartupdatemethodenimplementation, die einfach einmal alle
 		// Entities updatet
-
-		entityManager.updateEntities(container, game, delta);
+		if (!MasterGame.getDebug()) {
+			entityManager.updateEntities(container, game, delta);
+		}
 	}
 
 	/**

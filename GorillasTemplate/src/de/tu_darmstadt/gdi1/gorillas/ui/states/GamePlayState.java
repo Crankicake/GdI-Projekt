@@ -56,8 +56,8 @@ public class GamePlayState extends OwnState {
 	private Label angleLabel;
 	private Label playerLabel;
 
-	private String oldVelocity;
-	private String oldAngle;
+	private int oldVelocity;
+	private int oldAngle;
 
 	private Vector2f arrowPosition;
 
@@ -132,7 +132,9 @@ public class GamePlayState extends OwnState {
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 
-		entityManager.updateEntities(gc, sbg, i);
+		if (!MasterGame.getDebug()) {
+			entityManager.updateEntities(gc, sbg, i);
+		}
 
 		updateInput(gc, sbg, i);
 		updateWind(gc, sbg, i);
@@ -230,8 +232,8 @@ public class GamePlayState extends OwnState {
 		names = new String[] { "Background", "Sun", "Building_",
 				"BuildingDestrucable_", "Banana" };
 
-		oldVelocity = "-1";
-		oldAngle = "-1";
+		oldVelocity = -1;
+		oldAngle = -1;
 
 		readyForHit = false;
 		rundeEnde = false;
@@ -406,8 +408,8 @@ public class GamePlayState extends OwnState {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
 			if (!MasterGame.getDebug()) {
 				arrow = new Image("/assets/gorillas/arrow.png");
+				arrow.rotate(180);
 			}
-			arrow.rotate(180);
 		} else if (MasterGame.getWind() > 0) {
 			arrowPosition = new Vector2f(30, windowHeight - 20);
 			if (!MasterGame.getDebug()) {
@@ -631,32 +633,32 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void velocityTextField_TextChanged() {
-
 		String oldText = velocityTextField.getText();
 
-		  if (oldVelocity.equals(oldText))
-		   return;
+		if ((String.valueOf(oldVelocity)).equals(oldText))
+			return;
 
-		  try {
-		   Integer number = Integer.parseInt(trimString(oldText));
+		try {
+			Integer number = Integer.parseInt(trimString(oldText));
 
-		   if (number < 0) {
-		    number = -1;
-		   } else if (number > 200) {
-		    number =  Integer.parseInt(trimString(oldVelocity));
-		   }
+			if (number < 0) {
+				number = -1;
+			} else if (number > 200) {
+				number = Integer.parseInt(trimString(String
+						.valueOf(oldVelocity)));
+			}
 
-		   oldVelocity = number.toString();
-		   velocityTextField.setText(oldVelocity);
-		  } catch (NumberFormatException nfe) {
+			oldVelocity = number;
+			velocityTextField.setText(String.valueOf(oldVelocity));
+		} catch (NumberFormatException nfe) {
 
-		  }
+		}
 	}
 
 	public void angleTextField_TextChanged() {
 		String oldText = angleTextField.getText();
 
-		if (oldAngle.equals(oldText))
+		if ((String.valueOf(oldAngle)).equals(oldText))
 			return;
 
 		try {
@@ -665,11 +667,11 @@ public class GamePlayState extends OwnState {
 			if (number < 0) {
 				number = -1;
 			} else if (number > 360) {
-				number = Integer.parseInt(trimString(oldAngle));
+				number = Integer.parseInt(trimString(String.valueOf(oldAngle)));
 			}
 
-			oldAngle = number.toString();
-			angleTextField.setText(oldAngle);
+			oldAngle = number;
+			angleTextField.setText(String.valueOf(oldAngle));
 		} catch (NumberFormatException nfe) {
 
 		}
@@ -774,8 +776,10 @@ public class GamePlayState extends OwnState {
 	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 
-		for (char c : s.toCharArray()) {
-			switch (c) {
+		char[] array = s.toCharArray();
+
+		for (int i = 0; i < array.length; ++i) {
+			switch (array[i]) {
 			case '0':
 			case '1':
 			case '2':
@@ -786,8 +790,12 @@ public class GamePlayState extends OwnState {
 			case '7':
 			case '8':
 			case '9':
-				sb.append(c);
+				sb.append(array[i]);
 				break;
+			}
+
+			if (i == 0 && array[0] == '-') {
+				sb.append(array[0]);
 			}
 		}
 
@@ -807,6 +815,68 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	public void addCharToVelocity(char newChar) {
+		String newString = "-1";
+
+		try {
+			newString = trimString(oldVelocity + String.valueOf(newChar));
+		} catch (NumberFormatException nfe) {
+			return;
+		}
+
+		if (oldVelocity == -1) {
+			newString = String.valueOf(newChar);
+		}
+
+		try {
+			Integer number = Integer.parseInt(newString);
+			if (number < 0) {
+				number = -1;
+				return;
+			}
+
+			if (number > 200) {
+				number = oldVelocity;
+			}
+
+			oldVelocity = number;
+		} catch (NumberFormatException nfe) {
+
+		}
+
+	}
+
+	public void addCharToAngle(char newChar) {
+		String newString = "-1";
+
+		try {
+			newString = trimString(oldAngle + String.valueOf(newChar));
+		} catch (NumberFormatException nfe) {
+			return;
+		}
+
+		if (oldAngle == -1) {
+			newString = String.valueOf(newChar);
+		}
+
+		try {
+			Integer number = Integer.parseInt(newString);
+
+			if (number < 0) {
+				number = -1;
+				return;
+			}
+
+			if (number > 360) {
+				number = oldAngle;
+			}
+
+			oldAngle = number;
+		} catch (NumberFormatException nfe) {
+
+		}
+	}
+
 	public void setVelocity(String value) {
 		velocityTextField.setText(velocityTextField.getText() + value);
 	}
@@ -816,8 +886,19 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void clearFields() {
-		velocityTextField.setText("-1");
-		angleTextField.setText("-1");
+		oldAngle = -1;
+		oldVelocity = -1;
+
+		velocityTextField.setText("0");
+		angleTextField.setText("0");
+	}
+
+	public String getVelocity() {
+		return String.valueOf(oldVelocity);
+	}
+
+	public String getAngle() {
+		return String.valueOf(oldAngle);
 	}
 
 	public Vector2f getNextBananaPosition() {

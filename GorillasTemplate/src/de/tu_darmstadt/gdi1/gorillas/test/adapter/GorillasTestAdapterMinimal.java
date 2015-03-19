@@ -139,18 +139,7 @@ public class GorillasTestAdapterMinimal {
 	 *            the name of player 2
 	 */
 	public void setPlayerNames(String player1Name, String player2Name) {
-		int stateID = gorillas.getCurrentStateID();
-
-		if (stateID != TestGorillas.GAMESETUPSTATE)
-			return;
-
-		GameState state = gorillas.getCurrentState();
-
-		if (!(state instanceof GameSetupState)) {
-			return;
-		}
-
-		GameSetupState gs = (GameSetupState) state;
+		GameSetupState gs = (GameSetupState) gorillas.getState(TestGorillas.GAMESETUPSTATE);
 
 		gs.setPlayerOneName(player1Name);
 		gs.setPlayerTwoName(player2Name);
@@ -185,11 +174,10 @@ public class GorillasTestAdapterMinimal {
 	 *            the input character
 	 */
 	public void fillVelocityInput(char charac) {
-		String value = String.valueOf(charac);
 		GamePlayState state = (GamePlayState) gorillas
 				.getState(TestGorillas.GAMEPLAYSTATE);
 
-		state.setVelocity(value);
+		state.addCharToVelocity(charac);
 	}
 
 	/**
@@ -200,7 +188,7 @@ public class GorillasTestAdapterMinimal {
 		GamePlayState gs = (GamePlayState) gorillas
 				.getState(TestGorillas.GAMEPLAYSTATE);
 
-		int velocity = gs.getProjectile().getVelocity();
+		int velocity = Integer.parseInt(gs.getVelocity());
 
 		return velocity;
 	}
@@ -215,12 +203,10 @@ public class GorillasTestAdapterMinimal {
 	 *            the input character
 	 */
 	public void fillAngleInput(char charac) {
-		// TODO: Implement
-		String value = String.valueOf(charac);
 		GamePlayState state = (GamePlayState) gorillas
 				.getState(TestGorillas.GAMEPLAYSTATE);
 
-		state.setAngle(value);
+		state.addCharToAngle(charac);
 	}
 
 	/**
@@ -231,7 +217,7 @@ public class GorillasTestAdapterMinimal {
 		GamePlayState gs = (GamePlayState) gorillas
 				.getState(TestGorillas.GAMEPLAYSTATE);
 
-		int angle = gs.getProjectile().getAngle();
+		int angle = Integer.parseInt(gs.getAngle());
 
 		return angle;
 	}
@@ -317,7 +303,7 @@ public class GorillasTestAdapterMinimal {
 	 *         left empty and the start game button is pressed
 	 */
 	public String getEmptyError() {
-		return "Die Spielernamen duerfen nicht leer sein!";
+		return "Die Spielernamen duerfen nicht leer sein";
 	}
 
 	/**
@@ -329,7 +315,7 @@ public class GorillasTestAdapterMinimal {
 	 * 
 	 */
 	public String getEqualError() {
-		return "Bitte unterschiedliche Spielernamen eingeben!";
+		return "Bitte unterschiedliche Spielernamen eingeben";
 	}
 
 	/**
@@ -340,7 +326,13 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer1Error() {
-		return "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
+		GameSetupState gss = (GameSetupState)gorillas.getState(TestGorillas.GAMESETUPSTATE);
+		
+		String s = gss.getErrorMessageP1();
+		
+		//String s = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
+		
+		return s;
 	}
 
 	/**
@@ -351,7 +343,13 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer2Error() {
-		return "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
+		GameSetupState gss = (GameSetupState)gorillas.getState(TestGorillas.GAMESETUPSTATE);
+		
+		String s = gss.getErrorMessageP2();
+		
+		//String s = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
+		
+		return s;
 	}
 
 	/**

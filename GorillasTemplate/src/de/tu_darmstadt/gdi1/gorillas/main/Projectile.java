@@ -22,7 +22,7 @@ public class Projectile extends Entity {
 	private boolean flying;
 	private ThrowAttempt throwAttempt;
 	private boolean exploded;
-	
+
 	public Projectile(String entityID) {
 		super(entityID);
 		nextPositions = new PriorityQueue<Vector2f>();
@@ -31,19 +31,19 @@ public class Projectile extends Entity {
 	}
 
 	public void createEntity() throws SlickException {
-		picture = new Image("/assets/gorillas/banana.png");
-
+		if (!MasterGame.getDebug()) {
+			picture = new Image("/assets/gorillas/banana.png");
+		}
+		
 		setScale(Launcher.SCALE);
 		setPassable(true);
 		setRotation(0.0f);
 	}
 
-	public void setParameter(int angle, int velocity,
-			int playerID) {
+	public void setParameter(int angle, int velocity, int playerID) {
 
 		try {
-			throwAttempt = new ThrowAttempt(angle, velocity, position,
-					playerID);
+			throwAttempt = new ThrowAttempt(angle, velocity, position, playerID);
 			flying = true;
 		} catch (GorillasException e) {
 			flying = false;
@@ -67,20 +67,19 @@ public class Projectile extends Entity {
 	public void updateOwn(GameContainer gc, StateBasedGame sbg, int i)
 			throws GorillasException {
 
-		if(exploded)
+		if (exploded)
 			throw new GorillasException(null, "Boooom", 0);
-		
+
 		if (!flying)
 			return;
 
 		Vector2f pos = throwAttempt.getNextPoint(i);
-		
-		if (pos.x > 0 && pos.y < Launcher.FRAME_HEIGHT && pos.x < Launcher.FRAME_WIDTH)
-		{
+
+		if (pos.x > 0 && pos.y < Launcher.FRAME_HEIGHT
+				&& pos.x < Launcher.FRAME_WIDTH) {
 			setPosition(pos);
-			
-		}
-		else {
+
+		} else {
 			throw new GorillasException(new Exception(),
 					"Banane ist ausserhalb vom Bild, " + pos.x + " " + pos.y,
 					ExceptionReason.ThrowAttemptNoNextPosition);
@@ -136,11 +135,10 @@ public class Projectile extends Entity {
 		super.setRotation(newRotation);
 
 		rotation = newRotation;
-		try{
+		try {
 			picture.setRotation(newRotation);
-		}
-		catch (NullPointerException ex) {
-			
+		} catch (NullPointerException ex) {
+
 		}
 	}
 
