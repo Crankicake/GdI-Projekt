@@ -122,9 +122,10 @@ public class GamePlayState extends OwnState {
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
 
-		/*render(sun.getHitbox(), g);
-		render(playerOne.getHitbox(), g);
-		render(playerTwo.getHitbox(), g);*/
+		/*
+		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
+		 * render(playerTwo.getHitbox(), g);
+		 */
 	}
 
 	@Override
@@ -630,25 +631,26 @@ public class GamePlayState extends OwnState {
 	}
 
 	public void velocityTextField_TextChanged() {
+
 		String oldText = velocityTextField.getText();
 
-		if (oldVelocity.equals(oldText))
-			return;
+		  if (oldVelocity.equals(oldText))
+		   return;
 
-		try {
-			Integer number = Integer.parseInt(trimString(oldText));
+		  try {
+		   Integer number = Integer.parseInt(trimString(oldText));
 
-			if (number < 0) {
-				number = -1;
-			} else if (number > 200) {
-				number =  Integer.parseInt(trimString(oldVelocity));
-			}
+		   if (number < 0) {
+		    number = -1;
+		   } else if (number > 200) {
+		    number =  Integer.parseInt(trimString(oldVelocity));
+		   }
 
-			oldVelocity = number.toString();
-			velocityTextField.setText(oldVelocity);
-		} catch (NumberFormatException nfe) {
+		   oldVelocity = number.toString();
+		   velocityTextField.setText(oldVelocity);
+		  } catch (NumberFormatException nfe) {
 
-		}
+		  }
 	}
 
 	public void angleTextField_TextChanged() {
@@ -662,8 +664,8 @@ public class GamePlayState extends OwnState {
 
 			if (number < 0) {
 				number = -1;
-			} else if (number > 200) {
-				number =  Integer.parseInt(trimString(oldAngle));
+			} else if (number > 360) {
+				number = Integer.parseInt(trimString(oldAngle));
 			}
 
 			oldAngle = number.toString();
