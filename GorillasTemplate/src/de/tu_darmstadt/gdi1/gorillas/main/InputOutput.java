@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 /**
- * Diese Klasse ist für alle Input- und Outputbelange gedacht.
+ * Diese Klasse ist fuer alle Input- und Outputbelange gedacht.
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  *
@@ -149,6 +149,7 @@ public class InputOutput {
 		return temp;
 	}
 
+	@SuppressWarnings("resource")
 	public int anzahlHighscore() {
 		File datei = new File("Highscore.hcs");
 		InputStream fis = null;
@@ -165,10 +166,6 @@ public class InputOutput {
 					tmp1[i] = (Highscore) ois.readObject();
 					i++;
 				}
-
-				//fis.close();
-				//ois.close();
-
 			} catch (EOFException e) {
 				return i;
 			} catch (ClassNotFoundException e) {
@@ -181,8 +178,13 @@ public class InputOutput {
 
 	}
 
+	/**
+	 * Diese Methode reseted die Highscoredatei
+	 * 
+	 */
 	public void resetHighscore() {
-		// Muss noch gemacht
+		File datei = new File("Highscore.hcs");
+		datei.delete();
 	}
 
 	/**

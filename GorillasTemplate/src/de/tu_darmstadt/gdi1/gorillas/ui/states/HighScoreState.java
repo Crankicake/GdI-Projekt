@@ -84,7 +84,7 @@ public class HighScoreState extends OwnState {
 
 		int y = 120;
 		g.setColor(org.newdawn.slick.Color.white);
-		for (int i = 0; i < io.anzahlHighscore(); i++) {
+		for (int i = 0; i < hsc.length; i++) {
 			double anzahlR =0,anzahlG=0,anzahlB=0,ergebnis1=0,ergebnis2=0;
 			anzahlR = hsc[i].getAnzahlRunden();
 			anzahlG = hsc[i].getAnzahlGewonnen();
