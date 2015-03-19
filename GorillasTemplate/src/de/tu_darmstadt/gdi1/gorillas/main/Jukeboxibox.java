@@ -13,10 +13,11 @@ import java.nio.file.Paths;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+
 /**
- * Diese Klasse repraesentiert die Jukebox. Die Jukebox ist in einem extra Frame implementiert.
- * Die Lieder werden im Pfad ~/ressources/Musik/ gesucht und aufgelistet. Ein Liedwechsel ist jederzeit
- * ueber die Dropdownbox moeglich.
+ * Diese Klasse repraesentiert die Jukebox. Die Jukebox ist in einem extra Frame
+ * implementiert. Die Lieder werden im Pfad ~/ressources/Musik/ gesucht und
+ * aufgelistet. Ein Liedwechsel ist jederzeit ueber die Dropdownbox moeglich.
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  *
@@ -121,12 +122,12 @@ public class Jukeboxibox extends Application {
 
 			@Override
 			public void windowIconified(java.awt.event.WindowEvent e) {
-				
+
 			}
 
 			@Override
 			public void windowDeiconified(java.awt.event.WindowEvent e) {
-				
+
 			}
 
 			@Override
@@ -152,7 +153,8 @@ public class Jukeboxibox extends Application {
 		});
 
 		frame.add(liedbox);
-		frame.setVisible(true);
+		if (!MasterGame.getDebug())
+			frame.setVisible(true);
 		frame.setAlwaysOnTop(false);
 	}
 

@@ -93,12 +93,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * be set as current map in the game, if the game is in GamePlayState
 	 */
 	public void startCurrrentMap() {
-		GamePlayState state = (GamePlayState) gorillas
+		/*GamePlayState state = (GamePlayState) gorillas
 				.getState(TestGorillas.GAMEPLAYSTATE);
 
-		/*
-		 * try { state.initBuildings(); } catch (SlickException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
+		
+		 try { state.initBuildings(); } catch (SlickException e) { // TODO
+		 Auto-generated catch block e.printStackTrace(); }
 		 */
 	}
 

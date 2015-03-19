@@ -2,7 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
@@ -195,6 +194,7 @@ public class InputOutput {
 			} catch (IOException e) {
 			} catch (OutOfMemoryError e) {
 				System.out.println("No more memory");
+				e.printStackTrace();
 			}
 
 			finally {
