@@ -4,6 +4,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
+import de.tu_darmstadt.gdi1.gorillas.main.SunMode;
 import de.tu_darmstadt.gdi1.gorillas.main.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 
@@ -89,7 +90,7 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
 	 */
 	public boolean isSunAstonished() {
 		if(gorillas.getCurrentState() instanceof GamePlayState) {
-			//return ((GamePlayState)gorillas.getCurrentState()).getSun().getSunMode() == SunMode.astonished;
+			return ((GamePlayState)gorillas.getCurrentState()).getSun().getSunMode() == SunMode.astonished;
 		}
 		
 		return false;

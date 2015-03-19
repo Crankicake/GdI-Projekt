@@ -1,6 +1,7 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -70,6 +71,10 @@ public class GamePlayState extends OwnState {
 	private int messageTimer;
 	private int flyingTimer;
 	private int hitTimer;
+
+	private float buildingX, buildingY;
+	public Vector2f getApeHeight;
+	private ArrayList<Vector2f> buildingCoordinates = new ArrayList<Vector2f>();
 
 	public GamePlayState(int sid) {
 		super(sid);
@@ -288,8 +293,6 @@ public class GamePlayState extends OwnState {
 		int indexFirstApe = r.nextInt(3);
 		int indexSecondApe = r.nextInt(3) + 5;
 
-		float buildingX, buildingY;
-
 		for (int i = 0; i < 8; ++i) {
 
 			try {
@@ -300,10 +303,12 @@ public class GamePlayState extends OwnState {
 				e.printStackTrace();
 			}
 
-			buildingX = (50f + 100f * i) * windowWidth / 800;
+			buildingX = (50f + 100f * i) * scale;
 			buildingY = windowHeight + (r.nextInt(7) - 3) * windowHeight / 20;
 
 			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
+
+			buildingCoordinates.add(i, buildings[i].getPosition());
 
 			if (indexFirstApe == i) {
 
@@ -313,6 +318,7 @@ public class GamePlayState extends OwnState {
 			}
 
 			else if (indexSecondApe == i) {
+
 				playerTwo.setPosition(new Vector2f(buildingX, buildingY - 321));
 
 				entityManager.addEntity(stateID, playerTwo);
@@ -903,5 +909,25 @@ public class GamePlayState extends OwnState {
 
 	public Vector2f getNextBananaPosition() {
 		return projectile.nextPosition();
+	}
+
+	public Sun getSun() {
+		return sun;
+	}
+
+	public ArrayList<Vector2f> getbuildingCoordinates() {
+		return buildingCoordinates;
+	}
+
+	public float getWindowWidth() {
+		return windowWidth;
+	}
+
+	public float getWindowHeight() {
+		return windowHeight;
+	}
+
+	public int getWhichPlayersDraw() {
+		return whichPlayersDraw;
 	}
 }

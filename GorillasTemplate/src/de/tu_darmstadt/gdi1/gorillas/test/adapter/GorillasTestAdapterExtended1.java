@@ -2,11 +2,13 @@ package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
+import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 
 public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
@@ -95,7 +97,15 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * should be set as current map in the game, if the game is in GamePlayState
 	 */
 	public void startCurrrentMap() {
-		// TODO: Implement
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+		
+		/*try {
+			state.initBuildings();
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 	}
 
 	/**
@@ -105,8 +115,13 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         current map, ordered from left to right
 	 */
 	public ArrayList<Vector2f> getBuildingCoordinates() {
-		// TODO: Implement
-		return null;
+	
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+		
+		return state.getbuildingCoordinates();
+		
+		
 	}
 
 	/**
@@ -115,8 +130,9 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * @return the center coordinate of the left gorilla
 	 */
 	public Vector2f getLeftGorillaCoordinate() {
-		// TODO: Implement
-		return null;
+		
+		return MasterGame.getPlayerOne().getPosition();
+		
 	}
 
 	/**
@@ -125,8 +141,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * @return the center coordinate of the right gorilla
 	 */
 	public Vector2f getRightGorillaCoordinate() {
-		// TODO: Implement
-		return null;
+		
+		return MasterGame.getPlayerTwo().getPosition();
 	}
 
 	/**
@@ -135,8 +151,10 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * @return the frameWidth which was used to create the current map
 	 */
 	public float getMapFrameWidth() {
-		// TODO: Implement
-		return -1;
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+
+		return state.getWindowWidth();
 	}
 
 	/**
@@ -145,8 +163,11 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * @return the frameHeight which was used to create the current map
 	 */
 	public float getMapFrameHeight() {
-		// TODO: Implement
-		return -1;
+		
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+
+		return state.getWindowHeight();
 	}
 
 	/**
@@ -349,7 +370,10 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 *         turn of anyone
 	 */
 	public boolean isPlayer2Turn() {
-		// TODO: Implement
-		return false;
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+		
+		if(state.getWhichPlayersDraw() == 1) return false;
+		else return true;
 	}
 }
