@@ -112,7 +112,7 @@ public class GameSetupState extends OwnState {
 			@Override
 			public void callback(int arg0) {
 				try {
-					double d = Double.valueOf(gravitationTextbox.getText());
+					float d = Float.valueOf(gravitationTextbox.getText());
 
 					fillGravitationTextbox(d);
 
@@ -177,7 +177,7 @@ public class GameSetupState extends OwnState {
 		return rp;
 	}
 
-	public void fillGravitationTextbox(double d) {
+	public void fillGravitationTextbox(float d) {
 
 		MasterGame.setGravitation(d);
 

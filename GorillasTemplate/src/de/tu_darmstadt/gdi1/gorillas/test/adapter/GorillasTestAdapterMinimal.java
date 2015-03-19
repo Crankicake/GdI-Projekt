@@ -301,11 +301,13 @@ public class GorillasTestAdapterMinimal {
 	 */
 	public Vector2f getNextShotPosition(Vector2f startPosition, int angle,
 			int speed, boolean fromLeftToRight, int deltaTime) {
-
+		
+		MasterGame.setGravitation(10);
+		
 		try {
 			ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
-					9.81, fromLeftToRight ? 1 : 2);
-
+					fromLeftToRight ? 1 : 2);
+			
 			return ta.getNextPoint(deltaTime);
 		} catch (GorillasException e) {
 			e.printStackTrace();

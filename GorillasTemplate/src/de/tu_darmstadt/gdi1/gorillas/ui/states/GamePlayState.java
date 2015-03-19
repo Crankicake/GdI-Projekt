@@ -437,7 +437,7 @@ public class GamePlayState extends OwnState {
 			apeHit.addComponent(new ImageRenderComponent(new Image(
 					"gorillas/gorillaHit.png")));
 		}
-		
+
 		apeHit.setVisible(false);
 
 		entityManager.addEntity(getID(), apeHit);
@@ -708,9 +708,10 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void throwBanana() {
-		projectile.setParameter(Integer.parseInt(angleTextField.getText()),
-				Integer.parseInt(velocityTextField.getText()),
-				MasterGame.getGravitation(), whichPlayersDraw);
+		projectile
+				.setParameter(Integer.parseInt(angleTextField.getText()),
+						Integer.parseInt(velocityTextField.getText()),
+						whichPlayersDraw);
 
 		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
 				: playerOne.getName()) + ":");

@@ -38,11 +38,11 @@ public class Projectile extends Entity {
 		setRotation(0.0f);
 	}
 
-	public void setParameter(int angle, int velocity, double gravity,
+	public void setParameter(int angle, int velocity,
 			int playerID) {
 
 		try {
-			throwAttempt = new ThrowAttempt(angle, velocity, position, gravity,
+			throwAttempt = new ThrowAttempt(angle, velocity, position,
 					playerID);
 			flying = true;
 		} catch (GorillasException e) {
@@ -73,11 +73,17 @@ public class Projectile extends Entity {
 		if (!flying)
 			return;
 
-		try {
-			setPosition(throwAttempt.getNextPoint(i));
-		} catch (GorillasException ex) {
-			flying = false;
-			throw ex;
+		Vector2f pos = throwAttempt.getNextPoint(i);
+		
+		if (pos.x > 0 && pos.y < Launcher.FRAME_HEIGHT && pos.x < Launcher.FRAME_WIDTH)
+		{
+			setPosition(pos);
+			
+		}
+		else {
+			throw new GorillasException(new Exception(),
+					"Banane ist ausserhalb vom Bild, " + pos.x + " " + pos.y,
+					ExceptionReason.ThrowAttemptNoNextPosition);
 		}
 	}
 
@@ -94,10 +100,6 @@ public class Projectile extends Entity {
 		}
 
 		super.update(gc, sbg, i);
-	}
-
-	public double getGravity() {
-		return throwAttempt.getGravity();
 	}
 
 	public int getVelocity() {
