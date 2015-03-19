@@ -2,7 +2,6 @@ package de.tu_darmstadt.gdi1.gorillas.main;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
@@ -14,6 +13,15 @@ import java.util.regex.Pattern;
  *
  */
 public class InputOutput {
+
+	File dateiHighscore;
+	File dateiNamen;
+
+	public InputOutput() {
+		dateiNamen = new File("Namen.bin");
+		dateiHighscore = new File("Highscore.hcs");
+	}
+
 	/**
 	 * Diese Methode speichert in der Datei "Namen.bin" den eingegebenen
 	 * Spielernamen, der als Parameter übergeben wird
@@ -21,65 +29,69 @@ public class InputOutput {
 	 * @param name
 	 */
 	public void speichereName(String name) {
-		File datei = new File("Namen.bin");
-		name = name + ";";
-		if (datei.exists()) {
-			try {
-				FileOutputStream bos = new FileOutputStream(datei, true);
+		name += ";";
 
-				byte[] puffer = name.getBytes();
-				for (int i = 0; i < puffer.length; i++) {
-					puffer[i] = (byte) (puffer[i] ^ 1001001);
-					bos.write(puffer[i]);
-					bos.flush();
+		if (dateiHighscore.exists()) {
+			try {
+				FileOutputStream fos = new FileOutputStream(dateiHighscore,
+						true);
+
+				try {
+					byte[] puffer = name.getBytes();
+
+					for (int i = 0; i < puffer.length; i++) {
+						puffer[i] = (byte) (puffer[i] ^ 1001001);
+						fos.write(puffer[i]);
+						fos.flush();
+					}
+
+					fos.flush();
+				} finally {
+					fos.close();
 				}
-				bos.flush();
-				bos.close();
-				System.out.println("Datei existierte...");
 			} catch (IOException e) {
-				System.out.println("Fehler beim Ah�ngen des Namens: "
-						+ e.toString());
 			}
 		} else {
 			try {
-				FileOutputStream bos = new FileOutputStream(datei, false);
-				byte[] puffer = name.getBytes();
-				for (int i = 0; i < puffer.length; i++) {
-					puffer[i] = (byte) (puffer[i] ^ 1001001);
-					bos.write(puffer[i]);
-					bos.flush();
+				FileOutputStream fos = new FileOutputStream(dateiHighscore,
+						false);
+				try {
+					byte[] puffer = name.getBytes();
+
+					for (int i = 0; i < puffer.length; i++) {
+						puffer[i] = (byte) (puffer[i] ^ 1001001);
+						fos.write(puffer[i]);
+						fos.flush();
+					}
+
+					fos.flush();
+				} finally {
+					fos.close();
 				}
-				bos.flush();
-				bos.close();
-				System.out.println("Datei existierte nicht...");
 			} catch (IOException e) {
-				System.out.println("Fehler beim Schreiben des Namens: "
-						+ e.toString());
 			}
 		}
 	}
 
 	/**
 	 * Diese Klasse durchsucht die Datei "Namen.bin" nach einem String der als
-	 * Parameter übergeben wird
+	 * Parameter uebergeben wird
 	 * 
 	 * @param n
 	 *            - The Name to search for
 	 * @return The found name or the parameter n
 	 */
 	public String findeNamen(String n) {
-
-		Path datei = Paths.get("Namen.bin");
-		String[] segs = null;
-
 		try {
+			byte[] puffer = Files.readAllBytes(dateiNamen.toPath());
 
-			byte[] puffer = Files.readAllBytes(datei);
 			for (int i = 0; i < puffer.length; i++) {
 				puffer[i] = (byte) (puffer[i] ^ 1001001);
 			}
+
 			String str = new String(puffer, "UTF-8");
-			segs = str.split(Pattern.quote(";"));
+
+			String[] segs = str.split(Pattern.quote(";"));
 
 			for (int i = 0; i < segs.length; i++) {
 				if (segs[i].startsWith(n))
@@ -87,7 +99,7 @@ public class InputOutput {
 			}
 
 		} catch (IOException e) {
-			
+
 		}
 		return n; // Falls der eingegebene Name nicht gefunden wird
 	}
@@ -100,65 +112,65 @@ public class InputOutput {
 	 */
 
 	public Highscore[] leseHighscore() {
-		File datei = new File("Highscore.hcs");
-		InputStream fis = null;
-		Highscore tmp1[] = new Highscore[10000];
-		Highscore tmp2;
+		Highscore[] tmp1 = null;
+
 		int i = 0;
 
-		if (datei.exists()) {
+		if (dateiHighscore.exists()) {
 			try {
-				fis = new FileInputStream(datei);
+				int anzahl = anzahlHighscore();
+
+				FileInputStream fis = new FileInputStream(dateiHighscore);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 
-				int anzahl = anzahlHighscore();
-				
+				tmp1 = new Highscore[anzahl];
+
 				while (i <= anzahl) {
 					tmp1[i] = (Highscore) ois.readObject();
 					i++;
 				}
 
-				fis.close();
 				ois.close();
+				fis.close();
+
+				Highscore tmp2;
+
+				for (int k = 0; k < anzahlHighscore(); k++) {
+					for (int j = 1; j < anzahlHighscore(); j++) {
+						if ((tmp1[j - 1].getAnzahlGewonnen() / tmp1[j - 1]
+								.getAnzahlRunden()) > (tmp1[j]
+								.getAnzahlGewonnen() / tmp1[j]
+								.getAnzahlRunden())) {
+							tmp2 = tmp1[j];
+							tmp1[j] = tmp1[j - 1];
+							tmp1[j - 1] = tmp2;
+						}
+					}
+				}
 
 			} catch (IOException e) {
 			} catch (ClassNotFoundException e) {
-				
-			}
-
-			// Sortierung
-			for (int k = 0; k < anzahlHighscore(); k++) {
-				for (int j = 1; j < anzahlHighscore(); j++) {
-					if ( (tmp1[j - 1].getAnzahlGewonnen()
-							/ tmp1[j - 1].getAnzahlRunden()) > (tmp1[j].getAnzahlGewonnen() / tmp1[j].getAnzahlRunden())) {
-						tmp2 = tmp1[j];
-						tmp1[j] = tmp1[j - 1];
-						tmp1[j - 1] = tmp2;
-					}
-				}
 			}
 		}
-		
+
 		Highscore[] temp = new Highscore[i];
-		
-		for(int x = 0; x < i; ++x) {
+
+		for (int x = 0; x < i; ++x) {
 			temp[x] = tmp1[x];
 		}
-		
+
 		return temp;
 	}
 
-	@SuppressWarnings("resource")
 	public int anzahlHighscore() {
-		File datei = new File("Highscore.hcs");
 		InputStream fis = null;
 		Highscore tmp1[] = new Highscore[10000];
 
 		int i = 0;
 
-		if (datei.exists()) {
+		if (dateiHighscore.exists()) {
 			try {
-				fis = new FileInputStream(datei);
+				fis = new FileInputStream(dateiHighscore);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 
 				while (true) {
@@ -166,15 +178,19 @@ public class InputOutput {
 					i++;
 				}
 			} catch (EOFException e) {
-				return i;
 			} catch (ClassNotFoundException e) {
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} finally {
+				if (fis != null) {
+					try {
+						fis.close();
+					} catch (IOException e) {
+					}
+				}
 			}
 		} else
 			return 0;
 		return i;
-
 	}
 
 	/**
@@ -182,8 +198,18 @@ public class InputOutput {
 	 * 
 	 */
 	public void resetHighscore() {
-		File datei = new File("Highscore.hcs");
-		datei.delete();
+		try {
+			FileOutputStream fos = new FileOutputStream(dateiHighscore, false);
+			try {
+				fos.write(0);
+				fos.flush();
+				fos.close();
+			} catch (IOException ioe) {
+				fos.close();
+			}
+		} catch (IOException ioe) {
+
+		}
 	}
 
 	/**
@@ -193,20 +219,17 @@ public class InputOutput {
 	 * @param hsc
 	 */
 	public void addHighscore(Highscore hsc) {
-		File datei = new File("Highscore.hcs");
-		OutputStream fos = null;
+		LinkedList<Highscore> liste = new LinkedList<Highscore>();
 		Highscore[] tmp;
 
-		LinkedList<Highscore> liste = new LinkedList<Highscore>();
-		
-		boolean flag = false;
-
-		if (datei.exists()) {
+		if (dateiHighscore.exists()) {
 			tmp = leseHighscore();
-			
+
 			try {
+				boolean flag = false;
+
 				int counter = tmp.length;
-				
+
 				for (int i = 0; i < counter; i++) {
 					if (tmp[i].getName().equals(hsc.getName())) {
 						tmp[i].setAnzahlRunden(tmp[i].getAnzahlRunden()
@@ -216,53 +239,52 @@ public class InputOutput {
 						tmp[i].setAnzahlBananen(tmp[i].getAnzahlBananen()
 								+ hsc.getAnzahlBananen());
 						flag = true;
-					} 
-					
+					}
+
 					liste.add(tmp[i]);
 				}
 
-				if(!flag)
+				if (!flag)
 					liste.add(hsc);
-				
-				fos = new FileOutputStream(datei, false);
-				
-				if(liste.size() > 0)
-				{
+
+				FileOutputStream fos = new FileOutputStream(dateiHighscore,
+						false);
+
+				if (liste.size() > 0) {
 					ObjectOutputStream oos = new ObjectOutputStream(fos);
 					oos.writeObject(liste.removeFirst());
 					oos.flush();
 					oos.close();
 				}
-				
+
 				fos.close();
-				
-				fos = new FileOutputStream(datei, true);
-				
+
+				FileOutputStream nfos = new FileOutputStream(dateiHighscore,
+						true);
+
 				AppendingObjectOutputStream aoos = new AppendingObjectOutputStream(
-						fos);
-				
-				while(liste.size() > 0) {
+						nfos);
+
+				while (liste.size() > 0) {
 					aoos.writeObject(liste.removeFirst());
 				}
-				
+
 				aoos.flush();
 				aoos.close();
-				fos.close();
+				nfos.close();
 			} catch (IOException e) {
 			}
 		} else {
 			try {
-				fos = new FileOutputStream(datei);
+				FileOutputStream fos = new FileOutputStream(dateiHighscore);
 
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(hsc);
 				oos.close();
 				fos.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 			}
 		}
-
 	}
 
 	/**

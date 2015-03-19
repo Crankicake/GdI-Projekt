@@ -27,7 +27,7 @@ public class GorillasTestAdapterMinimal {
 	TWLTestAppGameContainer app;
 
 	Highscore[] highscore;
-	
+
 	public GorillasTestAdapterMinimal() {
 		super();
 	}
@@ -123,10 +123,8 @@ public class GorillasTestAdapterMinimal {
 	 */
 	public void rememberGameData() {
 		InputOutput io = new InputOutput();
-		
+
 		highscore = io.leseHighscore();
-		
-		io.resetHighscore();
 	}
 
 	/**
@@ -135,10 +133,11 @@ public class GorillasTestAdapterMinimal {
 	 */
 	public void restoreGameData() {
 		InputOutput io = new InputOutput();
-		
-		for(Highscore h : highscore) {
-			io.addHighscore(h);
-		}
+
+		if (highscore != null)
+			for (Highscore h : highscore) {
+				io.addHighscore(h);
+			}
 	}
 
 	/**
@@ -151,7 +150,8 @@ public class GorillasTestAdapterMinimal {
 	 *            the name of player 2
 	 */
 	public void setPlayerNames(String player1Name, String player2Name) {
-		GameSetupState gs = (GameSetupState) gorillas.getState(TestGorillas.GAMESETUPSTATE);
+		GameSetupState gs = (GameSetupState) gorillas
+				.getState(TestGorillas.GAMESETUPSTATE);
 
 		gs.setPlayerOneName(player1Name);
 		gs.setPlayerTwoName(player2Name);
@@ -338,12 +338,13 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer1Error() {
-		GameSetupState gss = (GameSetupState)gorillas.getState(TestGorillas.GAMESETUPSTATE);
-		
+		GameSetupState gss = (GameSetupState) gorillas
+				.getState(TestGorillas.GAMESETUPSTATE);
+
 		String s = gss.getErrorMessageP1();
-		
-		//String s = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
-		
+
+		// String s = "Die Spielernamen duerfen nicht leer sein: Spieler 1!";
+
 		return s;
 	}
 
@@ -355,12 +356,13 @@ public class GorillasTestAdapterMinimal {
 	 *         GameSetupState
 	 */
 	public String getPlayer2Error() {
-		GameSetupState gss = (GameSetupState)gorillas.getState(TestGorillas.GAMESETUPSTATE);
-		
+		GameSetupState gss = (GameSetupState) gorillas
+				.getState(TestGorillas.GAMESETUPSTATE);
+
 		String s = gss.getErrorMessageP2();
-		
-		//String s = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
-		
+
+		// String s = "Die Spielernamen duerfen nicht leer sein: Spieler 2!";
+
 		return s;
 	}
 

@@ -82,7 +82,7 @@ public class HighScoreState extends OwnState {
 		g.drawString("Gewonnene Runden", windowWidth/2+50, windowHeight/2-160);
 		g.drawString("Trefferquote", windowWidth/2+250,windowHeight/2-160);
 
-		int y = 120;
+		int y = windowHeight / 2;
 		g.setColor(org.newdawn.slick.Color.white);
 		for (int i = 0; i < hsc.length; i++) {
 			double anzahlR =0,anzahlG=0,anzahlB=0,ergebnis1=0,ergebnis2=0;
