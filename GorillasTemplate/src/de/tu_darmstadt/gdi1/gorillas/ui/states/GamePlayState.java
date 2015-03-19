@@ -122,10 +122,9 @@ public class GamePlayState extends OwnState {
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
 
-		render(sun.getHitbox(), g);
+		/*render(sun.getHitbox(), g);
 		render(playerOne.getHitbox(), g);
-		render(playerTwo.getHitbox(), g);
-
+		render(playerTwo.getHitbox(), g);*/
 	}
 
 	@Override
@@ -230,8 +229,8 @@ public class GamePlayState extends OwnState {
 		names = new String[] { "Background", "Sun", "Building_",
 				"BuildingDestrucable_", "Banana" };
 
-		oldVelocity = "";
-		oldAngle = "";
+		oldVelocity = "-1";
+		oldAngle = "-1";
 
 		readyForHit = false;
 		rundeEnde = false;
@@ -640,15 +639,13 @@ public class GamePlayState extends OwnState {
 			Integer number = Integer.parseInt(trimString(oldText));
 
 			if (number < 0) {
-				number = 0;
+				number = -1;
 			} else if (number > 200) {
-				velocityTextField.setText(oldVelocity);
+				number =  Integer.parseInt(trimString(oldVelocity));
 			}
 
-			oldText = number.toString();
-
-			oldVelocity = oldText;
-			velocityTextField.setText(oldText);
+			oldVelocity = number.toString();
+			velocityTextField.setText(oldVelocity);
 		} catch (NumberFormatException nfe) {
 
 		}
@@ -661,18 +658,16 @@ public class GamePlayState extends OwnState {
 			return;
 
 		try {
-			Integer number = Integer.parseInt(trimString(oldAngle));
+			Integer number = Integer.parseInt(trimString(oldText));
 
 			if (number < 0) {
-				number = 0;
-			} else if (number > 360) {
-				angleTextField.setText(oldText);
+				number = -1;
+			} else if (number > 200) {
+				number =  Integer.parseInt(trimString(oldAngle));
 			}
 
-			oldText = number.toString();
-
-			oldAngle = oldText;
-			angleTextField.setText(oldText);
+			oldAngle = number.toString();
+			angleTextField.setText(oldAngle);
 		} catch (NumberFormatException nfe) {
 
 		}
