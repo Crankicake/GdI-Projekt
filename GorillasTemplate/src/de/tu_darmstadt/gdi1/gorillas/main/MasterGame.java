@@ -12,11 +12,11 @@ public class MasterGame {
 	private static boolean debug;
 	private static boolean laeuftJukebox;
 
-	private static double grav;
+	private static float grav;
 
-	private static double windScale = 0.2;
-	private static double timeScale = 0.005;
-	private static double wind;
+	private static float windScale;
+	private static float timeScale;
+	private static int wind;
 
 	private static String[] remarks;
 
@@ -25,10 +25,10 @@ public class MasterGame {
 		running = false;
 		laeuftJukebox = false;
 		debug = false;
-		grav = 9.81;
+		grav = 9.81f;
 
-		windScale = 0.02;
-		timeScale = 0.005;
+		windScale = 0.02f;
+		timeScale = 0.005f;
 		wind = 0;
 
 		remarks = new String[] {
@@ -65,30 +65,30 @@ public class MasterGame {
 		laeuftJukebox = b;
 	}
 
-	public static void setGravitation(double g) {
+	public static void setGravitation(float g) {
 		if (Double.isNaN(g) || Double.isInfinite(g))
 			return;
 
 		grav = g;
 	}
 
-	public static double getGravitation() {
+	public static float getGravitation() {
 		return grav;
 	}
 
-	public static double getWindScale() {
+	public static float getWindScale() {
 		return windScale;
 	}
 
-	public static double getTimeScale() {
+	public static float getTimeScale() {
 		return timeScale;
 	}
 
-	public static double getWind() {
+	public static int getWind() {
 		return wind;
 	}
 
-	public static void setWind(double d) {
+	public static void setWind(int d) {
 		wind = d;
 	}
 

@@ -23,6 +23,7 @@ public class HighScoreState extends OwnState {
 
 	private InputOutput io;
 	private Highscore[] hsc;
+	
 
 	public HighScoreState(int sid) {
 		super(sid);
@@ -30,12 +31,6 @@ public class HighScoreState extends OwnState {
 		names = new String[] { "Zurueck", "GorillaLogo" };
 
 		io = new InputOutput();
-
-		Highscore mm = new Highscore("Simon", 12, 4, 22);
-		io.addHighscore(mm);
-		mm = new Highscore("Salim", 123, 44, 200);
-		io.addHighscore(mm);
-
 		hsc = io.leseHighscore();
 	}
 

@@ -45,7 +45,7 @@ public class Launcher {
 		
 		// Set window properties and start it
 		app.setAlwaysRender(true);
-		app.setShowFPS(false);
+		app.setShowFPS(true);
 		app.setVSync(false);
 		app.setDisplayMode(FRAME_WIDTH, FRAME_HEIGHT, false);
 		app.setTargetFrameRate(TARGET_FRAME_RATE);

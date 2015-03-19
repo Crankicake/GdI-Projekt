@@ -122,10 +122,10 @@ public class GamePlayState extends OwnState {
 
 		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
 
-		/*
-		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
-		 * render(playerTwo.getHitbox(), g);
-		 */
+		render(sun.getHitbox(), g);
+		render(playerOne.getHitbox(), g);
+		render(playerTwo.getHitbox(), g);
+
 	}
 
 	@Override
@@ -437,7 +437,7 @@ public class GamePlayState extends OwnState {
 			apeHit.addComponent(new ImageRenderComponent(new Image(
 					"gorillas/gorillaHit.png")));
 		}
-		
+
 		apeHit.setVisible(false);
 
 		entityManager.addEntity(getID(), apeHit);
@@ -642,7 +642,7 @@ public class GamePlayState extends OwnState {
 			if (number < 0) {
 				number = 0;
 			} else if (number > 200) {
-				number = 200;
+				velocityTextField.setText(oldVelocity);
 			}
 
 			oldText = number.toString();
@@ -661,12 +661,12 @@ public class GamePlayState extends OwnState {
 			return;
 
 		try {
-			Integer number = Integer.parseInt(trimString(oldText));
+			Integer number = Integer.parseInt(trimString(oldAngle));
 
 			if (number < 0) {
 				number = 0;
 			} else if (number > 360) {
-				number = 360;
+				angleTextField.setText(oldText);
 			}
 
 			oldText = number.toString();
@@ -708,9 +708,10 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void throwBanana() {
-		projectile.setParameter(Integer.parseInt(angleTextField.getText()),
-				Integer.parseInt(velocityTextField.getText()),
-				MasterGame.getGravitation(), whichPlayersDraw);
+		projectile
+				.setParameter(Integer.parseInt(angleTextField.getText()),
+						Integer.parseInt(velocityTextField.getText()),
+						whichPlayersDraw);
 
 		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
 				: playerOne.getName()) + ":");
