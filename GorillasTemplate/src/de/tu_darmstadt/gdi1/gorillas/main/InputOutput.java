@@ -133,7 +133,6 @@ public class InputOutput {
 			} catch (IOException e) {
 			} catch (ClassNotFoundException e) {
 			} catch (OutOfMemoryError e) {
-				System.out.println("No more memory");
 			} finally {
 				if (fis != null) {
 					try {
@@ -184,7 +183,6 @@ public class InputOutput {
 			} catch (ClassNotFoundException e) {
 			} catch (IOException e) {
 			} catch (OutOfMemoryError e) {
-				System.out.println("No more memory");
 			}
 
 			finally {
@@ -192,7 +190,6 @@ public class InputOutput {
 					try {
 						fis.close();
 					} catch (IOException e) {
-						System.out.println("fis not closed");
 					}
 				}
 
@@ -200,7 +197,6 @@ public class InputOutput {
 					try {
 						ois.close();
 					} catch (IOException e) {
-						System.out.println("ois not closed");
 					}
 				}
 			}

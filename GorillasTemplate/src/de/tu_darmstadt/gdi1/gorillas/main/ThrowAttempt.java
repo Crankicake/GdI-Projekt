@@ -26,10 +26,14 @@ public class ThrowAttempt {
 	public ThrowAttempt(int angle, int velocity, Vector2f position,
 			 int playerID) throws GorillasException {
 
-		if (angle < 0 || angle > 360) {
-			throw new GorillasException(new ArithmeticException(), "angle: "
-					+ angle, ExceptionReason.ThrowAttemptAngelWrong);
+		if (angle < 0 ) {
+			angle = 0;
 		}
+		
+		if(angle > 360) {
+			angle = 360;
+		}
+		
 		// Der Winkel soll ja zwischen 0 und 360° sein und eine natuerliche
 		// Zahl.
 

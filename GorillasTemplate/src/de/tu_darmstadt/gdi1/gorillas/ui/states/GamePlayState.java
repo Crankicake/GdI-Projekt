@@ -1,5 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.ui.states;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -87,7 +88,7 @@ public class GamePlayState extends OwnState {
 	public GamePlayState(int sid) {
 		super(sid);
 
-		setAttributes();
+		setAttributes(1);
 	}
 
 	@Override
@@ -101,16 +102,16 @@ public class GamePlayState extends OwnState {
 		initExplosion(new Vector2f());
 		initHit();
 
-		
-		  ArrayList<Vector2f> bc = new ArrayList<Vector2f>(); bc.add(new
-		  Vector2f(0, 570));
-		  
-		  Vector2f leftGorillaCoordinate = new Vector2f(50, 549); Vector2f
-		  rightGorillaCoordinate = new Vector2f(950, 549);
-		  
-		 createMap(1000, 600, 100, bc, leftGorillaCoordinate,
-		 rightGorillaCoordinate);
-		 
+		/*
+		 * ArrayList<Vector2f> bc = new ArrayList<Vector2f>(); bc.add(new
+		 * Vector2f(0, 570));
+		 * 
+		 * Vector2f leftGorillaCoordinate = new Vector2f(50, 549); Vector2f
+		 * rightGorillaCoordinate = new Vector2f(950, 549);
+		 * 
+		 * createMap(1000, 600, 100, bc, leftGorillaCoordinate,
+		 * rightGorillaCoordinate);
+		 */
 	}
 
 	@Override
@@ -260,14 +261,26 @@ public class GamePlayState extends OwnState {
 		throwButton.setSize(148, throwButton.getHeight());
 	}
 
-	private void setAttributes() {
+	private void setAttributes(int whichPlayersDraw) {
 		playerOne = MasterGame.getPlayerOne();
-		playerOne.setImageState(PlayerImageState.LeftHandRised);
+
+		if (whichPlayersDraw == 1) {
+			playerOne.setImageState(PlayerImageState.LeftHandRised);
+		} else {
+			playerOne.setImageState(PlayerImageState.NoHandsForYou);
+		}
+
 		playerOne.setFormerAngle(0);
 		playerOne.setFormerVelocity(0);
 
 		playerTwo = MasterGame.getPlayerTwo();
-		playerTwo.setImageState(PlayerImageState.NoHandsForYou);
+
+		if (whichPlayersDraw == 1) {
+			playerTwo.setImageState(PlayerImageState.NoHandsForYou);
+		} else {
+			playerTwo.setImageState(PlayerImageState.LeftHandRised);
+		}
+
 		playerTwo.setFormerAngle(0);
 		playerTwo.setFormerVelocity(0);
 
@@ -280,7 +293,7 @@ public class GamePlayState extends OwnState {
 		readyForHit = false;
 		rundeEnde = false;
 
-		whichPlayersDraw = 1;
+		this.whichPlayersDraw = whichPlayersDraw;
 
 		explosionTimer = 150;
 		messageTimer = 150;
@@ -289,8 +302,13 @@ public class GamePlayState extends OwnState {
 
 		MasterGame.setWind(new Random().nextInt(31) - 15);
 
-		if (playerLabel != null)
-			playerLabel.setText(playerOne.getName() + ":");
+		if (playerLabel != null) {
+			if (whichPlayersDraw == 1) {
+				playerLabel.setText(playerOne.getName() + ":");
+			} else {
+				playerLabel.setText(playerTwo.getName() + ":");
+			}
+		}
 	}
 
 	@Override
@@ -323,34 +341,55 @@ public class GamePlayState extends OwnState {
 
 	private void initBuildings() throws SlickException {
 
-		DestructibleImageEntity[] buildings = new DestructibleImageEntity[8];
-
 		Random r = new Random();
 
 		int indexFirstApe = r.nextInt(3);
 		int indexSecondApe = r.nextInt(3) + 5;
 
+		DestructibleImageEntity des;
+
+		BufferedImage b = new BufferedImage(windowWidth, windowHeight,
+				BufferedImage.TYPE_INT_ARGB);
+
+		java.awt.Graphics g = b.getGraphics();
+
 		for (int i = 0; i < 8; ++i) {
 
-			buildings[i] = generateBuildingEntity(i, (50f + 100f * i) * scale,
-					windowHeight + (r.nextInt(7) - 3) * windowHeight / 20);
+			float x = (50f + 100f * i) * scale;
+			float y = windowHeight + (r.nextInt(7) - 3) * windowHeight / 20;
+
+			Vector2f pos = new Vector2f(x, y);
+
+			Vector2f p = new Vector2f(pos.x, pos.y);
+
+			p.x -= 50f * scale;
+			p.y -= 321;
+			
+			buildingCoordinates.add(p);
+			
+			try {
+				g.drawImage(Building.generateBuilding(), (int) pos.x - 50,
+						(int) pos.y - 300, null);
+			} catch (IOException e) {
+			}
 
 			if (indexFirstApe == i) {
-
-				playerOne.setPosition(new Vector2f(buildingX, buildingY - 321));
-
-				entityManager.addEntity(stateID, playerOne);
+				playerOne.setPosition(new Vector2f(x, y - 321));
+				entityManager.addEntity(getID(), playerOne);
 			}
 
 			else if (indexSecondApe == i) {
-
-				playerTwo.setPosition(new Vector2f(buildingX, buildingY - 321));
-
-				entityManager.addEntity(stateID, playerTwo);
+				playerTwo.setPosition(new Vector2f(x, y - 321));
+				entityManager.addEntity(getID(), playerTwo);
 			}
-
-			entityManager.addEntity(stateID, buildings[i]);
 		}
+
+		des = new DestructibleImageEntity("Des", b,
+				"dropofwater/destruction.png", MasterGame.getDebug());
+
+		des.setPosition(new Vector2f(windowWidth / 2, windowHeight / 2));
+
+		entityManager.addEntity(getID(), des);
 	}
 
 	private void initProjectile() throws SlickException {
@@ -556,7 +595,6 @@ public class GamePlayState extends OwnState {
 
 			if (sun.getSunMode() != SunMode.normal) {
 				sun.setSunMode(SunMode.normal);
-				System.out.println("Normal");
 			}
 		}
 	}
@@ -582,7 +620,6 @@ public class GamePlayState extends OwnState {
 			if (compareVectors(v, projectile.getPosition())) {
 				if (sun.getSunMode() != SunMode.astonished) {
 					sun.setSunMode(SunMode.astonished);
-					System.out.println("Astonished");
 				}
 				break;
 			}
@@ -594,7 +631,6 @@ public class GamePlayState extends OwnState {
 			for (Vector2f v : hitbox) {
 				if (compareVectors(v, projectile.getPosition())) {
 					explode(playerOne, playerTwo, v);
-					System.out.println("Hit Player One");
 					return;
 				}
 			}
@@ -604,7 +640,6 @@ public class GamePlayState extends OwnState {
 			for (Vector2f v : hitbox) {
 				if (compareVectors(v, projectile.getPosition())) {
 					explode(playerTwo, playerOne, v);
-					System.out.println("Hit Player Two");
 					return;
 				}
 			}
@@ -657,7 +692,7 @@ public class GamePlayState extends OwnState {
 				changeState(gc, sbg, Gorillas.MAINMENUSTATE);
 			}
 
-			restart();
+			restart(whichPlayersDraw);
 		} else if (messageTimer < 350 && rundeEnde) {
 			messageTimer += i;
 		}
@@ -716,9 +751,9 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
-	private void restart() {
+	private void restart(int whichPlayersDraw) {
 
-		setAttributes();
+		setAttributes(whichPlayersDraw);
 		clearInput();
 
 		try {
@@ -847,18 +882,10 @@ public class GamePlayState extends OwnState {
 	}
 
 	private boolean compareVectors(Vector2f one, Vector2f two) {
-
-		// float x = one.x - two.x;
-		// float y = one.y - two.y;
-
 		Vector2f t1 = new Vector2f((int) one.x, (int) one.y);
 		Vector2f t2 = new Vector2f((int) two.x, (int) two.y);
 
 		return t1.equals(t2);
-
-		// System.out.println(x + "  " + y);
-
-		// return x < 0.1 && y < 0.1;
 	}
 
 	@SuppressWarnings("unused")
@@ -997,7 +1024,6 @@ public class GamePlayState extends OwnState {
 			initBackground();
 			initProjectile();
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
