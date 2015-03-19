@@ -64,7 +64,7 @@ public class HighScoreState extends OwnState {
 		// Setzen der Komponenten
 		gorilla_logoE.setPosition(new Vector2f(windowWidth / 2 - 30,
 				windowHeight / 2 - 100));
-		gorilla_logoE.setScale(1f);
+		gorilla_logoE.setScale(0.5f);
 		if (!MasterGame.getDebug()) {
 			gorilla_logoE.addComponent(new ImageRenderComponent(new Image(
 					"assets/gorillas/background/Banner_highscore.png")));
@@ -80,28 +80,29 @@ public class HighScoreState extends OwnState {
 			throws SlickException {
 		super.render(container, game, g);
 
+		g.setColor(org.newdawn.slick.Color.blue);
+		g.drawString("Platzierung", windowWidth/2-300, windowHeight/2-200);
+		g.drawString("Name",windowWidth/2-180, windowHeight/2-200);
+		g.drawString("Gespielte Runden",windowWidth/2-120, windowHeight/2-200);
+		g.drawString("Gewonnene Runden", windowWidth/2+50, windowHeight/2-200);
+		g.drawString("Trefferquote", windowWidth/2+250,windowHeight/2-200);
+
+		int y = 120;
 		g.setColor(org.newdawn.slick.Color.white);
-
-		int y = 80;
-
 		for (int i = 0; i < io.anzahlHighscore(); i++) {
-			g.drawString(
-					"Platz :"
-							+ i
-							+ "    "
-							+ hsc[i].getName()
-							+ "   "
-							+ hsc[i].getAnzahlRunden()
-							+ "    "
-							+ hsc[i].getAnzahlGewonnen()
-							+ "      "
-							+ (hsc[i].getAnzahlGewonnen() / hsc[i]
-									.getAnzahlRunden())
-							* 100
-							+ "%"
-							+ "        Trefferquote:"
-							+ (hsc[i].getAnzahlGewonnen() / hsc[i]
-									.getAnzahlBananen()), 100, y += 20);
+			double anzahlR =0,anzahlG=0,anzahlB=0,ergebnis1=0,ergebnis2=0;
+			anzahlR = hsc[i].getAnzahlRunden();
+			anzahlG = hsc[i].getAnzahlGewonnen();
+			anzahlB = hsc[i].getAnzahlBananen();
+			ergebnis1 = (anzahlG/anzahlR)*100;
+			ergebnis2 = anzahlG/anzahlB;
+			g.drawString((i+1)+"",windowWidth/2-300,y);
+			g.drawString(hsc[i].getName(),windowWidth/2-180,y);
+			g.drawString(""+hsc[i].getAnzahlRunden(),windowWidth/2-100,y);
+			g.drawString(""+hsc[i].getAnzahlGewonnen(),windowWidth/2+50,y);
+			g.drawString("--("+Math.round(ergebnis1 * 100)/100+")%",windowWidth/2+100,y);
+			g.drawString(""+ Math.round(ergebnis2*100.00)/100.00, windowWidth/2+250, y);
+			y+=20;
 		}
 		g.drawString("Zurueck", 85, 66);
 	}
