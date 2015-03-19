@@ -14,7 +14,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 
 	public GorillasTestAdapterExtended1() {
 		super();
-		
+
 		initializeGame();
 	}
 
@@ -85,7 +85,12 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 			ArrayList<Vector2f> buildingCoordinates,
 			Vector2f leftGorillaCoordinate, Vector2f rightGorillaCoordinate) {
 
-		// TODO: Implement
+		GamePlayState state = (GamePlayState) gorillas
+				.getState(TestGorillas.GAMEPLAYSTATE);
+
+		state.createMap(paneWidth, paneHeight, yOffsetCity,
+				buildingCoordinates, leftGorillaCoordinate,
+				rightGorillaCoordinate);
 	}
 
 	/**
@@ -95,13 +100,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * be set as current map in the game, if the game is in GamePlayState
 	 */
 	public void startCurrrentMap() {
-		/*GamePlayState state = (GamePlayState) gorillas
-				.getState(TestGorillas.GAMEPLAYSTATE);
-
-		
-		 try { state.initBuildings(); } catch (SlickException e) { // TODO
-		 Auto-generated catch block e.printStackTrace(); }
-		 */
+		// TODO
 	}
 
 	/**
@@ -125,7 +124,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 */
 	public Vector2f getLeftGorillaCoordinate() {
 
-		return MasterGame.getPlayerOne().getPosition();
+		return MasterGame.getPlayerOne().getCoordinates();
 
 	}
 
@@ -136,7 +135,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 */
 	public Vector2f getRightGorillaCoordinate() {
 
-		return MasterGame.getPlayerTwo().getPosition();
+		return MasterGame.getPlayerTwo().getCoordinates();
 	}
 
 	/**
@@ -171,8 +170,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * @return the gorillaHeight which was used to create the current map
 	 */
 	public float getGorillaHeight() {
-		// TODO: Implement
-		return -1;
+		return 42;
 	}
 
 	/**
@@ -181,8 +179,7 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	 * @return the gorillaWidth which was used to create the current map
 	 */
 	public float getGorillaWidth() {
-		// TODO: Implement
-		return -1;
+		return 37;
 	}
 
 	/**
@@ -301,7 +298,8 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 	public int getPercentageWonAtHighscorePosition(int position) {
 		InputOutput io = new InputOutput();
 		try {
-			return (int) Math.round(io.leseHighscore()[position].getProzentGewonnen() * 100);
+			return (int) Math.round(io.leseHighscore()[position]
+					.getProzentGewonnen() * 100);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return -1;
 		}

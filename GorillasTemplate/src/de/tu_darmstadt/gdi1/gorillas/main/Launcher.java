@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 @SuppressWarnings("unused")
 public class Launcher {
 
-	public static final int FRAME_WIDTH = 800;
+	public static final int FRAME_WIDTH = 1000;
 	public static final int FRAME_HEIGHT = 600;
 
 	public static final int TARGET_FRAME_RATE = 600;

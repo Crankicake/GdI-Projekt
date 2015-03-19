@@ -81,10 +81,12 @@ public class GamePlayTest {
 		adapter.shootButtonPressed();
 
 		// let the shot fly, it should definitely hit the right gorilla
-		for (int i = 0; i < 500; i += 1) {
+		for (int i = 0; i < 2000; i += 1) {
 			adapter.runGame(2);
 		}
 
+		System.out.println("Dings");
+		
 		assertEquals(
 				"The right gorilla was hit, so the score of player one should be 1.",
 				1, adapter.getPlayer1Score());

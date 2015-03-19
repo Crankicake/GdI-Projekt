@@ -160,4 +160,14 @@ public class Player extends Entity {
 	public Vector2f[] getHitbox() {
 		return hitbox;
 	}
+
+	public Vector2f getCoordinates() {		
+		Vector2f p = getPosition();
+		
+		Vector2f pos = new Vector2f(p.x, p.y);
+		
+		pos.x += 18;
+		
+		return pos;
+	}
 }

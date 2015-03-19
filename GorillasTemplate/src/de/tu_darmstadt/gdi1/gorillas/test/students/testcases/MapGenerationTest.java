@@ -100,7 +100,7 @@ public class MapGenerationTest {
 				rightGorillaBuilding = i - 1;
 			}
 		}
-
+		
 		// this tests whether the gorillas really stand on their buildings;
 		// there must'nt be a gap between the gorilla and the building.
 		assertTrue(

@@ -101,12 +101,16 @@ public class GamePlayState extends OwnState {
 		initExplosion(new Vector2f());
 		initHit();
 
-		// PlayerHitKommentar
-		if (playerOne.getScore() != 0 || playerTwo.getScore() != 0) {
-			displayOutOfWindowComment = true;
-			outOfWindowComment = sun.getComment(0);
-		}
-
+		
+		  ArrayList<Vector2f> bc = new ArrayList<Vector2f>(); bc.add(new
+		  Vector2f(0, 570));
+		  
+		  Vector2f leftGorillaCoordinate = new Vector2f(50, 549); Vector2f
+		  rightGorillaCoordinate = new Vector2f(950, 549);
+		  
+		 createMap(1000, 600, 100, bc, leftGorillaCoordinate,
+		 rightGorillaCoordinate);
+		 
 	}
 
 	@Override
@@ -136,17 +140,17 @@ public class GamePlayState extends OwnState {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(playerOne.getName()).append(": ")
-				.append(playerOne.getScore()).append("                              ")
+				.append(playerOne.getScore())
+				.append("                              ")
 				.append(playerTwo.getName()).append(": ")
 				.append(playerTwo.getScore());
 
 		g.drawString(sb.toString(), windowWidth / 2 - 180, 10);
 
-		
-		if(displayOutOfWindowComment) {
-			g.drawString(outOfWindowComment,sun.getPosition().x + 60 ,
-					sun.getPosition().y); }
-		
+		if (displayOutOfWindowComment) {
+			g.drawString(outOfWindowComment, sun.getPosition().x + 100,
+					sun.getPosition().y + 50);
+		}
 
 		if (displayBuildingHitComment) {
 			g.drawString(buildingHitComment, sun.getPosition().x + 100,
@@ -158,10 +162,12 @@ public class GamePlayState extends OwnState {
 					sun.getPosition().y + 50);
 
 		}
+
 		/*
 		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
 		 * render(playerTwo.getHitbox(), g);
 		 */
+
 	}
 
 	@Override
@@ -326,20 +332,8 @@ public class GamePlayState extends OwnState {
 
 		for (int i = 0; i < 8; ++i) {
 
-			try {
-				buildings[i] = new DestructibleImageEntity(names[3] + i,
-						Building.generateBuilding(),
-						"dropofwater/destruction.png", MasterGame.getDebug());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			buildingX = (50f + 100f * i) * scale;
-			buildingY = windowHeight + (r.nextInt(7) - 3) * windowHeight / 20;
-
-			buildings[i].setPosition(new Vector2f(buildingX, buildingY));
-
-			buildingCoordinates.add(i, buildings[i].getPosition());
+			buildings[i] = generateBuildingEntity(i, (50f + 100f * i) * scale,
+					windowHeight + (r.nextInt(7) - 3) * windowHeight / 20);
 
 			if (indexFirstApe == i) {
 
@@ -354,10 +348,6 @@ public class GamePlayState extends OwnState {
 
 				entityManager.addEntity(stateID, playerTwo);
 			}
-
-			buildings[i].setScale(scale);
-			buildings[i].setPassable(false);
-			buildings[i].setRotation(0.0f);
 
 			entityManager.addEntity(stateID, buildings[i]);
 		}
@@ -383,6 +373,9 @@ public class GamePlayState extends OwnState {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta,
 					Component event) {
+				if (!readyForHit)
+					return;
+
 				CollisionEvent collider = (CollisionEvent) event;
 				Entity entity = collider.getCollidedEntity();
 
@@ -403,6 +396,9 @@ public class GamePlayState extends OwnState {
 					initExplosion(event.getOwnerEntity().getPosition());
 
 					displayBuildingHitComment = true;
+					displayApeHitComment = false;
+					displayOutOfWindowComment = false;
+
 					buildingHitComment = sun.getComment(1);
 
 					for (Entity e : entityManager.getEntitiesByState(getID())) {
@@ -523,7 +519,7 @@ public class GamePlayState extends OwnState {
 	private void updateProjectile(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		if (projectile.isFlying()) {
-			if (flyingTimer < 500) {
+			if (flyingTimer < 250) {
 				flyingTimer += i;
 			} else {
 				readyForHit = true;
@@ -535,6 +531,11 @@ public class GamePlayState extends OwnState {
 				setVisibility(true);
 
 				flyingTimer = 0;
+
+				displayOutOfWindowComment = true;
+				displayApeHitComment = false;
+				displayBuildingHitComment = false;
+				outOfWindowComment = sun.getComment(0);
 
 				readyForHit = false;
 
@@ -572,28 +573,7 @@ public class GamePlayState extends OwnState {
 
 	private void updateHitboxes(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
-
-		/*
-		 * Vector2f posPro = projectile.getPosition();
-		 * 
-		 * if (Arrays.asList(sun.getHitbox()).contains(posPro)) { if
-		 * (sun.getSunMode() != SunMode.astonished) {
-		 * sun.setSunMode(SunMode.astonished); System.out.println("Astonished");
-		 * } }
-		 * 
-		 * if (readyForHit) { if
-		 * (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
-		 * explode(playerOne, playerTwo, posPro); return; }
-		 * 
-		 * if (Arrays.asList(playerOne.getHitbox()).contains(posPro)) {
-		 * explode(playerTwo, playerOne, posPro); return; }
-		 * 
-		 * }
-		 */
-
 		Vector2f[] hitbox = sun.getHitbox();
-
-		// System.out.println(hitbox.length + " hb sun");
 
 		if (!projectile.isFlying())
 			return;
@@ -611,8 +591,6 @@ public class GamePlayState extends OwnState {
 		if (readyForHit) {
 			hitbox = playerOne.getHitbox();
 
-			// System.out.println(hitbox.length + " hb 1");
-
 			for (Vector2f v : hitbox) {
 				if (compareVectors(v, projectile.getPosition())) {
 					explode(playerOne, playerTwo, v);
@@ -622,8 +600,6 @@ public class GamePlayState extends OwnState {
 			}
 
 			hitbox = playerTwo.getHitbox();
-
-			// System.out.println(hitbox.length + " hb 2");
 
 			for (Vector2f v : hitbox) {
 				if (compareVectors(v, projectile.getPosition())) {
@@ -778,10 +754,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void throwBanana() {
-		projectile
-				.setParameter(Integer.parseInt(angleTextField.getText()),
-						Integer.parseInt(velocityTextField.getText()),
-						whichPlayersDraw);
+		projectile.setParameter(oldAngle, oldVelocity, whichPlayersDraw);
 
 		playerLabel.setText((whichPlayersDraw == 1 ? playerTwo.getName()
 				: playerOne.getName()) + ":");
@@ -1005,5 +978,71 @@ public class GamePlayState extends OwnState {
 
 	public int getWhichPlayersDraw() {
 		return whichPlayersDraw;
+	}
+
+	public void createMap(int paneWidth, int paneHeight, int yOffsetCity,
+			ArrayList<Vector2f> buildingCoordinates,
+			Vector2f leftGorillaCoordinate, Vector2f rightGorillaCoordinate) {
+		entityManager.clearEntitiesFromState(getID());
+
+		windowHeight = paneHeight;
+		windowWidth = paneWidth;
+
+		MasterGame.setWind(0);
+
+		playerOne.setPosition(leftGorillaCoordinate);
+		playerTwo.setPosition(rightGorillaCoordinate);
+
+		try {
+			initBackground();
+			initProjectile();
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		DestructibleImageEntity[] buildings = new DestructibleImageEntity[buildingCoordinates
+				.size()];
+
+		for (int i = 0; i < buildingCoordinates.size(); ++i) {
+			buildings[i] = generateBuildingEntity(i,
+					buildingCoordinates.get(i).x + 50,
+					buildingCoordinates.get(i).y);
+			entityManager.addEntity(getID(), buildings[i]);
+		}
+	}
+
+	private DestructibleImageEntity generateBuildingEntity(int i, float f,
+			float y) {
+
+		DestructibleImageEntity building = null;
+
+		try {
+			building = new DestructibleImageEntity(names[3] + i,
+					Building.generateBuilding(), "dropofwater/destruction.png",
+					MasterGame.getDebug());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		buildingX = f;
+		buildingY = y;
+
+		Vector2f pos = new Vector2f(buildingX, buildingY);
+
+		building.setPosition(pos);
+
+		Vector2f p = new Vector2f(pos.x, pos.y);
+
+		p.x -= 50f * scale;
+		p.y -= 321;
+
+		buildingCoordinates.add(i, p);
+
+		building.setScale(scale);
+		building.setPassable(false);
+		building.setRotation(0.0f);
+
+		return building;
 	}
 }
