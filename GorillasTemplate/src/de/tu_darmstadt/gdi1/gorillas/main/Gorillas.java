@@ -12,7 +12,7 @@ import de.tu_darmstadt.gdi1.gorillas.ui.states.HighScoreState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.InstructionState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.MainMenuState;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.OptionState;
-import de.tu_darmstadt.gdi1.gorillas.ui.states.SecondInstructionState;
+import de.tu_darmstadt.gdi1.gorillas.ui.states.InstructionState2;
 import eea.engine.entity.StateBasedEntityManager;
 
 /**
@@ -56,7 +56,7 @@ public class Gorillas extends TWLStateBasedGame {
 		this.addState(new OptionState(OPTIONSTATE));
 		this.addState(new InstructionState(INSTRUCTIONSSTATE));
 		
-		this.addState(new SecondInstructionState(INSTRUCTIONSSTATE2));
+		this.addState(new InstructionState2(INSTRUCTIONSSTATE2));
 
 		// Add states to the StateBasedEntityManager
 		StateBasedEntityManager.getInstance().addState(MAINMENUSTATE);
