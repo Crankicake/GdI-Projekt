@@ -110,46 +110,44 @@ public class InputOutput {
 	 * 
 	 * @return Array of Highscores
 	 */
-
 	public Highscore[] leseHighscore() {
 		Highscore[] tmp1 = null;
-
+		int anzahl = anzahlHighscore();
 		int i = 0;
 
 		if (dateiHighscore.exists()) {
+			ObjectInputStream ois = null;
+			FileInputStream fis = null;
 			try {
-				int anzahl = anzahlHighscore();
 
-				FileInputStream fis = new FileInputStream(dateiHighscore);
-				ObjectInputStream ois = new ObjectInputStream(fis);
+				fis = new FileInputStream(dateiHighscore);
+				ois = new ObjectInputStream(fis);
 
 				tmp1 = new Highscore[anzahl];
 
-				while (i <= anzahl) {
+				while (true) {
 					tmp1[i] = (Highscore) ois.readObject();
 					i++;
 				}
 
-				ois.close();
-				fis.close();
-
-				Highscore tmp2;
-
-				for (int k = 0; k < anzahlHighscore(); k++) {
-					for (int j = 1; j < anzahlHighscore(); j++) {
-						if ((tmp1[j - 1].getAnzahlGewonnen() / tmp1[j - 1]
-								.getAnzahlRunden()) > (tmp1[j]
-								.getAnzahlGewonnen() / tmp1[j]
-								.getAnzahlRunden())) {
-							tmp2 = tmp1[j];
-							tmp1[j] = tmp1[j - 1];
-							tmp1[j - 1] = tmp2;
-						}
+			} catch (IOException e) {
+			} catch (ClassNotFoundException e) {
+			} catch (OutOfMemoryError e) {
+				System.out.println("No more memory");
+			} finally {
+				if (fis != null) {
+					try {
+						fis.close();
+					} catch (IOException e) {
 					}
 				}
 
-			} catch (IOException e) {
-			} catch (ClassNotFoundException e) {
+				if (ois != null) {
+					try {
+						ois.close();
+					} catch (IOException e) {
+					}
+				}
 			}
 		}
 
@@ -159,19 +157,34 @@ public class InputOutput {
 			temp[x] = tmp1[x];
 		}
 
+		Highscore tempItem;
+
+		for (int k = 0; k < anzahl; k++) {
+			for (int j = 1; j < anzahl; j++) {
+				if ((temp[j - 1].getAnzahlGewonnen() / temp[j - 1]
+						.getAnzahlRunden()) > (temp[j].getAnzahlGewonnen() / temp[j]
+						.getAnzahlRunden())) {
+					tempItem = temp[j];
+					temp[j] = temp[j - 1];
+					temp[j - 1] = tempItem;
+				}
+			}
+		}
+
 		return temp;
 	}
 
 	public int anzahlHighscore() {
 		InputStream fis = null;
-		Highscore tmp1[] = new Highscore[10000];
+		ObjectInputStream ois = null;
+		Highscore tmp1[] = new Highscore[50];
 
 		int i = 0;
 
 		if (dateiHighscore.exists()) {
 			try {
 				fis = new FileInputStream(dateiHighscore);
-				ObjectInputStream ois = new ObjectInputStream(fis);
+				ois = new ObjectInputStream(fis);
 
 				while (true) {
 					tmp1[i] = (Highscore) ois.readObject();
@@ -180,11 +193,24 @@ public class InputOutput {
 			} catch (EOFException e) {
 			} catch (ClassNotFoundException e) {
 			} catch (IOException e) {
-			} finally {
+			} catch (OutOfMemoryError e) {
+				System.out.println("No more memory");
+			}
+
+			finally {
 				if (fis != null) {
 					try {
 						fis.close();
 					} catch (IOException e) {
+						System.out.println("fis not closed");
+					}
+				}
+
+				if (ois != null) {
+					try {
+						ois.close();
+					} catch (IOException e) {
+						System.out.println("ois not closed");
 					}
 				}
 			}
