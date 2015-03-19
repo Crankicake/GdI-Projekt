@@ -61,6 +61,7 @@ public class GorillasTestAdapterExtended3 extends GorillasTestAdapterExtended2 {
 			int speed, int wind, int gravity, boolean fromLeftToRight,
 			int deltaTime) {
 		MasterGame.setGravitation(gravity);
+		MasterGame.setWind(wind);
 		
 		try {
 			ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,

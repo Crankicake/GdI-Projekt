@@ -136,11 +136,11 @@ public class GamePlayState extends OwnState {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(playerOne.getName()).append(": ")
-				.append(playerOne.getScore()).append("          ")
+				.append(playerOne.getScore()).append("                              ")
 				.append(playerTwo.getName()).append(": ")
 				.append(playerTwo.getScore());
 
-		g.drawString(sb.toString(), windowWidth / 2 - 130, 10);
+		g.drawString(sb.toString(), windowWidth / 2 - 180, 10);
 
 		/*
 		 * if(displayOutOfWindowComment) {
@@ -162,7 +162,6 @@ public class GamePlayState extends OwnState {
 		 * render(sun.getHitbox(), g); render(playerOne.getHitbox(), g);
 		 * render(playerTwo.getHitbox(), g);
 		 */
-
 	}
 
 	@Override
@@ -436,8 +435,8 @@ public class GamePlayState extends OwnState {
 			sun.addImage(new Image("/assets/gorillas/sun/sun_smiling.png"));
 			sun.addImage(new Image("/assets/gorillas/sun/sun_astonished.png"));
 		}
-		sun.setPosition(new Vector2f(windowWidth / 2, windowHeight / 8));
-		sun.setScale(scale);
+		sun.setPosition(new Vector2f(windowWidth / 2 - 50, 5));
+		sun.setScale(scale * 100f / 56f);
 		sun.setPassable(true);
 		sun.setRotation(0.0f);
 

@@ -282,6 +282,7 @@ public class GorillasTestAdapterMinimal {
 	public Vector2f getNextShotPosition(Vector2f startPosition, int angle,
 			int speed, boolean fromLeftToRight, int deltaTime) {
 
+		MasterGame.setWind(0);
 		MasterGame.setGravitation(10);
 
 		try {

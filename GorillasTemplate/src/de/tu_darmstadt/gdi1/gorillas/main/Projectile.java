@@ -35,7 +35,7 @@ public class Projectile extends Entity {
 			picture = new Image("/assets/gorillas/banana.png");
 		}
 		
-		setScale(Launcher.SCALE);
+		setScale(0.5f);
 		setPassable(true);
 		setRotation(0.0f);
 	}

@@ -25,7 +25,7 @@ public class Sun extends Entity {
 
 		images = new LinkedList<Image>();
 		sm = SunMode.normal;
-		hitbox = new Vector2f[100 * 100];
+		hitbox = new Vector2f[100 * 101];
 		
 		remarks = MasterGame.getRemarks();	
 	}
@@ -42,10 +42,10 @@ public class Sun extends Entity {
 
 		switch (sm) {
 		case normal:
-			graphicsContext.drawImage(images.get(0), pos.x, pos.y);
+			graphicsContext.drawImage(images.get(0).getScaledCopy(getScale()), pos.x, pos.y);
 			break;
 		case astonished:
-			graphicsContext.drawImage(images.get(1), pos.x, pos.y);
+			graphicsContext.drawImage(images.get(1).getScaledCopy(getScale()), pos.x, pos.y);
 			break;
 		}
 
@@ -70,10 +70,10 @@ public class Sun extends Entity {
 			
 			hitbox[count] = new Vector2f(pos.x + x, pos.y + y);
 			
-			if (x == 56)
+			if (x == 100)
 				x = -1;
 
-			if (y == 55)
+			if (y == 99)
 				y = -1;
 		}
 	}
