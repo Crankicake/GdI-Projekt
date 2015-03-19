@@ -6,6 +6,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 
 import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
+import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import de.tu_darmstadt.gdi1.gorillas.main.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
@@ -24,6 +26,8 @@ public class GorillasTestAdapterMinimal {
 	// fuer Tests!)
 	TWLTestAppGameContainer app;
 
+	Highscore[] highscore;
+	
 	public GorillasTestAdapterMinimal() {
 		super();
 	}
@@ -118,7 +122,11 @@ public class GorillasTestAdapterMinimal {
 	 * player names).
 	 */
 	public void rememberGameData() {
-		// TODO: Implement
+		InputOutput io = new InputOutput();
+		
+		highscore = io.leseHighscore();
+		
+		io.resetHighscore();
 	}
 
 	/**
@@ -126,7 +134,11 @@ public class GorillasTestAdapterMinimal {
 	 * should make sure that
 	 */
 	public void restoreGameData() {
-		// TODO: Implement
+		InputOutput io = new InputOutput();
+		
+		for(Highscore h : highscore) {
+			io.addHighscore(h);
+		}
 	}
 
 	/**
