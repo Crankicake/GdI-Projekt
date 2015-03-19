@@ -471,12 +471,14 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
-	private void updateWind(GameContainer gc, StateBasedGame sbg, int i)
+	private void updateWind(GameContainer gc, StateBasedGame sbg, int  i)
 			throws SlickException {
 		if (arrowPosition == null)
 			arrowPosition = new Vector2f(0, 0);
 
-		arrowPosition.x += MasterGame.getWind();
+		float wind = MasterGame.getWind() * i * MasterGame.getTimeScale();
+		
+		arrowPosition.x += wind;
 
 		if (arrowPosition.x > windowWidth + 30) {
 			arrowPosition.x = 0;

@@ -120,8 +120,6 @@ public class GorillasTestAdapterExtended1 extends GorillasTestAdapterMinimal {
 				.getState(TestGorillas.GAMEPLAYSTATE);
 		
 		return state.getbuildingCoordinates();
-		
-		
 	}
 
 	/**
