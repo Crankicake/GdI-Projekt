@@ -1,7 +1,6 @@
 package de.tu_darmstadt.gdi1.gorillas.entity;
 
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,7 +20,6 @@ import eea.engine.entity.Entity;
  */
 public class Projectile extends Entity {
 
-	private PriorityQueue<Vector2f> nextPositions;
 	private Vector2f position;
 	private float rotation;
 	private Image picture;
@@ -32,7 +30,6 @@ public class Projectile extends Entity {
 
 	public Projectile(String entityID) {
 		super(entityID);
-		nextPositions = new PriorityQueue<Vector2f>();
 
 		position = super.getPosition();
 	}
@@ -66,14 +63,9 @@ public class Projectile extends Entity {
 		flying = true;
 	}
 
-	public Vector2f nextPosition() {
-		return nextPositions.poll();
-	}
-
 	/**
 	 * 
-	 * @return Hier koennen alle fuer die Banane relevanten Parameter abgerufen
-	 *         werden
+	 * @return gibt alle zukünftigen Punkte zurück
 	 */
 	public LinkedList<Vector2f> getAllPositions() {
 		return throwAttempt.getAllPoints();

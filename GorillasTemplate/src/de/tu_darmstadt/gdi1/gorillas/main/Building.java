@@ -55,10 +55,11 @@ public class Building {
 
 		g.drawImage(baseBuilding, 0, 0, null);
 
-		int maxY = mode == 0 ? 12 : 12;
+		int maxY = 12;
 
 		// Algorithmus zum Zusammenbasteln:
-		// Ein zufaelliges Fenster wird ausgewaehlt & an die ensprechende Position
+		// Ein zufaelliges Fenster wird ausgewaehlt & an die ensprechende
+		// Position
 		// gesetzt
 		for (int y = 0; y < maxY; ++y) {
 			if (mode == 0) {

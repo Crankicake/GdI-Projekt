@@ -44,9 +44,9 @@ public class InputOutput {
 	public void speichereName(String name) {
 		name += ";";
 
-		if (dateiHighscore.exists()) {
+		if (dateiNamen.exists()) {
 			try {
-				FileOutputStream fos = new FileOutputStream(dateiHighscore,
+				FileOutputStream fos = new FileOutputStream(dateiNamen,
 						true);
 
 				try {
@@ -66,7 +66,7 @@ public class InputOutput {
 			}
 		} else {
 			try {
-				FileOutputStream fos = new FileOutputStream(dateiHighscore,
+				FileOutputStream fos = new FileOutputStream(dateiNamen,
 						false);
 				try {
 					byte[] puffer = name.getBytes();
@@ -118,8 +118,8 @@ public class InputOutput {
 	}
 
 	/**
-	 * Diese Methode liest alle Higscore Einträge aus der "Highscore.hsc" Datei
-	 * und liefert ein Array aus Highscores zurück
+	 * Diese Methode liest alle Higscore Eintraege aus der "Highscore.hsc" Datei
+	 * und liefert ein Array aus Highscores zurueck
 	 * 
 	 * @return Array of Highscores
 	 */
@@ -238,8 +238,8 @@ public class InputOutput {
 	}
 
 	/**
-	 * Diese Methode fügt einen neuen Highscore in die Datei "Highscore.hsc"
-	 * hinzu bzw. updated sie mit dem übergebenen Parameter
+	 * Diese Methode faegt einen neuen Highscore in die Datei "Highscore.hsc"
+	 * hinzu bzw. updated sie mit dem uebergebenen Parameter
 	 * 
 	 * @param hsc
 	 */
@@ -341,7 +341,7 @@ public class InputOutput {
 
 	/**
 	 * Diese Methode durchsucht den Pfad "../ressources/Musik/" nach allen dort
-	 * vorhandenen Audiodateien und liefert einen String mit deren Namen zurück
+	 * vorhandenen Audiodateien und liefert einen String mit deren Namen zurueck
 	 * 
 	 * @return Array of Strings with filenames of the audiofiles
 	 */
@@ -352,7 +352,7 @@ public class InputOutput {
 
 	/**
 	 * Diese Methode liefert die Anzahl der Audiodateien im Pfad
-	 * "../ressources/Musik/" zurück
+	 * "../ressources/Musik/" zurueck
 	 * 
 	 * @return The amount of Audiofiles
 	 */

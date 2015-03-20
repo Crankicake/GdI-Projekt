@@ -8,7 +8,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 
 /**
  * Diese Klasse erbt und ueberschreibt ObjectOutputstream dahingehend, dass der
- * Header des serialisierten Objekts nicht geschrieben. Dadurch wird das
+ * Header des serialisierten Objekts nicht geschrieben wird. Dadurch wird das
  * appenden eines weiteren Objekts ermoeglicht {@link InputOutput}.
  * 
  * Credits to www.stackoverflow.com

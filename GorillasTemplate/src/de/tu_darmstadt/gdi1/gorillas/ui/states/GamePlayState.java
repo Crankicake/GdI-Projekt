@@ -557,7 +557,7 @@ public class GamePlayState extends OwnState {
 	private void updateProjectile(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		if (projectile.isFlying()) {
-			if (flyingTimer < 250) {
+			if (flyingTimer < 10) {
 				flyingTimer += i;
 			} else {
 				readyForHit = true;
@@ -983,7 +983,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	public Vector2f getNextBananaPosition() {
-		return projectile.nextPosition();
+		return projectile.getPosition();
 	}
 
 	public Sun getSun() {

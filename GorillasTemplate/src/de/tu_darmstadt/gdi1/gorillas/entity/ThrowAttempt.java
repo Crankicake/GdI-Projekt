@@ -8,7 +8,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.Launcher;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 
 /**
- * Soll die Sonne erstaunt gucken oder nicht?
+ * Mathematik hinter dem Wurf als Klasse
  *
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  */
@@ -77,18 +77,26 @@ public class ThrowAttempt {
 		this.playerID = playerID;
 	}
 
-	// Hier drunter passiert 2x das gleiche. Nach der Formel fuer x und y wird
-	// deren Wert errechnet.
-	// Danach geprueft, ob der noch im Fenster liegt...
-
+	/**
+	 * 
+	 * @return staerke des aktuellen wurfs
+	 */
 	public int getVelocity() {
 		return velocity;
 	}
 
+	/**
+	 * 
+	 * @return winkel des aktuellen wurfs
+	 */
 	public int getAngle() {
 		return angle;
 	}
 
+	/**
+	 * 
+	 * @return Gibt eine Liste mit allen Punkten auf der Flugbahn zurück
+	 */
 	public LinkedList<Vector2f> getAllPoints() {
 
 		LinkedList<Vector2f> liste = new LinkedList<Vector2f>();
@@ -113,6 +121,11 @@ public class ThrowAttempt {
 		}
 	}
 
+	/**
+	 * 
+	 * @param time time passed seit dem letzen frame
+	 * @return die neue position
+	 */
 	public Vector2f getNextPoint(double time) {
 
 		time *= MasterGame.getTimeScale();
