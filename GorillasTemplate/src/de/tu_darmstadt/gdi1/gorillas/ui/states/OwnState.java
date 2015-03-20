@@ -150,22 +150,32 @@ public abstract class OwnState extends BasicTWLGameState {
 		return stateID;
 	}
 
-	protected void changeInitState(GameContainer gc, StateBasedGame sb,
+	/**
+	 * Wechselt den State und initialisiert alle neu
+	 * 
+	 * @param container
+	 *            : Der Container, in dem dieses Spiel ausgefuehrt wird
+	 * @param sb
+	 *            : Das Spiel
+	 * @param state
+	 *            : Die interne StateID, in die gewechselt werden soll
+	 */
+	protected void changeInitState(GameContainer container, StateBasedGame sb,
 			int state) {
 		sb.enterState(state);
 
 		StateBasedEntityManager.getInstance().clearEntitiesFromState(state);
 
 		try {
-			gc.getInput().clearKeyPressedRecord();
-			gc.getInput().clearControlPressedRecord();
-			gc.getInput().clearMousePressedRecord();
-			sb.init(gc);
+			container.getInput().clearKeyPressedRecord();
+			container.getInput().clearControlPressedRecord();
+			container.getInput().clearMousePressedRecord();
+			sb.init(container);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		if (gc.isPaused())
-			gc.resume();
+		if (container.isPaused())
+			container.resume();
 	}
 
 	/**

@@ -50,7 +50,7 @@ import de.matthiasmann.twl.renderer.AnimationState.StateKey;
  * 
  * <code>editField</code> and <code>label</code> are protected instead of private, too.
  * 
- * @author Matthias Mann, Peter Klöckner
+ * @author Matthias Mann, Peter Kloeckner
  */
 public abstract class AdvancedValueAdjuster extends Widget {
 

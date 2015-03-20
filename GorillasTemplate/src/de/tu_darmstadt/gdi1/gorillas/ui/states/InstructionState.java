@@ -6,15 +6,21 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import de.tu_darmstadt.gdi1.gorillas.changed.OwnChangeStateAction;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
+
+/**
+ * Der 1. Instructionstate für Instructions
+ * 
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
+ */
 
 public class InstructionState extends OwnState {
 
@@ -43,7 +49,7 @@ public class InstructionState extends OwnState {
 		zurueckEvent.addAction(zurueckAction);
 		zurueckE.addComponent(zurueckEvent);
 
-		// Entitaet für Weitergehen zu Seite2
+		// Entitaet fuer Weitergehen zu Seite2
 		Entity weiterE = createMenuEntity(names[0], new Vector2f(670, 80));
 
 		// Events und Actions
@@ -95,19 +101,19 @@ public class InstructionState extends OwnState {
 		g.setColor(org.newdawn.slick.Color.white);
 
 		// Schreiben der Texte
-		g.drawString("Zurück", 85, 66);
+		g.drawString("Zurueck", 85, 66);
 		g.drawString("Weiter", 635, 66);
 
-		// Schreiben der Texte für Pic1
+		// Schreiben der Texte fuer Pic1
 		g.drawString("1. Neues Spiel beginnen ", 350, 130);
 		g.drawString("2. Rangliste der besten Spieler ", 350, 170);
 		g.drawString("3. Spielanleitung ", 350, 210);
-		g.drawString("4. Infos über Version und Namen der Entwickler ", 350,
+		g.drawString("4. Infos ueber Version und Namen der Entwickler ", 350,
 				250);
 		g.drawString("5. Spiel beenden ", 350, 290);
 
-		// Schreiben der Texte für Pic2
-		g.drawString("6. Zum Hauptmenue zurrückkehren ", 350, 400);
+		// Schreiben der Texte fuer Pic2
+		g.drawString("6. Zum Hauptmenue zurrueckkehren ", 350, 400);
 		g.drawString("7. Auswahl der Spielernamen ", 350, 440);
 		g.drawString("8. Spiel starten ", 350, 480);
 

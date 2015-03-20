@@ -81,7 +81,7 @@ public abstract class BasicTWLGameState extends BasicGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
     	
-    	// change by Peter Klöckner:
+    	// change by Peter Kloeckner:
     	// if the game is in test mode, use TWLTestStateBasedGame
     	if (!TestGorillas.debug) {
     		((TWLStateBasedGame)game).setRootPane(getRootPane());

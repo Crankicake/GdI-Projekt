@@ -5,11 +5,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.GameState;
 
-import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.entity.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import de.tu_darmstadt.gdi1.gorillas.main.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestAppGameContainer;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TWLTestStateBasedGame;
 import de.tu_darmstadt.gdi1.gorillas.test.setup.TestGorillas;
@@ -284,16 +283,11 @@ public class GorillasTestAdapterMinimal {
 
 		MasterGame.setWind(0);
 		MasterGame.setGravitation(10);
+		
+		ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
+				fromLeftToRight ? 1 : 2);
 
-		try {
-			ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
-					fromLeftToRight ? 1 : 2);
-
-			return ta.getNextPoint(deltaTime);
-		} catch (GorillasException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return ta.getNextPoint(deltaTime);
 	}
 
 	/**

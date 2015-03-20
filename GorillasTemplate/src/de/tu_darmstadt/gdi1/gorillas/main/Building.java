@@ -8,25 +8,34 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-public class Building{
+/**
+ * Diese nur statische Klasse generiert zufaellig Gebaeude
+ * 
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
+ */
 
-	private static BufferedImage baseBuilding;
-	private static BufferedImage window1;
-	private static BufferedImage window2;
-	private static Random random;
+public class Building {
 
-	static {
-		random = new Random();
-	}
-
+	/**
+	 * @return The random picture
+	 * @throws IOException
+	 *             : Thrown, if the Images can't be loaded
+	 */
 	public static BufferedImage generateBuilding() throws IOException {
+
+		Random random = new Random();
 
 		int mode = random.nextInt(2);
 
+		// Die Grundgrafik, auf die die spaeteren Bilder gezeichnet werden
 		BufferedImage combined = new BufferedImage(100, 600,
 				BufferedImage.TYPE_INT_ARGB);
 
 		Graphics g = combined.getGraphics();
+
+		BufferedImage baseBuilding;
+		BufferedImage window1;
+		BufferedImage window2;
 
 		if (mode == 0) {
 			baseBuilding = ImageIO.read(new File(
@@ -48,6 +57,9 @@ public class Building{
 
 		int maxY = mode == 0 ? 12 : 12;
 
+		// Algorithmus zum Zusammenbasteln:
+		// Ein zufaelliges Fenster wird ausgewaehlt & an die ensprechende Position
+		// gesetzt
 		for (int y = 0; y < maxY; ++y) {
 			if (mode == 0) {
 
@@ -69,7 +81,7 @@ public class Building{
 					g.drawImage(window2, 68, 26 + y * 52, null);
 				}
 			} else {
-				
+
 				if (random.nextInt(2) == 0) {
 					g.drawImage(window1, 6, 26 + y * 52, null);
 				} else {
@@ -86,5 +98,4 @@ public class Building{
 
 		return combined;
 	}
-
 }

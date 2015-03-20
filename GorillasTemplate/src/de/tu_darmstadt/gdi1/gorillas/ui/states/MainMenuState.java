@@ -17,13 +17,17 @@ import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
+
+
 /**
- * Diese Klasse repraesentiert den State des Hauptmenues. Hier hat der Spieler die Auswahl ein neues Spiel
- * zu starten, die Highscores einzusehen, die Anleitung zu lesen oder das Spiel zu beenden.
+ * Diese Klasse repraesentiert den State des Hauptmenues. Hier hat der Spieler
+ * die Auswahl ein neues Spiel zu starten, die Highscores einzusehen, die
+ * Anleitung zu lesen oder das Spiel zu beenden.
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  *
  */
+
 public class MainMenuState extends OwnState {
 
 	private Jukeboxibox jukebox;

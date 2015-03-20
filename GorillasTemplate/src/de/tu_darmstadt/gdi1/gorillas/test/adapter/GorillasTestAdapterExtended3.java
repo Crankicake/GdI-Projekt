@@ -2,9 +2,8 @@ package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.entity.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import de.tu_darmstadt.gdi1.gorillas.main.ThrowAttempt;
 
 public class GorillasTestAdapterExtended3 extends GorillasTestAdapterExtended2 {
 
@@ -62,15 +61,10 @@ public class GorillasTestAdapterExtended3 extends GorillasTestAdapterExtended2 {
 			int deltaTime) {
 		MasterGame.setGravitation(gravity);
 		MasterGame.setWind(wind);
-		
-		try {
-			ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
-					fromLeftToRight ? 1 : 2);
-			
-			return ta.getNextPoint(deltaTime);
-		} catch (GorillasException e) {
-			e.printStackTrace();
-		}
-		return null;
+
+		ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
+				fromLeftToRight ? 1 : 2);
+
+		return ta.getNextPoint(deltaTime);
 	}
 }

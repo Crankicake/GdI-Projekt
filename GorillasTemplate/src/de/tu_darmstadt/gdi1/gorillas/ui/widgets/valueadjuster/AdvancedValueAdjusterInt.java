@@ -42,7 +42,7 @@ import de.matthiasmann.twl.model.IntegerModel;
  * sure that nothing but an int bigger or equal than <code>minValue</code> and smaller
  * or equal than <code>maxValue</code> is accepted.
  * 
- * @author Matthias Mann, Peter Klöckner
+ * @author Matthias Mann, Peter Kloeckner
  * */
 public class AdvancedValueAdjusterInt extends AdvancedValueAdjuster {
 

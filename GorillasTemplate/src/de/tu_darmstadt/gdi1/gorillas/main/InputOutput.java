@@ -1,10 +1,19 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
-import java.io.*;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
+
+import de.tu_darmstadt.gdi1.gorillas.changed.AppendingObjectOutputStream;
 
 /**
  * Diese Klasse ist fuer alle Input- und Outputbelange gedacht.
@@ -14,9 +23,13 @@ import java.util.regex.Pattern;
  */
 public class InputOutput {
 
+	// Die beiden Dateien
 	File dateiHighscore;
 	File dateiNamen;
 
+	/**
+	 * Initialisiert die beiden Dateien
+	 */
 	public InputOutput() {
 		dateiNamen = new File("Namen.bin");
 		dateiHighscore = new File("Highscore.hsc");
@@ -24,7 +37,7 @@ public class InputOutput {
 
 	/**
 	 * Diese Methode speichert in der Datei "Namen.bin" den eingegebenen
-	 * Spielernamen, der als Parameter übergeben wird
+	 * Spielernamen, der als Parameter uebergeben wird
 	 * 
 	 * @param name
 	 */

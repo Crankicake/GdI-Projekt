@@ -7,11 +7,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import de.tu_darmstadt.gdi1.gorillas.changed.OwnChangeStateAction;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
@@ -19,12 +19,23 @@ import eea.engine.event.Event;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 
+/**
+ * Der Highscorestate, der den Highscore anzeigt
+ * 
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
+ */
+
 public class HighScoreState extends OwnState {
 
 	private InputOutput io;
 	private Highscore[] hsc;
-	
 
+	/**
+	 * hsc ist der geladene Highscore, da wir den nur einmal am Anfang laden
+	 * müssen
+	 * 
+	 * @param sid
+	 */
 	public HighScoreState(int sid) {
 		super(sid);
 
@@ -74,29 +85,39 @@ public class HighScoreState extends OwnState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		super.render(container, game, g);
-		
-        //Initialisierung der Spaltennamen
-		g.setColor(org.newdawn.slick.Color.blue);
-		g.drawString("Platzierung", windowWidth/2-370, windowHeight/2-160);
-		g.drawString("Name",windowWidth/2-250, windowHeight/2-160);
-		g.drawString("Gespielte Runden",windowWidth/2-120, windowHeight/2-160);
-		g.drawString("Gewonnene Runden", windowWidth/2+50, windowHeight/2-160);
-		g.drawString("Trefferquote", windowWidth/2+250,windowHeight/2-160);
 
-		int y = windowHeight / 2 -130;
+		// Initialisierung der Spaltennamen
+		g.setColor(org.newdawn.slick.Color.blue);
+		g.drawString("Platzierung", windowWidth / 2 - 370,
+				windowHeight / 2 - 160);
+		g.drawString("Name", windowWidth / 2 - 250, windowHeight / 2 - 160);
+		g.drawString("Gespielte Runden", windowWidth / 2 - 120,
+				windowHeight / 2 - 160);
+		g.drawString("Gewonnene Runden", windowWidth / 2 + 50,
+				windowHeight / 2 - 160);
+		g.drawString("Trefferquote", windowWidth / 2 + 250,
+				windowHeight / 2 - 160);
+
+		int y = windowHeight / 2 - 130;
 		g.setColor(org.newdawn.slick.Color.white);
-		//Zeichnen der Highscoreeinträge
+		// Zeichnen der Highscoreeintraege
 		for (int i = 0; i < hsc.length; i++) {
-			g.drawString((i+1)+"",windowWidth/2-350,y);
-			g.drawString(hsc[i].getName(),windowWidth/2-250,y);
-			g.drawString(""+hsc[i].getAnzahlRunden(),windowWidth/2-100,y);
-			g.drawString(""+hsc[i].getAnzahlGewonnen(),windowWidth/2+50,y);
-			g.drawString("--("+Math.round(hsc[i].getProzentGewonnen() *100* 100.00)/100.00+"%)",windowWidth/2+100,y);
-			g.drawString(""+ Math.round(hsc[i].getTrefferquote()*100.00)/100.00, windowWidth/2+250, y);
-			y+=20;
-			
-			if(i==9)
-				i= io.anzahlHighscore()+1;
+			g.drawString((i + 1) + "", windowWidth / 2 - 350, y);
+			g.drawString(hsc[i].getName(), windowWidth / 2 - 250, y);
+			g.drawString("" + hsc[i].getAnzahlRunden(), windowWidth / 2 - 100,
+					y);
+			g.drawString("" + hsc[i].getAnzahlGewonnen(), windowWidth / 2 + 50,
+					y);
+			g.drawString(
+					"--("
+							+ Math.round(hsc[i].getProzentGewonnen() * 100 * 100.00)
+							/ 100.00 + "%)", windowWidth / 2 + 100, y);
+			g.drawString("" + Math.round(hsc[i].getTrefferquote() * 100.00)
+					/ 100.00, windowWidth / 2 + 250, y);
+			y += 20;
+
+			if (i == 9)
+				i = io.anzahlHighscore() + 1;
 		}
 		g.drawString("Zurueck", 85, 66);
 	}

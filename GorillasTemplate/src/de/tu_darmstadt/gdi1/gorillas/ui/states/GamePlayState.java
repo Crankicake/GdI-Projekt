@@ -21,17 +21,16 @@ import de.matthiasmann.twl.EditField;
 import de.matthiasmann.twl.EditField.Callback;
 import de.matthiasmann.twl.Label;
 import de.matthiasmann.twl.slick.RootPane;
+import de.tu_darmstadt.gdi1.gorillas.entity.Player;
+import de.tu_darmstadt.gdi1.gorillas.entity.PlayerImageState;
+import de.tu_darmstadt.gdi1.gorillas.entity.Projectile;
+import de.tu_darmstadt.gdi1.gorillas.entity.Sun;
+import de.tu_darmstadt.gdi1.gorillas.entity.SunMode;
 import de.tu_darmstadt.gdi1.gorillas.main.Building;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
-import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
 import de.tu_darmstadt.gdi1.gorillas.main.Highscore;
 import de.tu_darmstadt.gdi1.gorillas.main.InputOutput;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import de.tu_darmstadt.gdi1.gorillas.main.Player;
-import de.tu_darmstadt.gdi1.gorillas.main.PlayerImageState;
-import de.tu_darmstadt.gdi1.gorillas.main.Projectile;
-import de.tu_darmstadt.gdi1.gorillas.main.Sun;
-import de.tu_darmstadt.gdi1.gorillas.main.SunMode;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.DestroyEntityAction;
 import eea.engine.component.Component;
@@ -465,7 +464,7 @@ public class GamePlayState extends OwnState {
 	}
 
 	private void initSun() throws SlickException {
-		sun = new Sun(names[1], null);
+		sun = new Sun(names[1]);
 		if (!MasterGame.getDebug()) {
 			sun.addImage(new Image("/assets/gorillas/sun/sun_smiling.png"));
 			sun.addImage(new Image("/assets/gorillas/sun/sun_astonished.png"));
@@ -566,7 +565,7 @@ public class GamePlayState extends OwnState {
 
 			try {
 				projectile.updateOwn(gc, sbg, i);
-			} catch (GorillasException ex) {
+			} catch (Exception ex) {
 				setVisibility(true);
 
 				flyingTimer = 0;

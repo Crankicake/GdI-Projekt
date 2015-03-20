@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Diese Klasse repraesentiert die Struktur eines Highscoreeintrags. Sie ist
- * Serialisierbar, da das von Noeten ist, um diese Struktur spaeter in der
+ * serialisierbar, da das von Noeten ist, um diese Struktur spaeter in der
  * {@link InputOutput} in die entsprechende Datei schreiben zu koennen.
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
@@ -26,19 +26,12 @@ public class Highscore implements Serializable {
 	private double trefferquote;
 
 	/**
-	 * Konstruktor zur Initialisierung der Attribute
-	 * 
-	 * public Highscore(){ name = ""; anzahlRunden = 0; anzahlGewonnen = 0;
-	 * anzahlBananen = 0; prozentGewonnen = 0; setTrefferquote(0); }
-	 */
-
-	/**
 	 * Ueberladener Konstruktor zur direkten Initialisierung der Attribute
 	 * 
-	 * @param Name
-	 * @param AnzRunden
-	 * @param AnzGewonnen
-	 * @param AnzBananen
+	 * @param Name: der Name
+	 * @param AnzRunden: die gespielten Runden
+	 * @param AnzGewonnen: die gewonnenen Runden
+	 * @param AnzBananen: die geworfenen Bananen
 	 */
 	public Highscore(String Name, int AnzRunden, int AnzGewonnen, int AnzBananen) {
 		name = Name;
@@ -51,7 +44,7 @@ public class Highscore implements Serializable {
 	/**
 	 * Getter fuer den Namen
 	 * 
-	 * @return The Name
+	 * @return der Name
 	 */
 	public String getName() {
 		return name;
@@ -60,7 +53,7 @@ public class Highscore implements Serializable {
 	/**
 	 * Setter fuer den Namen
 	 * 
-	 * @param name
+	 * @param Name: der Name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -120,9 +113,6 @@ public class Highscore implements Serializable {
 		this.anzahlBananen = anzahlBananen;
 	}
 
-	/*
-	 * public double getGenauigkeit() { return anzahlRunden / anzahlGewonnen; }
-	 */
 	/**
 	 * Getter fuer Prozentzahl der gewonnenen Runden
 	 * 
@@ -132,6 +122,10 @@ public class Highscore implements Serializable {
 		return prozentGewonnen;
 	}
 
+	/**
+	 * Setter fuer Prozentzahl der gewonnenen Runden
+	 * @param prozentGewonnen: The percentage of won rounds 
+	 */
 	public void setProzentGewonnen(double prozentGewonnen) {
 		this.prozentGewonnen = prozentGewonnen;
 	}
@@ -155,6 +149,9 @@ public class Highscore implements Serializable {
 		this.trefferquote = trefferquote;
 	}
 
+	/**
+	 * Kalkuliert die neuen Prozentwerte
+	 */
 	public void calculateValues() {
 		setProzentGewonnen((double)anzahlGewonnen / (double)anzahlRunden);
 		setTrefferquote((double)anzahlBananen / (double)anzahlGewonnen);

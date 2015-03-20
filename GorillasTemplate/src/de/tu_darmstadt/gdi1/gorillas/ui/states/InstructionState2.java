@@ -6,15 +6,21 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import de.tu_darmstadt.gdi1.gorillas.changed.OwnChangeStateAction;
 import de.tu_darmstadt.gdi1.gorillas.main.Gorillas;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import de.tu_darmstadt.gdi1.gorillas.main.OwnChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
+
+/**
+ * Der 2. Instructionstate für mehr Instructions
+ * 
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
+ */
 
 public class InstructionState2 extends OwnState {
 
@@ -80,16 +86,16 @@ public class InstructionState2 extends OwnState {
 
 		g.setColor(org.newdawn.slick.Color.white);
 		// Schreiben der Texte
-		g.drawString("Zurück", 85, 66);
+		g.drawString("Zurueck", 85, 66);
 
-		// Schreiben der Texte für Pic3
-		g.drawString("9.  Eingabe der Wurfstärke ", 350, 150);
+		// Schreiben der Texte fuer Pic3
+		g.drawString("9.  Eingabe der Wurfstaerke ", 350, 150);
 		g.drawString("10. Eingabe des Wurfwinkels ", 350, 190);
-		g.drawString("11. Bestätigen des Wurfs ", 350, 230);
-		g.drawString("12. Richtung und Stärke des Windes ", 350, 270);
+		g.drawString("11. Bestaetigen des Wurfs ", 350, 230);
+		g.drawString("12. Richtung und Staerke des Windes ", 350, 270);
 
-		// Schreiben der Texte für Pic4
-		g.drawString("Viel Erfolg und Spaß beim Spielen!!! ", 350, 400);
+		// Schreiben der Texte fuer Pic4
+		g.drawString("Viel Erfolg und Spass beim Spielen!!! ", 350, 400);
 
 	}
 }

@@ -1,15 +1,16 @@
 package de.tu_darmstadt.gdi1.gorillas.main;
 
-import javafx.application.Application;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.*;
-import javafx.stage.Stage;
-
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowListener;
 import java.net.URI;
 import java.nio.file.Paths;
+
+import javafx.application.Application;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;

@@ -2,10 +2,9 @@ package de.tu_darmstadt.gdi1.gorillas.test.adapter;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import de.tu_darmstadt.gdi1.gorillas.main.GorillasException;
+import de.tu_darmstadt.gdi1.gorillas.entity.SunMode;
+import de.tu_darmstadt.gdi1.gorillas.entity.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
-import de.tu_darmstadt.gdi1.gorillas.main.SunMode;
-import de.tu_darmstadt.gdi1.gorillas.main.ThrowAttempt;
 import de.tu_darmstadt.gdi1.gorillas.ui.states.GamePlayState;
 
 public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
@@ -59,16 +58,11 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
 			int speed, int wind, boolean fromLeftToRight, int deltaTime) {
 		MasterGame.setWind(wind);
 		MasterGame.setGravitation(10);
-		
-		try {
-			ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
-					fromLeftToRight ? 1 : 2);
-			
-			return ta.getNextPoint(deltaTime);
-		} catch (GorillasException e) {
-			e.printStackTrace();
-		}
-		return null;
+
+		ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
+				fromLeftToRight ? 1 : 2);
+
+		return ta.getNextPoint(deltaTime);
 	}
 
 	/**
@@ -79,7 +73,7 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
 	 * @return the wind scaling factor for the parabolic flight calculation
 	 */
 	public float getWindScalingFactor() {
-		return (float)MasterGame.getWindScale();
+		return (float) MasterGame.getWindScale();
 	}
 
 	/**
@@ -89,10 +83,11 @@ public class GorillasTestAdapterExtended2 extends GorillasTestAdapterExtended1 {
 	 *         otherwise false
 	 */
 	public boolean isSunAstonished() {
-		if(gorillas.getCurrentState() instanceof GamePlayState) {
-			return ((GamePlayState)gorillas.getCurrentState()).getSun().getSunMode() == SunMode.astonished;
+		if (gorillas.getCurrentState() instanceof GamePlayState) {
+			return ((GamePlayState) gorillas.getCurrentState()).getSun()
+					.getSunMode() == SunMode.astonished;
 		}
-		
+
 		return false;
 	}
 

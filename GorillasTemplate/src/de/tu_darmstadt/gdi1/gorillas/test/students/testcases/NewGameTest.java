@@ -26,7 +26,7 @@ public class NewGameTest {
 	@Test
 	public void testNewGame() {
 
-		// Testet, ob das Spiel aus dem MainMenuState, wenn "n" gedrückt wird,
+		// Testet, ob das Spiel aus dem MainMenuState, wenn "n" gedrueckt wird,
 		// in den GameSetupState wechselt, wie es in der Aufgabenstellung unter
 		// "Neues Spiel starten" vorgegeben ist.
 		adapter.initializeGame();
