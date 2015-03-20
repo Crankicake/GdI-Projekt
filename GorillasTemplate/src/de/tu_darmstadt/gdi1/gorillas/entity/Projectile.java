@@ -65,7 +65,7 @@ public class Projectile extends Entity {
 
 	/**
 	 * 
-	 * @return gibt alle zukünftigen Punkte zurück
+	 * @return gibt alle zukuenftigen Punkte zurueck
 	 */
 	public LinkedList<Vector2f> getAllPositions() {
 		return throwAttempt.getAllPoints();

@@ -17,7 +17,7 @@ import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 
 /**
- * Der 1. Instructionstate für Instructions
+ * Der 1. Instructionstate fuer Instructions
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  */

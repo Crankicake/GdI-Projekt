@@ -32,7 +32,7 @@ public class HighScoreState extends OwnState {
 
 	/**
 	 * hsc ist der geladene Highscore, da wir den nur einmal am Anfang laden
-	 * müssen
+	 * muessen
 	 * 
 	 * @param sid
 	 */

@@ -13,7 +13,7 @@ import de.tu_darmstadt.gdi1.gorillas.main.MasterGame;
 import eea.engine.entity.Entity;
 
 /**
- * Diese Klasse repräsentiert die Sonne. Deswegen erbt sie von Entity.
+ * Diese Klasse repraesentiert die Sonne. Deswegen erbt sie von Entity.
  * 
  * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
  */
@@ -28,7 +28,7 @@ public class Sun extends Entity {
 	/**
 	 * 
 	 * @param entityID
-	 *            : Der Name, unter dem die Entität später gefunden werden kann.
+	 *            : Der Name, unter dem die Entitaet spaeter gefunden werden kann.
 	 */
 	public Sun(String entityID) {
 		super(entityID);
@@ -41,7 +41,7 @@ public class Sun extends Entity {
 	}
 
 	/**
-	 * Fügt ein neues Bild zu
+	 * Fuegt ein neues Bild zu
 	 * 
 	 * @param image
 	 *            : das neue Bild
@@ -80,7 +80,7 @@ public class Sun extends Entity {
 
 	/**
 	 * @param sm
-	 *            : Der neue Gefühlsstatus der Sonne
+	 *            : Der neue Gefuehlsstatus der Sonne
 	 */
 	public void setSunMode(SunMode sm) {
 		this.sm = sm;
@@ -88,7 +88,7 @@ public class Sun extends Entity {
 
 	/**
 	 * @param pos
-	 *            : Setzt die Sonne an die angegebene Position und füllt die
+	 *            : Setzt die Sonne an die angegebene Position und fuellt die
 	 *            Hitbox neu
 	 */
 	public void setPosition(Vector2f pos) {
@@ -111,7 +111,7 @@ public class Sun extends Entity {
 
 	/**
 	 * 
-	 * @return Gibt die Hitbox zurück
+	 * @return Gibt die Hitbox zurueck
 	 */
 	public Vector2f[] getHitbox() {
 		return hitbox;
@@ -120,7 +120,7 @@ public class Sun extends Entity {
 	/**
 	 * @param mode
 	 *            : Der Modus, von dem der Kommentar erwartet wird
-	 * @return: Ein zufälliger, passender Kommentar
+	 * @return: Ein zufaelliger, passender Kommentar
 	 */
 	public String getComment(int mode) {
 		int r = new Random().nextInt(2);

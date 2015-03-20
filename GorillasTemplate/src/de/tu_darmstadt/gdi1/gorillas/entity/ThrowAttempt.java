@@ -95,7 +95,7 @@ public class ThrowAttempt {
 
 	/**
 	 * 
-	 * @return Gibt eine Liste mit allen Punkten auf der Flugbahn zurück
+	 * @return Gibt eine Liste mit allen Punkten auf der Flugbahn zurueck
 	 */
 	public LinkedList<Vector2f> getAllPoints() {
 

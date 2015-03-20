@@ -40,7 +40,14 @@ import eea.engine.entity.Entity;
 import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.interfaces.IDestructible;
 
+/**
+ * Die groesste Klasse, sie implementiert die Spiellogik und erbt von OwnState
+ * 
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
+ */
 public class GamePlayState extends OwnState {
+
+	// Alle Attribute, die wir so brauchen
 
 	private Projectile projectile;
 	private Player playerOne;
@@ -73,23 +80,30 @@ public class GamePlayState extends OwnState {
 	private int hitTimer;
 
 	private float buildingX, buildingY;
-	public Vector2f getApeHeight;
-	private ArrayList<Vector2f> buildingCoordinates = new ArrayList<Vector2f>();
+	private ArrayList<Vector2f> buildingCoordinates;
 
-	private boolean displayOutOfWindowComment = false;
-	private boolean displayBuildingHitComment = false;
-	private boolean displayApeHitComment = false;
+	private boolean displayOutOfWindowComment;
+	private boolean displayBuildingHitComment;
+	private boolean displayApeHitComment;
 
-	private String buildingHitComment = "";
-	private String apeHitComment = "";
-	private String outOfWindowComment = "";
+	private String buildingHitComment;
+	private String apeHitComment;
+	private String outOfWindowComment;
 
+	/**
+	 * Setzt alle Attribute und ruft den Konstruktor von OwnState auf
+	 * 
+	 * @param sid
+	 */
 	public GamePlayState(int sid) {
 		super(sid);
 
 		setAttributes(1);
 	}
 
+	/**
+	 * ueberschreibt die Initmethode und ruft alle anderen Inits auf
+	 */
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
@@ -113,6 +127,9 @@ public class GamePlayState extends OwnState {
 		 */
 	}
 
+	/**
+	 * ueberschreibt die Rendermethoden und rendert alle noetigen Sachen
+	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
@@ -172,6 +189,9 @@ public class GamePlayState extends OwnState {
 
 	}
 
+	/**
+	 * Updated alle Entities und ruft alle anderen Updatemethoden auf
+	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
@@ -190,6 +210,9 @@ public class GamePlayState extends OwnState {
 		updateMessageBoxes(gc, sbg, i);
 	}
 
+	/**
+	 * @return: Der Frame mit den GUI Elementen
+	 */
 	@Override
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
@@ -241,6 +264,11 @@ public class GamePlayState extends OwnState {
 		return rp;
 	}
 
+	/**
+	 * 
+	 * @param d
+	 *            die neue Gravitation
+	 */
 	@Override
 	protected void layoutRootPane() {
 
@@ -264,8 +292,22 @@ public class GamePlayState extends OwnState {
 		throwButton.setSize(148, throwButton.getHeight());
 	}
 
+	/**
+	 * Setzt alle Attribute auf den Standardwert
+	 * @param whichPlayersDraw: Mansche Werte muessen angepasst werden, je nach dem, welcher Spieler dran ist
+	 */
 	private void setAttributes(int whichPlayersDraw) {
 		playerOne = MasterGame.getPlayerOne();
+
+		buildingCoordinates = new ArrayList<Vector2f>();
+
+		displayOutOfWindowComment = false;
+		displayBuildingHitComment = false;
+		displayApeHitComment = false;
+
+		buildingHitComment = "";
+		apeHitComment = "";
+		outOfWindowComment = "";
 
 		if (whichPlayersDraw == 1) {
 			playerOne.setImageState(PlayerImageState.LeftHandRised);
@@ -298,7 +340,7 @@ public class GamePlayState extends OwnState {
 
 		this.whichPlayersDraw = whichPlayersDraw;
 
-		explosionTimer = 150;
+		explosionTimer = 350;
 		messageTimer = 150;
 		flyingTimer = 0;
 		hitTimer = 350;
@@ -314,6 +356,9 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * ueberschreibt die Methode aus OwnState und laedt ein zufaelliges Hintergrund rein
+	 */
 	@Override
 	protected void initBackground() throws SlickException {
 		Entity background = new Entity(names[0]);
@@ -342,6 +387,10 @@ public class GamePlayState extends OwnState {
 		entityManager.addEntity(stateID, background);
 	}
 
+	/**
+	 * Generiert eine zufaellige Skyline und erstellt daraus eine zerstoerbare Entitaet
+	 * @throws SlickException
+	 */
 	private void initBuildings() throws SlickException {
 
 		Random r = new Random();
@@ -395,6 +444,10 @@ public class GamePlayState extends OwnState {
 		entityManager.addEntity(getID(), des);
 	}
 
+	/**
+	 * Initialisiert das Projektil und das Kollisionsevent
+	 * @throws SlickException
+	 */
 	private void initProjectile() throws SlickException {
 		projectile = new Projectile(names[4]);
 		projectile.setRotation(0);
@@ -465,6 +518,10 @@ public class GamePlayState extends OwnState {
 		entityManager.addEntity(stateID, projectile);
 	}
 
+	/**
+	 * Initialisiert die Sonne
+	 * @throws SlickException
+	 */
 	private void initSun() throws SlickException {
 		sun = new Sun(names[1]);
 		if (!MasterGame.getDebug()) {
@@ -479,6 +536,10 @@ public class GamePlayState extends OwnState {
 		entityManager.addEntity(stateID, sun);
 	}
 
+	/**
+	 * Initialisiert den Windpfeil
+	 * @throws SlickException
+	 */
 	private void initWindIndicator() throws SlickException {
 		if (MasterGame.getWind() < 0) {
 			arrowPosition = new Vector2f(windowWidth - 30, windowHeight - 20);
@@ -494,6 +555,11 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Initialisiert die Explosion an der angegebenen Position
+	 * @param pos Die Position
+	 * @throws SlickException
+	 */
 	private void initExplosion(Vector2f pos) throws SlickException {
 		explosion = new Entity("Explo");
 		if (!MasterGame.getDebug()) {
@@ -508,6 +574,10 @@ public class GamePlayState extends OwnState {
 		entityManager.addEntity(getID(), explosion);
 	}
 
+	/**
+	 * Initialisiert den roten Rahmen
+	 * @throws SlickException
+	 */
 	private void initHit() throws SlickException {
 		apeHit = new Entity("Apehit");
 
@@ -522,6 +592,9 @@ public class GamePlayState extends OwnState {
 
 	}
 
+	/**
+	 * Updated den Input, also die Maus und Tasten
+	 */
 	private void updateInput(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		Input input = gc.getInput();
@@ -542,13 +615,16 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Updated den Windpfeil, skaliert mit dem Windscale und delta
+	 */
 	private void updateWind(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		if (arrowPosition == null)
 			arrowPosition = new Vector2f(0, 0);
 
-		arrowPosition.x += MasterGame.getWind();
-
+		arrowPosition.x += ((float)MasterGame.getWind() * MasterGame.getWindScale() * i);
+				
 		if (arrowPosition.x > windowWidth + 30) {
 			arrowPosition.x = 0;
 		} else if (arrowPosition.x < -30) {
@@ -556,6 +632,9 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Updated das Projektil, je nach dem, ob es fliegt, werden andere Dinge gemacht
+	 */
 	private void updateProjectile(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		if (projectile.isFlying()) {
@@ -600,9 +679,12 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Zeigt die Explosion 350 ms an, danach wird sie wieder ausgeblendet
+	 */
 	private void updateExplosion(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
-		if (explosionTimer >= 150) {
+		if (explosionTimer >= 350) {
 			explosion.setVisible(false);
 		} else {
 			explosionTimer += i;
@@ -610,6 +692,9 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Updated die Hitboxen und prueft, ob die Banane in denen ist
+	 */
 	private void updateHitboxes(GameContainer gc, StateBasedGame sbg, int i)
 			throws SlickException {
 		Vector2f[] hitbox = sun.getHitbox();
@@ -654,6 +739,9 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Updated die Messageboxen, falls jemand 3 Punkte erreicht hat
+	 */
 	private void updateMessageBoxes(GameContainer gc, StateBasedGame sbg, int i) {
 
 		if (messageTimer >= 350 && rundeEnde) {
@@ -699,6 +787,9 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Simuliert einen Klick auf den Werfenbutton
+	 */
 	public void throwButton_Click() {
 		displayBuildingHitComment = false;
 		displayOutOfWindowComment = false;
@@ -707,6 +798,9 @@ public class GamePlayState extends OwnState {
 		throwBanana();
 	}
 
+	/**
+	 * Das Event, wenn die StaerkeTextBox einen anderen Wert erhaelt
+	 */
 	public void velocityTextField_TextChanged() {
 		String oldText = velocityTextField.getText();
 
@@ -730,6 +824,9 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Das Event, wenn die WinkelTextBox einen anderen Wert erhaelt
+	 */
 	public void angleTextField_TextChanged() {
 		String oldText = angleTextField.getText();
 
@@ -752,6 +849,10 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Startet das Spiel neu und gibt dem angegebenen Spieler die Banane
+	 * @param whichPlayersDraw der bevorzugte Spieler
+	 */
 	private void restart(int whichPlayersDraw) {
 
 		setAttributes(whichPlayersDraw);
@@ -772,6 +873,12 @@ public class GamePlayState extends OwnState {
 
 	}
 
+	/**
+	 * Wird ausgeloesst, sobald die Banane explodieren soll
+	 * @param victum Das 'victim', das weggebombt wird
+	 * @param other Der, der den Punkt bekommt
+	 * @param pos Die Position, an die die Explosion gerendert wird
+	 */
 	private void explode(Player victum, Player other, Vector2f pos) {
 
 		projectile.explode();
@@ -789,6 +896,9 @@ public class GamePlayState extends OwnState {
 		explosion.setPosition(pos);
 	}
 
+	/**
+	 * Methode, um die Banane zu werfen
+	 */
 	private void throwBanana() {
 		projectile.setParameter(oldAngle, oldVelocity, whichPlayersDraw);
 
@@ -808,6 +918,9 @@ public class GamePlayState extends OwnState {
 		saveInput();
 	}
 
+	/**
+	 * Speichert den Input in den Textboxen
+	 */
 	private void saveInput() {
 		if (whichPlayersDraw == 2) {
 			playerOne
@@ -830,11 +943,18 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Leert die Textboxen
+	 */
 	private void clearInput() {
 		angleTextField.setText("0");
 		velocityTextField.setText("0");
 	}
 
+	/**
+	 * Setzt die GUI Elemente auf b
+	 * @param b ob die GUI Elemente angezeigt werden oder nicht
+	 */
 	private void setVisibility(boolean b) {
 
 		throwButton.setVisible(b);
@@ -845,14 +965,27 @@ public class GamePlayState extends OwnState {
 		velocityTextField.setVisible(b);
 	}
 
+	/**
+	 * Getter fuer das Projektil
+	 * @return projektil
+	 */
 	public Projectile getProjectile() {
 		return projectile;
 	}
 
+	/**
+	 * Getter fuer die Runden
+	 * @return Anzahlrunden
+	 */
 	public int getRounds() {
 		return playerOne.getScore() + playerTwo.getScore();
 	}
 
+	/**
+	 * Entfernt alle nicht-zahlen aus dem string s und gibt den zurueck
+	 * @param s unbearbeiteter string
+	 * @return nur-zahlen-string
+	 */
 	private String trimString(String s) {
 		StringBuilder sb = new StringBuilder(s.length());
 
@@ -878,6 +1011,12 @@ public class GamePlayState extends OwnState {
 		return sb.toString();
 	}
 
+	/**
+	 * Vergleicht 2 Vektoren, ob sie annaehernd gleich sind
+	 * @param one v1
+	 * @param two v2
+	 * @return gleichheit
+	 */
 	private boolean compareVectors(Vector2f one, Vector2f two) {
 		Vector2f t1 = new Vector2f((int) one.x, (int) one.y);
 		Vector2f t2 = new Vector2f((int) two.x, (int) two.y);
@@ -885,6 +1024,11 @@ public class GamePlayState extends OwnState {
 		return t1.equals(t2);
 	}
 
+	/**
+	 * Rendert die hitboxen
+	 * @param vectoren Hitbox
+	 * @param g
+	 */
 	@SuppressWarnings("unused")
 	private void render(Vector2f[] vectoren, Graphics g) {
 		g.setColor(Color.red);
@@ -894,6 +1038,10 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Simuliert einen Tastendruck in der VelocityTextbox
+	 * @param newChar neues Zeichen
+	 */
 	public void addCharToVelocity(char newChar) {
 		String newString = "-1";
 
@@ -925,6 +1073,10 @@ public class GamePlayState extends OwnState {
 
 	}
 
+	/**
+	 * Simuliert einen Tastendruck in der AngleTextbox
+	 * @param newChar neues Zeichen
+	 */
 	public void addCharToAngle(char newChar) {
 		String newString = "-1";
 
@@ -956,14 +1108,25 @@ public class GamePlayState extends OwnState {
 		}
 	}
 
+	/**
+	 * Fuegt den text in die velocitytextbox mit ein
+	 * @param value
+	 */
 	public void setVelocity(String value) {
 		velocityTextField.setText(velocityTextField.getText() + value);
 	}
 
+	/**
+	 * Fuegt den text in die AngleTextBox mit ein
+	 * @param value
+	 */
 	public void setAngle(String value) {
 		angleTextField.setText(angleTextField.getText() + value);
 	}
 
+	/**
+	 * Leert den input und die gespeicherten werte
+	 */
 	public void clearFields() {
 		oldAngle = -1;
 		oldVelocity = -1;
@@ -972,38 +1135,79 @@ public class GamePlayState extends OwnState {
 		angleTextField.setText("0");
 	}
 
+	/**
+	 * Gibt die staerke zurueck
+	 * @return
+	 */
 	public String getVelocity() {
 		return String.valueOf(oldVelocity);
 	}
 
+	/**
+	 * gibt den winkel zurueck
+	 * @return
+	 */
 	public String getAngle() {
 		return String.valueOf(oldAngle);
 	}
 
+	/**
+	 * Gibt die Bananenposition zurueck
+	 * @return
+	 */
 	public Vector2f getNextBananaPosition() {
 		return projectile.getPosition();
 	}
 
+	/**
+	 * Getter fuer die Sonne
+	 * @return
+	 */
 	public Sun getSun() {
 		return sun;
 	}
 
+	/**
+	 * Getter fuer die gabaeudekoordinaten
+	 * @return
+	 */
 	public ArrayList<Vector2f> getbuildingCoordinates() {
 		return buildingCoordinates;
 	}
 
+	/**
+	 * gibt die windowbreite zurueck
+	 * @return
+	 */
 	public float getWindowWidth() {
 		return windowWidth;
 	}
 
+	/**
+	 * gibt die windowhoehe zurueck
+	 * @return
+	 */
 	public float getWindowHeight() {
 		return windowHeight;
 	}
 
+	/**
+	 * gibt zurueck, welcher spieler dran ist
+	 * @return
+	 */
 	public int getWhichPlayersDraw() {
 		return whichPlayersDraw;
 	}
 
+	/**
+	 * Erstellt eine Map mit den Parametern:
+	 * @param paneWidth breite vom fenster
+	 * @param paneHeight hoehe vom fenster
+	 * @param yOffsetCity offset
+	 * @param buildingCoordinates alle koordinaten der gebaeude
+	 * @param leftGorillaCoordinate position des linken affen
+	 * @param rightGorillaCoordinate position der rechten affen
+	 */
 	public void createMap(int paneWidth, int paneHeight, int yOffsetCity,
 			ArrayList<Vector2f> buildingCoordinates,
 			Vector2f leftGorillaCoordinate, Vector2f rightGorillaCoordinate) {
@@ -1046,6 +1250,13 @@ public class GamePlayState extends OwnState {
 			projectile.setPosition(playerTwo.getPosition());
 	}
 
+	/**
+	 * Gibt eine DIE zurueck, die f breit und y hoch ist.
+	 * @param i das i. gebaeude
+	 * @param f
+	 * @param y
+	 * @return
+	 */
 	private DestructibleImageEntity generateBuildingEntity(int i, float f,
 			float y) {
 

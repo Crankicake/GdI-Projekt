@@ -158,5 +158,4 @@ public class Jukeboxibox extends Application {
 			frame.setVisible(true);
 		frame.setAlwaysOnTop(false);
 	}
-
 }

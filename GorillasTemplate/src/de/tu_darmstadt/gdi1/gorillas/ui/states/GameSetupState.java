@@ -65,7 +65,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	/**
-	 * Überschreibt die Standartmethode und ruft die anderen init-Methoden auf
+	 * ueberschreibt die Standartmethode und ruft die anderen init-Methoden auf
 	 */
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
@@ -213,7 +213,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	/**
-	 * Passt die Größe der GUI Elemente an
+	 * Passt die Groesse der GUI Elemente an
 	 */
 	@Override
 	protected void layoutRootPane() {
@@ -246,7 +246,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	/**
-	 * Initialisiert die beiden 'Knöpfe'
+	 * Initialisiert die beiden 'Knoepfe'
 	 * @throws SlickException
 	 */
 	protected void initEntities() throws SlickException {
@@ -268,7 +268,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	/**
-	 * Die Methode, die ausgeführt wird, wenn der Name von Spieler 1 geändert wird
+	 * Die Methode, die ausgefuehrt wird, wenn der Name von Spieler 1 geaendert wird
 	 */	
 	public void playername1Textbox_TextChanged() {
 
@@ -289,7 +289,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	/**
-	 * Die Methode, die ausgeführt wird, wenn der Name von Spieler 2 geändert wird
+	 * Die Methode, die ausgefuehrt wird, wenn der Name von Spieler 2 geaendert wird
 	 */	
 	public void playername2Textbox_TextChanged() {
 
@@ -434,7 +434,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	/**
-	 * Gibt die ErrorMessage von Spieler 1 zurück
+	 * Gibt die ErrorMessage von Spieler 1 zurueck
 	 * @return die Message
 	 */
 	public String getErrorMessageP1() {
@@ -442,7 +442,7 @@ public class GameSetupState extends OwnState {
 	}
 	
 	/**
-	 * Gibt die ErrorMessage von Spieler 2 zurück
+	 * Gibt die ErrorMessage von Spieler 2 zurueck
 	 * @return die Message
 	 */
 	public String getErrorMessageP2() {
@@ -450,7 +450,7 @@ public class GameSetupState extends OwnState {
 	}
 
 	/**
-	 * Gibt die ErrorMessage zurück
+	 * Gibt die ErrorMessage zurueck
 	 * @return die Message
 	 */
 	public String getErrorMessage() {
