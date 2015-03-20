@@ -167,11 +167,7 @@ public class GorillasTestAdapterMinimal {
 		GameState state = gorillas.getCurrentState();
 
 		if (state instanceof GameSetupState) {
-			try {
-				((GameSetupState) state).StartButtonClick(app, gorillas);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
+			((GameSetupState) state).StartButtonClick(app, gorillas);
 		}
 	}
 
@@ -283,7 +279,7 @@ public class GorillasTestAdapterMinimal {
 
 		MasterGame.setWind(0);
 		MasterGame.setGravitation(10);
-		
+
 		ThrowAttempt ta = new ThrowAttempt(angle, speed, startPosition,
 				fromLeftToRight ? 1 : 2);
 

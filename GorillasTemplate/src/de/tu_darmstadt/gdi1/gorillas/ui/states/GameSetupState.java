@@ -28,11 +28,17 @@ import eea.engine.event.Event;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 
+/**
+ *  GameSetupState ist unser Einstellungsstate :D
+ * 
+ * @author Simon Foitzik, Salim Karacaoglan, Christoph Gombert, Fabian Czappa
+ */
+
 public class GameSetupState extends OwnState {
 
 	private EditField playername1Textbox;
 	private EditField playername2Textbox;
-	public static EditField gravitationTextbox;
+	private  EditField gravitationTextbox;
 	private Label playername1Label;
 	private Label playername2Label;
 	private Label gravitationLabel;
@@ -43,6 +49,10 @@ public class GameSetupState extends OwnState {
 	private String errorMessageP1;
 	private String errorMessageP2;
 
+	/**
+	 * Leert die errormessages und initialisiert das name-Array
+	 * @param sid
+	 */
 	public GameSetupState(int sid) {
 		super(sid);
 
@@ -54,6 +64,9 @@ public class GameSetupState extends OwnState {
 		names = new String[] { "Zurueck", "Spiel starten" };
 	}
 
+	/**
+	 * Überschreibt die Standartmethode und ruft die anderen init-Methoden auf
+	 */
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
@@ -62,6 +75,9 @@ public class GameSetupState extends OwnState {
 		initEntities();
 	}
 
+	/**
+	 * Rendert die Strings (nicht die Labels)
+	 */
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
@@ -74,6 +90,9 @@ public class GameSetupState extends OwnState {
 		g.drawString(errormessage, 220, 500);
 	}
 
+	/**
+	 * Updatet die Entities und den Imput
+	 */
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
@@ -87,6 +106,9 @@ public class GameSetupState extends OwnState {
 		}
 	}
 
+	/**
+	 * @return: Der Frame mit den GUI Elementen
+	 */
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 
@@ -133,6 +155,10 @@ public class GameSetupState extends OwnState {
 		gravitationLabel = new Label();
 		gravitationLabel.setText("Gravitation:");
 
+		/*
+		 * Autocomplete 
+		 */
+		
 		AutoCompletionDataSource acds = new AutoCompletionDataSource() {
 			public AutoCompletionResult collectSuggestions(String text,
 					int cursorPos, AutoCompletionResult prev) {
@@ -177,12 +203,18 @@ public class GameSetupState extends OwnState {
 		return rp;
 	}
 
+	/**
+	 * 
+	 * @param d die neue Gravitation
+	 */
 	public void fillGravitationTextbox(float d) {
 
 		MasterGame.setGravitation(d);
-
 	}
 
+	/**
+	 * Passt die Größe der GUI Elemente an
+	 */
 	@Override
 	protected void layoutRootPane() {
 		super.layoutRootPane();
@@ -213,6 +245,10 @@ public class GameSetupState extends OwnState {
 
 	}
 
+	/**
+	 * Initialisiert die beiden 'Knöpfe'
+	 * @throws SlickException
+	 */
 	protected void initEntities() throws SlickException {
 		Entity newGameEntity = createMenuEntity(names[1], new Vector2f(
 				windowWidth / 2, windowHeight / 2 + 50));
@@ -231,6 +267,9 @@ public class GameSetupState extends OwnState {
 		entityManager.addEntity(getID(), zurueckEntity);
 	}
 
+	/**
+	 * Die Methode, die ausgeführt wird, wenn der Name von Spieler 1 geändert wird
+	 */	
 	public void playername1Textbox_TextChanged() {
 
 		String name1, name2;
@@ -249,6 +288,9 @@ public class GameSetupState extends OwnState {
 		}
 	}
 
+	/**
+	 * Die Methode, die ausgeführt wird, wenn der Name von Spieler 2 geändert wird
+	 */	
 	public void playername2Textbox_TextChanged() {
 
 		String name1, name2;
@@ -268,8 +310,13 @@ public class GameSetupState extends OwnState {
 		}
 	}
 
+	/**
+	 * Simuliert einen Mouseclick an (x,y)
+	 * @param x die x-koordinate
+	 * @param y die y-koordinate
+	 */
 	public void mouseLeftButton_Click(GameContainer gc, StateBasedGame sbg,
-			int x, int y) throws SlickException {
+			int x, int y) {
 		Image i = getMenuEntryImage();
 
 		double width = i.getWidth() * 0.35 * scale;
@@ -286,8 +333,10 @@ public class GameSetupState extends OwnState {
 		}
 	}
 
-	public void StartButtonClick(GameContainer gc, StateBasedGame sbg)
-			throws SlickException {
+	/**
+	 * Simuliert einen Klick auf den Startenbutton
+	 */
+	public void StartButtonClick(GameContainer gc, StateBasedGame sbg) {
 		String name1 = MasterGame.getPlayerOne().getName();
 		String name2 = MasterGame.getPlayerTwo().getName();
 
@@ -305,10 +354,12 @@ public class GameSetupState extends OwnState {
 			errormessage = "Bitte unterschiedliche Spielernamen eingeben";
 		}
 
-		if(errorMessageP1 == null || errorMessageP2 == null || errormessage == null)
+		if (errorMessageP1 == null || errorMessageP2 == null
+				|| errormessage == null)
 			return;
-		
-		if(!errorMessageP1.isEmpty() || !errorMessageP2.isEmpty() || !errormessage.isEmpty())
+
+		if (!errorMessageP1.isEmpty() || !errorMessageP2.isEmpty()
+				|| !errormessage.isEmpty())
 			return;
 
 		changeState(gc, sbg, Gorillas.GAMEPLAYSTATE);
@@ -316,67 +367,92 @@ public class GameSetupState extends OwnState {
 		io.speichereName(name2);
 	}
 
+	/**
+	 * Setzt den Playername1TextboxText
+	 * @param text der neue Text
+	 */
 	public void setPlayername1TextboxText(String text) {
 		playername1Textbox.setText(text);
 	}
 
+	/**
+	 * Setzt den Playername2TextboxText
+	 * @param text der neue Text
+	 */
 	public void setPlayername2TextboxText(String text) {
 		playername2Textbox.setText(text);
 	}
 
+	/**
+	 * Setzt den GravitationTextboxText
+	 * @param text der neue Text
+	 */
 	private void setGravitationTextboxText(String text) {
 		gravitationTextbox.setText(text);
 	}
 
+	/**
+	 * Setzt den Namen von Spieler 1
+	 * @param name: der Name
+	 */
 	public void setPlayerOneName(String name) {
 		if (name == null || name.isEmpty()) {
 			errorMessageP1 = "Die Spielernamen duerfen nicht leer sein";
 			return;
 		}
 
-		if(name.equals(MasterGame.getPlayerTwo().getName()))
-		{
+		if (name.equals(MasterGame.getPlayerTwo().getName())) {
 			errorMessageP1 = "Bitte unterschiedliche Spielernamen eingeben";
 			errorMessageP2 = "Bitte unterschiedliche Spielernamen eingeben";
 			return;
 		}
-		
+
 		errorMessageP1 = "";
-		
+
 		MasterGame.getPlayerOne().setName(name);
 	}
 
+	/**
+	 * Setzt den Namen von Spieler 2
+	 * @param name: der Name
+	 */
 	public void setPlayerTwoName(String name) {
 		if (name == null || name.isEmpty()) {
 			errorMessageP2 = "Die Spielernamen duerfen nicht leer sein";
 			return;
 		}
 
-		if(name.equals(MasterGame.getPlayerOne().getName()))
-		{
+		if (name.equals(MasterGame.getPlayerOne().getName())) {
 			errorMessageP1 = "Bitte unterschiedliche Spielernamen eingeben";
 			errorMessageP2 = "Bitte unterschiedliche Spielernamen eingeben";
 			return;
 		}
-		
+
 		errorMessageP2 = "";
-		
+
 		MasterGame.getPlayerTwo().setName(name);
 	}
 
-	public void equalError() {
-		errormessage = "Bitte unterschiedliche Spielernamen eingeben";
-
-	}
-
+	/**
+	 * Gibt die ErrorMessage von Spieler 1 zurück
+	 * @return die Message
+	 */
 	public String getErrorMessageP1() {
 		return errorMessageP1;
 	}
-
+	
+	/**
+	 * Gibt die ErrorMessage von Spieler 2 zurück
+	 * @return die Message
+	 */
 	public String getErrorMessageP2() {
 		return errorMessageP2;
 	}
 
+	/**
+	 * Gibt die ErrorMessage zurück
+	 * @return die Message
+	 */
 	public String getErrorMessage() {
 		return errormessage;
 	}

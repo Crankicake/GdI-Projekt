@@ -15,7 +15,6 @@ public class MasterGame {
 	private static Player playerOne;
 	private static Player playerTwo;
 
-	private static boolean applyPlayerNames;
 	private static boolean running;
 	private static boolean debug;
 	private static boolean laeuftJukebox;
@@ -29,7 +28,6 @@ public class MasterGame {
 	private static String[] remarks;
 
 	static {
-		applyPlayerNames = false;
 		running = false;
 		laeuftJukebox = false;
 		debug = false;
@@ -60,13 +58,6 @@ public class MasterGame {
 	 */
 	public static Player getPlayerTwo() {
 		return playerTwo;
-	}
-
-	/**
-	 * @return
-	 */
-	public static boolean getApplyPlayerNames() {
-		return applyPlayerNames;
 	}
 
 	/**
@@ -172,7 +163,7 @@ public class MasterGame {
 
 		}
 
-		playerOne.setName("Payer 1");
+		playerOne.setName("Player 1");
 		playerTwo.setName("Player 2");
 	}
 

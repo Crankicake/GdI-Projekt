@@ -207,7 +207,7 @@ public abstract class OwnState extends BasicTWLGameState {
 	 *             : Steht hier wegen Kompatibilitaetsgruenden drinne
 	 */
 	protected void initBackground() throws SlickException {
-		// Erstellung der Standartentitaet fuer den Hintergrund
+		// Erstellung der Standardentitaet fuer den Hintergrund
 		// und das Konfigurieren der einzelnen Parameter werden hier
 		// vorgenommen.
 		// Bei Bedarf einfach ueberschreiben.
@@ -216,7 +216,7 @@ public abstract class OwnState extends BasicTWLGameState {
 
 		backgroundEntity.setPosition(new Vector2f(windowWidth / 2,
 				windowHeight / 2));
-		backgroundEntity.setScale(1.5f);
+		backgroundEntity.setScale(1.5f * scale);
 		backgroundEntity.setPassable(true);
 		backgroundEntity.setRotation(0.0f);
 		backgroundEntity.addComponent(new ImageRenderComponent(

@@ -116,8 +116,10 @@ public class GamePlayState extends OwnState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-
-		entityManager.renderEntities(gc, sbg, g);
+		if (!MasterGame.getDebug())
+			entityManager.renderEntities(gc, sbg, g);
+		else
+			projectile.render(gc, sbg, g);
 
 		if (MasterGame.getWind() != 0)
 			g.drawImage(arrow, arrowPosition.x, arrowPosition.y);
@@ -176,6 +178,8 @@ public class GamePlayState extends OwnState {
 
 		if (!MasterGame.getDebug()) {
 			entityManager.updateEntities(gc, sbg, i);
+		} else {
+			// projectile.update(gc, sbg, i);
 		}
 
 		updateInput(gc, sbg, i);
@@ -363,9 +367,9 @@ public class GamePlayState extends OwnState {
 
 			p.x -= 50f * scale;
 			p.y -= 321;
-			
+
 			buildingCoordinates.add(p);
-			
+
 			try {
 				g.drawImage(Building.generateBuilding(), (int) pos.x - 50,
 						(int) pos.y - 300, null);
@@ -425,8 +429,6 @@ public class GamePlayState extends OwnState {
 
 				if (entity instanceof IDestructible) {
 					IDestructible destructible = (IDestructible) entity;
-					destructible.impactAt(event.getOwnerEntity().getPosition());
-
 					destructible.impactAt(event.getOwnerEntity().getPosition());
 				}
 
@@ -871,10 +873,6 @@ public class GamePlayState extends OwnState {
 				sb.append(array[i]);
 				break;
 			}
-
-			if (i == 0 && array[0] == '-') {
-				sb.append(array[0]);
-			}
 		}
 
 		return sb.toString();
@@ -1016,12 +1014,12 @@ public class GamePlayState extends OwnState {
 
 		MasterGame.setWind(0);
 
-		playerOne.setPosition(leftGorillaCoordinate);
-		playerTwo.setPosition(rightGorillaCoordinate);
-
 		try {
 			initBackground();
 			initProjectile();
+			initExplosion(new Vector2f());
+			initWindIndicator();
+			initSun();
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -1035,6 +1033,17 @@ public class GamePlayState extends OwnState {
 					buildingCoordinates.get(i).y);
 			entityManager.addEntity(getID(), buildings[i]);
 		}
+
+		playerOne.setPosition(leftGorillaCoordinate);
+		playerTwo.setPosition(rightGorillaCoordinate);
+
+		entityManager.addEntity(getID(), playerOne);
+		entityManager.addEntity(getID(), playerTwo);
+
+		if (whichPlayersDraw == 1)
+			projectile.setPosition(playerOne.getPosition());
+		else
+			projectile.setPosition(playerTwo.getPosition());
 	}
 
 	private DestructibleImageEntity generateBuildingEntity(int i, float f,
